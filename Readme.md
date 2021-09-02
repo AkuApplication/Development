@@ -31,6 +31,11 @@ Regarding Dependencies
 Regarding Import
 - Fix saja nama import nya either by hovering or manually type in
 
+Firebase
+- Incase kamu try use kamu punya firebase yang google-services.json atu, li nda mau di run try :
+Flutter clean
+Flutter Run
+
 ## Features References :
 
 
