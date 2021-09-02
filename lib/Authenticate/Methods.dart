@@ -22,6 +22,7 @@ Future<User> createAccount(String name, String email, String password) async {
         "name": name,
         "email": email,
         "status": "Unavalible",
+        "accountType": "Patient",
         "uid": _auth.currentUser.uid,
       });
 
