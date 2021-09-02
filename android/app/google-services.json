@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "374465383236",
-    "project_id": "chatapp-692e2",
-    "storage_bucket": "chatapp-692e2.appspot.com"
+    "project_number": "588722514643",
+    "project_id": "aku-application-a7dda",
+    "storage_bucket": "aku-application-a7dda.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:374465383236:android:c31898044ac588f454a511",
+        "mobilesdk_app_id": "1:588722514643:android:a9058e27405e5268810226",
         "android_client_info": {
           "package_name": "com.example.chat_appflutter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "374465383236-uq01etsb9r6tn6jkb5rt472n27hfhqp9.apps.googleusercontent.com",
+          "client_id": "588722514643-uqcols9naehvj3ob9l924dl2c02lsm3i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAM_AOEfhZjOeBCkH58Agx9U5OqLBwy6dY"
+          "current_key": "AIzaSyDeNAfq86Z7e1aJh9MwEtXc7ns-bL-OdXI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "374465383236-uq01etsb9r6tn6jkb5rt472n27hfhqp9.apps.googleusercontent.com",
+              "client_id": "588722514643-uqcols9naehvj3ob9l924dl2c02lsm3i.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
