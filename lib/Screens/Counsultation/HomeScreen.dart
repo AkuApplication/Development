@@ -105,6 +105,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
         // For Loop ?  Foreach ? Array Loop ?
 
+        // To do list : How to loop userMap
+
         userMap = value.docs[0].data();
         isLoading = false;
       });
