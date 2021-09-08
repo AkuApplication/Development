@@ -1,3 +1,4 @@
+import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,30 @@ import 'package:flutter/material.dart';
 class ChatRoom extends StatelessWidget {
   final Map<String, dynamic> userMap;
   final String chatRoomId;
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget closeButton = FlatButton(
+      child: Text("Close"),
+      onPressed: () {},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Mental Health Test Result"),
+      content: Text("Question No. 1"),
+      actions: [
+        closeButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   ChatRoom({this.chatRoomId, this.userMap});
 
@@ -60,9 +85,31 @@ class ChatRoom extends StatelessWidget {
                     // If AccountType = Therapist
                     Row(
                       children: [
-                        Icon(Icons.assignment, color: Colors.white),
+                        Container(
+                          child: IconButton(
+                              onPressed: () {
+                                showAlertDialog(context);
+                              },
+                              icon: Icon(Icons.assignment)),
+                        ),
+                        Container(
+                          child: IconButton(
+                              onPressed: () {
+                                showAlertDialog(context);
+                              },
+                              icon: Icon(Icons.border_color_rounded)),
+                        ),
                         SizedBox(width: 20),
-                        Icon(Icons.border_color_rounded, color: Colors.white),
+                        RaisedButton(
+                          child: Text('End Session'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                            );
+                          },
+                        ),
                       ],
                     ),
 
