@@ -34,7 +34,7 @@ class _TimerAppState extends State<TimerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Tabata Timer',
+      title: 'Counsultation',
       theme: ThemeData(
         primarySwatch: widget.settings.primarySwatch,
         brightness:

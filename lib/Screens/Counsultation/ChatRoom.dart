@@ -44,13 +44,33 @@ class ChatRoom extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               return Container(
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(userMap['name']),
-                    Text(
-                      snapshot.data['status'],
-                      style: TextStyle(fontSize: 14),
+                    Column(
+                      children: [
+                        Text(userMap['name']),
+                        Text(
+                          snapshot.data['status'],
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ],
                     ),
+
+                    // If AccountType = Therapist
+                    Row(
+                      children: [
+                        Icon(Icons.assignment, color: Colors.white),
+                        SizedBox(width: 20),
+                        Icon(Icons.border_color_rounded, color: Colors.white),
+                      ],
+                    ),
+
+                    // Row(
+                    //   children: [
+                    //     Icon(Icons.exit_to_app, color: Colors.red.shade500),
+                    //   ],
+                    // ),
                   ],
                 ),
               );
