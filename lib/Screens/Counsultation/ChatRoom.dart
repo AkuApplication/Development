@@ -1,4 +1,3 @@
-import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,30 +5,6 @@ import 'package:flutter/material.dart';
 class ChatRoom extends StatelessWidget {
   final Map<String, dynamic> userMap;
   final String chatRoomId;
-
-  showAlertDialog(BuildContext context) {
-    // set up the buttons
-    Widget closeButton = FlatButton(
-      child: Text("Close"),
-      onPressed: () {},
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Mental Health Test Result"),
-      content: Text("Question No. 1"),
-      actions: [
-        closeButton,
-      ],
-    );
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 
   ChatRoom({this.chatRoomId, this.userMap});
 
@@ -69,55 +44,13 @@ class ChatRoom extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.data != null) {
               return Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    Column(
-                      children: [
-                        Text(userMap['name']),
-                        Text(
-                          snapshot.data['status'],
-                          style: TextStyle(fontSize: 14),
-                        ),
-                      ],
+                    Text(userMap['name']),
+                    Text(
+                      snapshot.data['status'],
+                      style: TextStyle(fontSize: 14),
                     ),
-
-                    // If AccountType = Therapist
-                    Row(
-                      children: [
-                        Container(
-                          child: IconButton(
-                              onPressed: () {
-                                showAlertDialog(context);
-                              },
-                              icon: Icon(Icons.assignment)),
-                        ),
-                        Container(
-                          child: IconButton(
-                              onPressed: () {
-                                showAlertDialog(context);
-                              },
-                              icon: Icon(Icons.border_color_rounded)),
-                        ),
-                        SizedBox(width: 20),
-                        RaisedButton(
-                          child: Text('End Session'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-
-                    // Row(
-                    //   children: [
-                    //     Icon(Icons.exit_to_app, color: Colors.red.shade500),
-                    //   ],
-                    // ),
                   ],
                 ),
               );

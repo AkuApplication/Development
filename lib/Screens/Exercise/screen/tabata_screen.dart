@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:numberpicker/numberpicker.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models.dart';
 import '../utils.dart';
@@ -12,12 +12,12 @@ import 'workout_screen.dart';
 
 class TabataScreen extends StatefulWidget {
   final Settings settings;
-  final SharedPreferences prefs;
+  // final SharedPreferences prefs;
   final Function onSettingsChanged;
 
   TabataScreen({
     this.settings,
-    this.prefs,
+    // this.prefs,
     this.onSettingsChanged,
   });
 
@@ -30,9 +30,9 @@ class _TabataScreenState extends State<TabataScreen> {
 
   @override
   initState() {
-    var json = widget.prefs.getString('tabata');
+    // var json = widget.prefs.getString('tabata');
     if (json != null) {
-      _tabata = Tabata.fromJson(jsonDecode(json));
+      // _tabata = Tabata.fromJson(jsonDecode(json));
     }
     super.initState();
   }
@@ -43,7 +43,7 @@ class _TabataScreenState extends State<TabataScreen> {
   }
 
   _saveTabata() {
-    widget.prefs.setString('tabata', jsonEncode(_tabata.toJson()));
+    // widget.prefs.setString('tabata', jsonEncode(_tabata.toJson()));
   }
 
   Widget build(BuildContext context) {
@@ -143,16 +143,16 @@ class _TabataScreenState extends State<TabataScreen> {
                   return StatefulBuilder(builder: (context, setState) {
                     return AlertDialog(
                       title: Text('Round of Exercise'),
-                      content: NumberPicker(
-                        value: _value,
-                        minValue: 1,
-                        maxValue: 10,
-                        onChanged: (value) {
-                          setState(() {
-                            _value = value;
-                          });
-                        },
-                      ),
+                      // content: NumberPicker(
+                      //   value: _value,
+                      //   minValue: 1,
+                      //   maxValue: 10,
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       _value = value;
+                      //     });
+                      //   },
+                      // ),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),

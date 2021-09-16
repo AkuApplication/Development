@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wakelock/wakelock.dart';
+// import 'package:wakelock/wakelock.dart';
 
 import '../models.dart';
 import '../utils.dart';
@@ -44,13 +44,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   @override
   dispose() {
     _workout.dispose();
-    Wakelock.disable();
+    // Wakelock.disable();
     super.dispose();
   }
 
   _onWorkoutChanged() {
     if (_workout.step == WorkoutState.finished) {
-      Wakelock.disable();
+      // Wakelock.disable();
     }
     this.setState(() {});
   }
@@ -71,12 +71,12 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
   _pause() {
     _workout.pause();
-    Wakelock.disable();
+    // Wakelock.disable();
   }
 
   _start() {
     _workout.start();
-    Wakelock.enable();
+    // Wakelock.enable();
   }
 
   Widget build(BuildContext context) {

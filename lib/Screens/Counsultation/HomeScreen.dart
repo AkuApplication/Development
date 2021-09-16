@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         backgroundColor: Colors.teal.shade300,
         title: Text("Consultation"),
         actions: [
-          IconButton(icon: Icon(Icons.logout), onPressed: () => logOut(context))
+          IconButton(icon: Icon(Icons.logout), onPressed: () => Methods().logOut(context))
         ],
       ),
       body: isLoading
