@@ -1,7 +1,9 @@
 import 'package:chat_app/Authenticate/Autheticate.dart';
+import 'package:chat_app/TherapistTimetable/timetable.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'Authenticate/LoginScree.dart';
+
+import 'Screens/Profile/profilepage.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Authenticate(),
+      home: Timetable(),
     );
   }
 }

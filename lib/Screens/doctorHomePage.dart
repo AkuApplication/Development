@@ -6,23 +6,25 @@ import 'package:chat_app/Screens/About/aboutpage.dart';
 import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
 import 'package:chat_app/Screens/Exercise/exercisepage.dart';
 import 'package:chat_app/Screens/Profile/profilepage.dart';
+import 'package:chat_app/Screens/Setup%20Exercise/setupExercise.dart';
 import 'package:chat_app/Screens/Therapist/therapistspage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 
-class HomePage extends StatefulWidget {
+class DoctorHomePage extends StatefulWidget {
+
   String _username;
   String _account;
 
-  HomePage(this._username, this._account);
+  DoctorHomePage(this._username, this._account);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _DoctorHomePageState createState() => _DoctorHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DoctorHomePageState extends State<DoctorHomePage> {
   final _wordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -53,7 +55,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal.shade300,
@@ -68,7 +69,16 @@ class _HomePageState extends State<HomePage> {
           children: [
             Container(
               decoration: BoxDecoration(
+                // color: Color(0xFF337B6E),
                 borderRadius: BorderRadius.circular(10.0),
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey.withOpacity(0.3),
+                //     spreadRadius: 5.0,
+                //     blurRadius: 7.0,
+                //     offset: Offset(0, 3),
+                //   ),
+                // ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -191,11 +201,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   InkWell(
                     onTap: () {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (_) => exercise(timerApp)));
-
-                      // MaterialPageRoute(builder: (_) => exercise()));
-                      print('This will redirect to Exercise Page');
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => SetupExercise()));
+                      print('This will redirect to Setup Exercise Page');
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -216,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                               height: 12.0,
                             ),
                             Text(
-                              'Exercise',
+                              'Setup Exercise',
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Colors.grey[600],
@@ -231,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => Therapists()));
-                      print('This will redirect to Therapist Page');
+                      print('This will redirect to Patients Page');
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -252,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                               height: 12.0,
                             ),
                             Text(
-                              'Therapist',
+                              'Patients',
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Colors.grey[600],

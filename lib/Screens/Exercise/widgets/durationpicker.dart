@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
+// import 'package:numberpicker/numberpicker.dart';
 
 class DurationPickerDialog extends StatefulWidget {
   final Duration initialDuration;
@@ -37,34 +37,34 @@ class _DurationPickerDialogState extends State<DurationPickerDialog> {
       title: widget.title,
       titlePadding: widget.titlePadding,
       content: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        NumberPicker(
-          itemWidth: 65,
-          value: minutes,
-          minValue: 0,
-          maxValue: 10,
-          zeroPad: true,
-          onChanged: (value) {
-            this.setState(() {
-              minutes = value;
-            });
-          },
-        ),
+        // NumberPicker(
+        //   itemWidth: 65,
+        //   value: minutes,
+        //   minValue: 0,
+        //   maxValue: 10,
+        //   zeroPad: true,
+        //   onChanged: (value) {
+        //     this.setState(() {
+        //       minutes = value;
+        //     });
+        //   },
+        // ),
         Text(
           ':',
           style: TextStyle(fontSize: 30),
         ),
-        NumberPicker(
-          itemWidth: 65,
-          value: seconds,
-          minValue: 0,
-          maxValue: 59,
-          zeroPad: true,
-          onChanged: (value) {
-            this.setState(() {
-              seconds = value;
-            });
-          },
-        ),
+        // NumberPicker(
+        //   itemWidth: 65,
+        //   value: seconds,
+        //   minValue: 0,
+        //   maxValue: 59,
+        //   zeroPad: true,
+        //   onChanged: (value) {
+        //     this.setState(() {
+        //       seconds = value;
+        //     });
+        //   },
+        // ),
       ]),
       actions: [
         TextButton(

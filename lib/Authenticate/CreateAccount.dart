@@ -1,8 +1,8 @@
+import 'package:chat_app/Authenticate/ConfirmEmail.dart';
+import 'package:chat_app/Authenticate/LoginScreen.dart';
 import 'package:chat_app/Authenticate/Methods.dart';
-import 'package:chat_app/Screens/homepage.dart';
+import 'package:chat_app/InputDecoration/Decoration.dart';
 import 'package:flutter/material.dart';
-
-import '../Screens/Counsultation/HomeScreen.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -10,132 +10,211 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  final TextEditingController _name = TextEditingController();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  bool isLoading = false;
+  bool _obscureText = true;
+
+  String _email;
+  String _password;
+  String _message = "An email has just been sent to you. Click the link provided in the email to "
+      + "complete registration";
+
+  final _formKey = GlobalKey<FormState>();
+
+  void _togglePass() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: isLoading
-          ? Center(
-              child: Container(
-                height: size.height / 20,
-                width: size.width / 20,
-                child: CircularProgressIndicator(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: size.height / 20,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              width: size.width / 1.2,
+              child: IconButton(
+                  icon: Icon(Icons.arrow_back_ios), onPressed: () {}),
+            ),
+            SizedBox(
+              height: size.height / 50,
+            ),
+            Container(
+              width: size.width / 1.3,
+              child: Text(
+                "Welcome",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )
-          : SingleChildScrollView(
+            ),
+            SizedBox(
+              height: size.height / 70,
+            ),
+            Container(
+              width: size.width / 1.3,
+              child: Text(
+                "Create Account to Continue!",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size.height / 40,
+            ),
+            Form(
+              key: _formKey,
               child: Column(
                 children: [
-                  SizedBox(
-                    height: size.height / 20,
-                  ),
                   Container(
-                    alignment: Alignment.centerLeft,
-                    width: size.width / 1.2,
-                    child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios), onPressed: () {}),
-                  ),
-                  SizedBox(
-                    height: size.height / 50,
-                  ),
-                  Container(
-                    width: size.width / 1.3,
-                    child: Text(
-                      "Welcome",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    width: size.width,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: TextFormField(
+                        validator: (value) {
+                          if(value.endsWith("@gmail.com")){
+                            return null;
+                          } else {
+                            return "Only gmail allowed";
+                          }
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _email = value;
+                          });
+                        },
+                        decoration: decoText.copyWith(
+                            hintText: "email",
+                            prefixIcon: Icon(
+                                Icons.account_box,
+                                color: Colors.grey)
+                        )
                     ),
-                  ),
-                  SizedBox(
-                    height: size.height / 70,
-                  ),
-                  Container(
-                    width: size.width / 1.3,
-                    child: Text(
-                      "Create Account to Continue!",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height / 40,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 18.0),
                     child: Container(
                       width: size.width,
                       alignment: Alignment.center,
-                      child: field(size, "Name", Icons.account_box, _name),
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: TextFormField(
+                          obscureText: _obscureText,
+                          validator: (value) {
+                            if(value.length > 5){
+                              return null;
+                            } else {
+                              return "Need at least 6 character";
+                            }
+                            },
+                          onChanged: (value) {
+                            setState(() {
+                              _password = value;
+                            });
+                            },
+                          decoration: decoText.copyWith(
+                              hintText: "password",
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.grey,
+                              )
+                          )
+                      ),
                     ),
                   ),
                   Container(
                     width: size.width,
                     alignment: Alignment.center,
-                    child: field(size, "email", Icons.account_box, _email),
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: TextFormField(
+                        obscureText: _obscureText,
+                        validator: (value) {
+                          if(value.length > 5){
+                            if(value == _password){
+                              return null;
+                            } else {
+                              return "Password does not match";
+                            }
+                          } else {
+                            return "Need at least 6 character";
+                          }
+                          },
+                        decoration: decoText.copyWith(
+                            hintText: "confirm password",
+                            prefixIcon: Icon(
+                              Icons.password,
+                              color: Colors.grey,
+                            )
+                        )
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18.0),
-                    child: Container(
-                      width: size.width,
-                      alignment: Alignment.center,
-                      child: field(size, "password", Icons.lock, _password),
+                  Container(
+                    padding: EdgeInsets.only(left: 60, right: 150),
+                    child: InkWell(
+                      child: Row(
+                        children: [
+                          Checkbox(
+                            value: !_obscureText,
+                            onChanged: (value) {
+                              _togglePass();
+                              },
+                          ),
+                          Text("Show / Hide Password")
+                        ],
+                      ),
+                      onTap: () {
+                        _togglePass();
+                        },
                     ),
                   ),
                   SizedBox(
-                    height: size.height / 4,
+                    height: size.height / 7,
                   ),
                   customButton(size),
                   SizedBox(
                     height: size.height / 50,
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => LoginScreen())),
                     child: Text("Already have an Account ?",
                         style: TextStyle(
                           color: Colors.teal.shade400,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                        )),
+                        )
+                    ),
                   ),
                 ],
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget customButton(Size size) {
     return GestureDetector(
       onTap: () {
-        if (_name.text.isNotEmpty &&
-            _email.text.isNotEmpty &&
-            _password.text.isNotEmpty) {
-          setState(() {
-            isLoading = true;
-          });
+        if (_formKey.currentState.validate() ){
 
-          createAccount(_name.text, _email.text, _password.text).then((user) {
+          Methods().createAccount(_email, _password).then((user) {
             if (user != null) {
-              setState(() {
-                isLoading = false;
-              });
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => HomePage()));
-              print("Account Created Sucessfull");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => ConfirmEmail(_message),));
+              print("goint to confimation email for creating account");
             } else {
               print("Login Failed");
-              setState(() {
-                isLoading = false;
-              });
             }
           });
         } else {
@@ -160,34 +239,5 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
       ),
     );
-  }
-
-  Widget field(
-      Size size, String hintText, IconData icon, TextEditingController cont) {
-    return Container(
-        height: size.height / 15,
-        width: size.width / 1.2,
-        child: TextField(
-          cursorColor: Colors.teal.shade300,
-          controller: cont,
-          decoration: InputDecoration(
-            fillColor: Colors.grey.shade100,
-            filled: true,
-            prefixIcon: Icon(icon, color: Colors.grey),
-            hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.teal.shade300, width: 2.0),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade200, width: 1.5),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-          ),
-        ));
   }
 }

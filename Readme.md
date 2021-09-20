@@ -1,50 +1,18 @@
+7th September 2021
+1. Added a validation for TextFormFields in LoginScreen/CreateAccount.
+2. Added a Show/Hide checkbox for Password in both LoginScreen and CreateAccount
 
-## Github / Email / Firebase Credential
+11th September 2021
+1. Added an email verification feature, this means whoever is using this app will have to login with their real email
+2. Added password reset feature
+3. Updated AboutPage
+4. A working AccountType logic but not satisfied with how it looks though on the backend side. Will be improving it before the next Push.
 
-Email : akuapp2021@gmail.com
-Password : 2021akuapP
-
-## Too ease the git clone process :
-
-Reference : https://www.youtube.com/watch?v=XIm7ofsCEH4
-
-We will start editing our code in Visual Studio, However we need to install some dart packages first.
-
-1. Dart
-2. Flutter
-
-If you were to clone a repository:
-Ctrl+shift+P 
-Type Git Clone
-Paste the Git Link
-
-Running Application Reference : https://www.youtube.com/watch?v=XDddJwOHqiU&t=234s
-
-To run the apps simply go to bottom right of the page and there will be somewhere you can click to choose your device, and select your emulator
-then go to top left conner where it say run, and click on Run without debugging.
-
-## Debugging the Project
-
-Regarding Dependencies
-- Flutter pub get
-
-Regarding Import
-- Fix saja nama import nya either by hovering or manually type in
-
-Firebase
-- Incase kamu try use kamu punya firebase yang google-services.json atu, li nda mau di run try :
-Flutter clean
-Flutter Run
-
-## Features References :
-
-
-Chat and Authentication is sama tu playlist nya : https://youtu.be/lsF2Ig6cyP8
-
-**Authentication**
-Link https://youtu.be/lsF2Ig6cyP8
-Authentication firebase guide - 00:30 - 02:45
-
-**Chat**
-Link https://www.youtube.com/watch?v=SyE_hgydvvQ&list=PLgvaMOCkUA6zqL46Yze3JrRjsFXUiV-2v&index=2
-Chat firebase guide - 00:50 - 02:00
+13th September 2021
+1. Cleaned all the dead codes for the AccountType Logic and also some of the pages.
+2. Removed the CircularProgressIndicator at some part of the pages for now. Will add it back when its time to decorate the app properly.
+3. Improved the Profile Page UI, and some of the pages such as Login Screen/Create Account that has text fields accordingly to Hafizzan's tastes.
+4. In profile page, only the UI is finished however, the profile picture part is not yet finished as still searching on how to store that data into firebase.
+5. In the Homepage/DoctorHomepage now, we can see the username of the current user being displayed along with its accountType.
+6. Now, we planned to also display the user's details in the Profile page along with the Profile Picture just like the Homepage where the username is displayed.
+7. Adding on to that, still searching on how to do the feature where the user can discard/update the changes made in the Profile Page.

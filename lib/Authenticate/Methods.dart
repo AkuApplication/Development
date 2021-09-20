@@ -1,78 +1,75 @@
-import 'package:chat_app/Authenticate/LoginScree.dart';
+import 'package:chat_app/Authenticate/LoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-Future<User> createAccount(String name, String email, String password) async {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+class Methods {
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  try {
-    User user = (await _auth.createUserWithEmailAndPassword(
-            email: email, password: password))
-        .user;
+  Future<User> createAccount(String email, String password) async {
+    try {
+      User user = (await _auth.createUserWithEmailAndPassword(
+          email: email, password: password)).user;
 
-    if (user != null) {
-      print("Account created Succesfull");
+      await user.sendEmailVerification();
+      print("Email Verification Sent");
 
-      user.updateProfile(displayName: name);
+      if (user != null) {
+        print("Account created Succesfull");
 
-      await _firestore.collection('users').doc(_auth.currentUser.uid).set({
-        "name": name,
-        "email": email,
-        "status": "Unavalible",
-        "accountType": "Patient",
-        "uid": _auth.currentUser.uid,
+        await _firestore.collection('users').doc(_auth.currentUser.uid).set({
+          "name": email,
+          // "email": email,
+          "gender": null,
+          "contact": null,
+          "condition": null,
+          "records": null,
+          "status": null,
+          "accountType": "Patient",
+        });
+
+        return user;
+      } else {
+        print("Account creation failed");
+        return user;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<User> logIn(String email, String password, String account) async {
+    try {
+      User user = (await _auth.signInWithEmailAndPassword(
+          email: email, password: password)).user;
+
+      if (user.emailVerified) {
+        print("Email Verified and Login Successful");
+        return user;
+      } else {
+        await user.sendEmailVerification();
+        print("Email Verification Sent");
+        print("Login Failed");
+        return user;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future logOut(BuildContext context) async {
+    try {
+      await _auth.signOut().then((value) {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
       });
-
-      return user;
-    } else {
-      print("Account creation failed");
-      return user;
+    } catch (e) {
+      print("error");
     }
-  } catch (e) {
-    print(e);
-    return null;
   }
+
 }
 
-Future<User> logIn(String email, String password) async {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
-  try {
-    User user = (await _auth.signInWithEmailAndPassword(
-            email: email, password: password))
-        .user;
-
-    if (user != null) {
-      print("Login Sucessfull");
-      _firestore
-          .collection('users')
-          .doc(_auth.currentUser.uid)
-          .get()
-          .then((value) => user.updateProfile(displayName: value['name']));
-
-      return user;
-    } else {
-      print("Login Failed");
-      return user;
-    }
-  } catch (e) {
-    print(e);
-    return null;
-  }
-}
-
-Future logOut(BuildContext context) async {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-
-  try {
-    await _auth.signOut().then((value) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
-    });
-  } catch (e) {
-    print("error");
-  }
-}

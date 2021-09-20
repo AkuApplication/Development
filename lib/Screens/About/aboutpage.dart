@@ -9,11 +9,11 @@ class About extends StatelessWidget {
         title: Text('About Aku Application'),
         backgroundColor: Color(0xFF337B6E),
       ),
-      body: ListView(children: [
-        Padding(
-          padding: const EdgeInsets.all(50.0),
-          child: Container(
-            child: Expanded(
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: Container(
               child: Column(
                 children: [
                   Center(
@@ -34,8 +34,8 @@ class About extends StatelessWidget {
                             spreadRadius: 5.0,
                             blurRadius: 7.0,
                             offset: Offset(0, 3),
-                          )
-                        ]),
+                          )]
+                    ),
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -57,14 +57,17 @@ class About extends StatelessWidget {
                             ),
                             Center(
                               child: Text(
-                                'Lorem ipsum dolor sit amet.'
-                                'Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.'
-                                'Lorem ipsum dolor sit amet.'
-                                'Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet.'
-                                'Lorem ipsum dolor sit amet.',
+                                'AKU Application is an online and on-demand counseling service. '
+                                'Users can choose their preferable counselors and reach out to them'
+                                'in 3 ways; Users can either Chat, Voice Call or Video Call. With this, '
+                                'users can rest easy and just focus on improving their mental health. Each '
+                                'counselors has at least 4 years experience in dealing with mental illness, '
+                                'and is professionally trained.',
+                                textAlign: TextAlign.justify,
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w100,
+                                  height: 1.5,
                                 ),
                               ),
                             ),
@@ -84,8 +87,8 @@ class About extends StatelessWidget {
               ),
             ),
           ),
-        ),
-      ]),
+        ]
+      ),
     );
   }
 }
