@@ -1,4 +1,3 @@
-import 'package:chat_app/FirstTime/components/Box.dart';
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:flutter/material.dart';
 

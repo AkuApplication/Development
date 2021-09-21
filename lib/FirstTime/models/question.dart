@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class Question {
@@ -28,27 +29,48 @@ class Question {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'question': question,
-      'options': options,
-      // 'highlightOption': chooseOption,
-    };
-  }
+  dynamic toJson() => {
+    'id': id,
+    'question': question,
+    'options': options,
+  };
 
-  factory Question.fromMap(Map<String, dynamic> map) {
+  factory Question.fromJson(Map<String, dynamic> json) {
     return Question(
-      id: map['id'],
-      question: map['question'],
-      options: List<String>.from(map['options']),
-      // chooseOption: map['chooseOption'],
+        id: json['id'],
+        question: json['question'],
+        options: List<String>.from(json['options'])
     );
-  }
+    }
 
-  String toJson() => json.encode(toMap());
-
-  factory Question.fromJson(String source) => Question.fromMap(json.decode(source));
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'id': id,
+  //     'question': question,
+  //     'options': options,
+  //     // 'highlightOption': chooseOption,
+  //   };
+  // }
+  //
+  // factory Question.fromMap(Map<String, dynamic> map) {
+  //   return Question(
+  //     id: map['id'],
+  //     question: map['question'],
+  //     options: List<String>.from(map['options']),
+  //     // chooseOption: map['chooseOption'],
+  //   );
+  // }
+  //
+  // factory Question.fromQueryDocumentSnapshot(QueryDocumentSnapshot snapshot) {
+  //   final data = snapshot.data() as Map<String, dynamic>;
+  //   final id = snapshot.id;
+  //   data['id'] = id;
+  //   return Question.fromMap(data);
+  // }
+  //
+  // String toJson() => json.encode(toMap());
+  //
+  // factory Question.fromJson(String source) => Question.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -137,3 +159,9 @@ List<Question> question = [
     // chooseOption: 'Never',
   ),
 ];
+
+Future<void> _uploadQuestionToFirebase(List<Question> answeredQuestion) async {
+  for(Question question in answeredQuestion) {
+    await FirebaseFirestore.instance.collection('users').doc().set(question.toJson());
+  }
+}

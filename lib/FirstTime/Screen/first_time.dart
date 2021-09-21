@@ -1,5 +1,6 @@
 import 'package:chat_app/FirstTime/Screen/question_screen.dart';
 import 'package:chat_app/FirstTime/models/question.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class FirstTime extends StatelessWidget {
@@ -30,29 +31,68 @@ class FirstTime extends StatelessWidget {
               ),
               height: 450,
             ),
-            SizedBox(
-              height: 50,
-              width: 350,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => QuestionScreen(
-                    questions: question,
-                  ),
-                  ),
-                  );
-                },
-                child: Text('Next',
-                  style: TextStyle(
+            // StreamBuilder<QuerySnapshot>(
+            //   stream: FirebaseFirestore.instance
+            //     .collection('questions')
+            //     .snapshots(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.hasData) {
+            //       return Center(child: CircularProgressIndicator(),
+            //       );
+            //     }
+            //
+            //     final questionDocs = snapshot.data.docs;
+            //
+            //     final questions = questionDocs.map((e) => Question.fromQueryDocumentSnapshot(e)).toList();
+            //
+            //     return SizedBox(
+            //       height: 50,
+            //       width: 350,
+            //       child: ElevatedButton(
+            //         onPressed: () {
+            //           Navigator.push(
+            //             context, MaterialPageRoute(builder: (_) => QuestionScreen(
+            //             questions: questions,
+            //           ),
+            //           ),
+            //           );
+            //         },
+            //         child: Text('Next',
+            //           style: TextStyle(
+            //             fontSize: 18,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //         ),
+            //         style: ElevatedButton.styleFrom(
+            //           primary: Colors.teal.shade400,
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // ),
+          SizedBox(
+            height: 50,
+            width: 350,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => QuestionScreen(
+                  questions: question,
+                ),
+                ),
+                );
+              },
+              child: Text('Next',
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.teal.shade400,
-                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.teal.shade400,
               ),
             ),
+          ),
           ],
         ),
         ),

@@ -68,7 +68,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         });
 
                         Future.delayed(Duration(milliseconds: 200), () {
-                          if (_currentIndex == question.length - 1) {
+                          if (_currentIndex == widget.questions.length - 1) {
                             Navigator.push(
                                 context, MaterialPageRoute(builder: (_) => CompleteScreen()));
                           }

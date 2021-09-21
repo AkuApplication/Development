@@ -1,4 +1,5 @@
 import 'package:chat_app/Authenticate/Methods.dart';
+import 'package:chat_app/FirstTime/Screen/first_time.dart';
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:flutter/material.dart';
 
@@ -129,7 +130,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 isLoading = false;
               });
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => HomePage()));
+                  // context, MaterialPageRoute(builder: (_) => HomePage()));
+                  context, MaterialPageRoute(builder: (_) => FirstTime()));
               print("Account Created Sucessfull");
             } else {
               print("Login Failed");
