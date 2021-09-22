@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat_app/InputDecoration/Decoration.dart';
+import 'package:chat_app/Screens/doctorHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,44 +18,107 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   // String _email;
   // String _password;
-  String _name;
+  final _name = TextEditingController();
   String _gender;
-  String _contact;
-  String _condition;
-  String _records;
+  final _contact = TextEditingController();
+  final _condition = TextEditingController();
+  final _records = TextEditingController();
   File _image;
   String _imageURL;
 
+  String _inputName;
+  String _inputContact;
+
+  String _backupName;
+  String _backupGender;
+  String _backupContact;
+  String _backupURL;
+
+  // List<NetworkImage> _listOfImage;
+  // String _nameImages;
+  //
+  // void getImages() async {
+  //   _listOfImage = [];
+  //   for (int i= 0; i < 6; i++){
+  //     _listOfImage.add(NetworkImage(_auth.currentUser.uid + i.toString() + ".jpeg"));
+  //   }
+  // }
+
   final _formKey = GlobalKey<FormState>();
+  final _imageKey = GlobalKey<FormState>();
   final _storage = FirebaseStorage.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   List<String> _genderList = ["Male", "Female"];
 
+  void checkFirestore() async {
+    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+      setState(() {
+        _name.text = value.data()["name"];
+        _backupName = _name.text;
+
+        _gender = value.data()["gender"];
+        _backupGender = _gender;
+
+        _contact.text = value.data()["contact"];
+        _backupContact = _contact.text;
+
+        _condition.text = value.data()["condition"];
+
+        _records.text = value.data()["records"];
+
+        _imageURL = value.data()["profileURL"];
+        _backupURL = _imageURL;
+      });
+
+    });
+
+  }
+
   void uploadImage() async {
-    final _picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
     _image = File(_picked.path);
-    String fileName = _image.path;
-    Reference reference = FirebaseStorage.instance.ref().child("uploads/" + _auth.currentUser.uid + "/$fileName");
+    String _fileName = _image.path;
+    Reference reference = _storage.ref().child("images/$_fileName");
     UploadTask upload = reference.putFile(_image);
     TaskSnapshot task = await upload.whenComplete(() => null);
-    task.ref.getDownloadURL().then((value) {
+    task.ref.getDownloadURL().then((value) async {
       setState(() {
         _imageURL = value;
       });
+
+      // await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+      //   "profileURL": _imageURL
+      // });
+
+      // Navigator.pop(context, _imageURL);
+    // _imageURL = await task.ref.getDownloadURL();
+    // await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+    //   "profileURL": _imageURL
     });
+    // await _firestore.collection("images").add({
+    //   "url": _imageURL,
+    //   "name": _fileName
+    // });
+
   }
 
   @override
   void initState() {
-    var referenceImage = _storage.ref().child("uploads/" + _auth.currentUser.uid)
-        .getDownloadURL().then((value) {
-          setState(() {
-            _imageURL = value;
-          });
-    });
+    checkFirestore();
     super.initState();
   }
+  // @override
+  // void initState() {
+  //   var referenceImage = _storage.ref().child(_auth.currentUser.uid)
+  //       .getDownloadURL().then((value) {
+  //         setState(() {
+  //           _imageURL = value;
+  //         });
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +128,13 @@ class _ProfileState extends State<Profile> {
         centerTitle: true,
         title: Text('Profile'),
         backgroundColor: Color(0xFF337B6E),
+        // leading: ElevatedButton(
+        //   child: Text("Homepage"),
+        //   onPressed: () {
+        //     Navigator.pushReplacement(context,
+        //         MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+        //   },
+        // ),
       ),
       body: ListView(
         children: [
@@ -76,30 +147,95 @@ class _ProfileState extends State<Profile> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      InkWell(
-                        // This is where the profile picture of the user goes into
-                        // child: CircleAvatar(
-                        //   radius: 100,
-                        //   backgroundColor: Colors.teal,
-                        // ),
-                        child: (_image == null) ? CircleAvatar(
-                          radius: 100,
-                        // ) : Image.file(_image),
-                  ) : Image.network(_imageURL,fit: BoxFit.fill,),
-                        onTap: () async {
-                          // final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
+                      FormField(builder: (field) {
+                           return Container(
+                             width: 100,
+                             height: 100,
+                             child: InkWell(
+                               // This is where the profile picture of the user goes into
+                               // child: CircleAvatar(
+                               //   radius: 100,
+                               //   backgroundColor: Colors.teal,
+                               // ),
+                         child: (_imageURL == null) ? Image.network("https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf")
+                               // child: (_image == null) ? CircleAvatar(
+                               //   radius: 100,
+                               // ) : Image.file(_image),
+                        : Image.network(_imageURL,fit: BoxFit.fill,),
+                               onTap: () async {
+                                 // final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
 
-                          uploadImage();
-                          // await _storage.ref().child("Images/$_picked").putFile(_image).whenComplete(() {
-                          //   _storage.ref().getDownloadURL().then((value) {
-                          //     print("Done: $value");
-                          //   });
-                          // });
-                          // setState(() {
-                          //   _image = File(_picked.path);
-                          // });
-                        },
-                      ),
+                                 await uploadImage();
+
+                                 // await _storage.ref().child("Images/$_picked").putFile(_image).whenComplete(() {
+                                 //   _storage.ref().getDownloadURL().then((value) {
+                                 //     print("Done: $value");
+                                 //   });
+                                 // });
+                                 // setState(() {
+                                 //   _image = File(_picked.path);
+                                 // });
+                               },
+                             ),
+                           );
+                      },
+                      key: _imageKey,),
+
+                      // GridView.builder(
+                      //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      //     crossAxisCount: 3,
+                      //     mainAxisSpacing: 3.0,
+                      //     crossAxisSpacing: 3.0
+                      //   ),
+                      //   shrinkWrap: true,
+                      //   padding: const EdgeInsets.all(10.0),
+                      //   itemCount: _listOfImage.length,
+                      //   itemBuilder: (context, index) {
+                      //     return GridTile(
+                      //       child: Material(
+                      //         child: GestureDetector(
+                      //           child: Stack(
+                      //             children: [
+                      //               this._nameImages ==
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
+
+                   //    Container(
+                   //      width: 100,
+                   //      height: 100,
+                   //      child: InkWell(
+                   //        // This is where the profile picture of the user goes into
+                   //        // child: CircleAvatar(
+                   //        //   radius: 100,
+                   //        //   backgroundColor: Colors.teal,
+                   //        // ),
+                   //  child: (_imageURL == null) ? Image.network("https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf")
+                   //        // child: (_image == null) ? CircleAvatar(
+                   //        //   radius: 100,
+                   //        // ) : Image.file(_image),
+                   // : Image.network(_imageURL,fit: BoxFit.fill,),
+                   //        onTap: () async {
+                   //          // final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
+                   //
+                   //          uploadImage();
+                   //
+                   //          // await _storage.ref().child("Images/$_picked").putFile(_image).whenComplete(() {
+                   //          //   _storage.ref().getDownloadURL().then((value) {
+                   //          //     print("Done: $value");
+                   //          //   });
+                   //          // });
+                   //          // setState(() {
+                   //          //   _image = File(_picked.path);
+                   //          // });
+                   //        },
+                   //      ),
+                   //    ),
+
                       SizedBox(
                         height: 15,
                       ),
@@ -159,8 +295,9 @@ class _ProfileState extends State<Profile> {
                               color: Colors.grey,
                             )
                         ),
+                        controller: _name,
                         onChanged: (value) {
-                          _name = value;
+                          _inputName = value;
                         },
                       ),
                       SizedBox(
@@ -174,10 +311,14 @@ class _ProfileState extends State<Profile> {
                               color: Colors.grey,
                             )
                         ),
+                        value: _gender,
                         items: _genderList.map((e) {
                           return DropdownMenuItem(
                             value: e,
                             child: Text(e),
+                            // child: TextFormField(
+                            //   controller: _gender,
+                            // ),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -196,8 +337,9 @@ class _ProfileState extends State<Profile> {
                               color: Colors.grey,
                             )
                         ),
+                        controller: _contact,
                         onChanged: (value) {
-                          _contact = value;
+                          _inputContact = value;
                         },
                       ),
                       SizedBox(
@@ -213,8 +355,9 @@ class _ProfileState extends State<Profile> {
                               color: Colors.grey,
                             )
                         ),
+                        controller: _condition,
                         onChanged: (value) {
-                          _condition = value;
+                          _condition.text = value;
                         },
                       ),
                       SizedBox(
@@ -230,29 +373,83 @@ class _ProfileState extends State<Profile> {
                               color: Colors.grey,
                             )
                         ),
+                        controller: _records,
                         onChanged: (value) {
-                          _records = value;
+                          _records.text = value;
                         },
                       ),
                       SizedBox(
                         height: 15,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color(0xFF337B6E),
-                        ),
-                        child: Text("Update"),
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            // print(_email);
-                            // print(_password);
-                            print(_name);
-                            print(_gender);
-                            print(_contact);
-                            print(_condition);
-                            print(_records);
-                          }
-                        },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF337B6E),
+                            ),
+                            child: Text("Update"),
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                // print(_email);
+                                // print(_password);
+                                await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+                                  "profileURL": _imageURL,
+                                  "name": _name.text,
+                                  "gender": _gender,
+                                  "contact": _contact.text,
+
+                                });
+                                print(_imageURL);
+                                print(_name.text);
+                                print(_gender);
+                                print(_contact.text);
+
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+
+                              }
+                            },
+                          ),
+                          SizedBox(width: 10,),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF337B6E),
+
+                            ),
+                            child: Text("Cancel"),
+                            onPressed: () {
+                              setState(() {
+                                _name.text = _backupName;
+                                _gender = _backupGender;
+                                _contact.text = _backupContact;
+                                _imageURL = _backupURL;
+                              });
+
+                              // if (_formKey.currentState.validate() && _formKey.currentState.) {
+                              //
+                              //
+                              //   // // print(_email);
+                              //   // // print(_password);
+                              //   // await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+                              //   //   "profileURL": _imageURL,
+                              //   //   "name": _name.text,
+                              //   //   "gender": _gender,
+                              //   //   "contact": _contact.text,
+                              //   //
+                              //   // });
+                              //   // print(_imageURL);
+                              //   // print(_name.text);
+                              //   // print(_gender);
+                              //   // print(_contact.text);
+                              //   //
+                              //   Navigator.pushReplacement(context,
+                              //       MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+                              //
+                              // }
+                            },
+                          ),
+                        ],
                       )
                     ],
                   ),

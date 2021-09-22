@@ -27,6 +27,7 @@ class Methods {
           "condition": null,
           "records": null,
           "status": null,
+          "profileURL": "https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf",
           "accountType": "Patient",
         });
 

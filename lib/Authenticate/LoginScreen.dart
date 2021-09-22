@@ -28,21 +28,23 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _account;
   String _name;
+  String _profileURL;
 
   void checkFirestore() async {
     try{
       await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value){
         _account = value.data()["accountType"];
-        _name = value.data()["name"];
+        // _name = value.data()["name"];
+        // _profileURL = value.data()["profileURL"];
 
         if(_account == "Patient"){
           print("go to patient 2");
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => HomePage(_name, _account),));
+              MaterialPageRoute(builder: (context) => HomePage(),));
         } else if(_account == "Doctor"){
           print("go to doctor 2");
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => DoctorHomePage(_name, _account),));
+              MaterialPageRoute(builder: (context) => DoctorHomePage(),));
         }
 
       });
