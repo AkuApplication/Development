@@ -13,10 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
-  String _username;
-  String _account;
-
-  HomePage(this._username, this._account);
+  // String _username;
+  // String _account;
+  // String _profileURL;
+  //
+  // HomePage(this._username, this._account, this._profileURL);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -29,6 +30,19 @@ class _HomePageState extends State<HomePage> {
 
   String _username2;
   String _account2;
+  String _profileURL2;
+
+  void checkFirestore() async {
+    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+      setState(() {
+        _username2 = value.data()["name"];
+        _account2 = value.data()["accountType"];
+        _profileURL2 = value.data()["profileURL"];
+
+      });
+
+    });
+  }
 
   void checkQuotes() async {
     await _firestore.collection("quotes").doc("words").get().then((value) {
@@ -43,8 +57,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
 
-    _username2 = widget._username;
-    _account2 = widget._account;
+    // _username2 = widget._username;
+    // _account2 = widget._account;
+    // _profileURl2 = widget._profileURL;
+    checkFirestore();
 
     checkQuotes();
 
@@ -101,18 +117,34 @@ class _HomePageState extends State<HomePage> {
                   Spacer(
                     flex: 1,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => Profile()));
-                      print('This will redirect to Profile Page');
-                    },
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 45.0,
-                      color: Colors.black12,
+                  Container(
+                    width: 50,
+                    height: 50,
+                    child: GestureDetector(
+                      child: (_profileURL2 == null) ? Icon(
+                        Icons.account_circle,
+                        size: 45.0,
+                        color: Colors.black12,
+                      ) : Image.network(_profileURL2),
+                      onTap: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Profile(),));
+                        print("This will redirect to Profile Page");
+                      },
                     ),
-                  ),
+                  )
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (_) => Profile()));
+                  //     print('This will redirect to Profile Page');
+                  //   },
+                  //   child: Icon(
+                  //     Icons.account_circle,
+                  //     size: 45.0,
+                  //     color: Colors.black12,
+                  //   ),
+                  // ),
                 ],
               ),
             ),

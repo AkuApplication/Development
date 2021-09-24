@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
         // To do list : How to loop userMap
 
-        userMap = value.docs[0].data();
+        userMap = value.docs[1].data();
         isLoading = false;
       });
     });
@@ -212,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                           onPressed: () {
                                             String roomId = chatRoomId(
                                                 _auth.currentUser.displayName,
-                                                userMap['name']);
+                                                userMap['uid']);
 
                                             Navigator.of(context).push(
                                               MaterialPageRoute(

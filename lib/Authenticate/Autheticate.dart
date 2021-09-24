@@ -3,6 +3,7 @@ import 'package:chat_app/Screens/doctorHomePage.dart';
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
@@ -13,24 +14,30 @@ class Authenticate extends StatefulWidget {
 class _AuthenticateState extends State<Authenticate> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   String _account;
   String _name;
+  String _profileURL;
 
   void checkFirestore() async {
     try {
       await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
         _account = value.data()["accountType"];
-        _name = value.data()["name"];
+        // _name = value.data()["name"];
+        // _profileURL = value.data()["profileURL"];
+
+        // _profileURL = await _storage.ref().child("logo.jpeg").getDownloadURL();
+        // print(_profileURL);
 
         if(_account == "Patient"){
           print("going to patient 1");
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => HomePage(_name, _account),));
+              MaterialPageRoute(builder: (context) => HomePage(),));
         } else if (_account == "Doctor") {
           print("going to doctor 1");
           Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => DoctorHomePage(_name, _account),));
+              MaterialPageRoute(builder: (context) => DoctorHomePage(),));
         }
 
       });

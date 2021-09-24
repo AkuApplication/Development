@@ -16,3 +16,10 @@
 5. In the Homepage/DoctorHomepage now, we can see the username of the current user being displayed along with its accountType.
 6. Now, we planned to also display the user's details in the Profile page along with the Profile Picture just like the Homepage where the username is displayed.
 7. Adding on to that, still searching on how to do the feature where the user can discard/update the changes made in the Profile Page.
+
+22nd September 2021
+1. User now can pick their own images to be their profile picture by clicking on the profile picture/image in the Profile page itself.
+2. The user's data are now displayed in the Profile Page.
+3. Implemented the feature where user is able to save or discard changes in the profile page.
+4. Planned to add a button for going to solely going to the Homepage Screen.
+5. Next, our task would be the fixing of the Chat Feature as currently it is not working as intended and also the Manage Notes function.

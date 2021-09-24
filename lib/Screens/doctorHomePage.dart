@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:chat_app/Authenticate/Methods.dart';
 import 'package:chat_app/Screens/About/aboutpage.dart';
 import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
+import 'package:chat_app/Screens/Counsultation/ShowNotesOfSpecificUser.dart';
 import 'package:chat_app/Screens/Exercise/exercisepage.dart';
 import 'package:chat_app/Screens/Profile/profilepage.dart';
 import 'package:chat_app/Screens/Setup%20Exercise/setupExercise.dart';
@@ -15,10 +16,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class DoctorHomePage extends StatefulWidget {
 
-  String _username;
-  String _account;
-
-  DoctorHomePage(this._username, this._account);
+  // String _username;
+  // String _account;
+  // String _profileURL;
+  //
+  // DoctorHomePage(this._username, this._account, this._profileURL);
 
   @override
   _DoctorHomePageState createState() => _DoctorHomePageState();
@@ -31,6 +33,19 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
 
   String _username2;
   String _account2;
+  String _profileURL2;
+
+  void checkFirestore() async {
+    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+        setState(() {
+          _username2 = value.data()["name"];
+          _account2 = value.data()["accountType"];
+          _profileURL2 = value.data()["profileURL"];
+
+        });
+
+    });
+  }
 
   void checkQuotes() async {
     await _firestore.collection("quotes").doc("words").get().then((value) {
@@ -45,8 +60,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   @override
   void initState() {
 
-    _username2 = widget._username;
-    _account2 = widget._account;
+    // _username2 = widget._username;
+    // _account2 = widget._account;
+    // _profileURl2 = widget._profileURL;
+    checkFirestore();
 
     checkQuotes();
 
@@ -60,7 +77,12 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         backgroundColor: Colors.teal.shade300,
         title: Text("Homepage"),
         actions: [
-          IconButton(icon: Icon(Icons.logout), onPressed: () => Methods().logOut(context))
+          IconButton(icon: Icon(Icons.logout),
+              onPressed: () {
+                Methods().logOut(context);
+              },
+              // onPressed: () => Methods().logOut(context)
+          )
         ],
       ),
       body: Container(
@@ -111,18 +133,43 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                   Spacer(
                     flex: 1,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => Profile()));
-                      print('This will redirect to Profile Page');
-                    },
-                    child: Icon(
-                      Icons.account_circle,
-                      size: 45.0,
-                      color: Colors.black12,
+                  Container(
+                    width: 50,
+                    height: 50,
+                    child: GestureDetector(
+                      child: (_profileURL2 == null) ? Icon(
+                        Icons.account_circle,
+                        size: 45.0,
+                        color: Colors.black12,
+                      ) : Image.network(_profileURL2),
+                      onTap: () {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => Profile(),));
+                        print("This will redirect to Profile Page");
+                      }
+                      // onTap: () async {
+                      //   final information = await Navigator.push(context,
+                      //       MaterialPageRoute(builder: (context) => Profile(),));
+                      //   print("This will redirect to Profile Page");
+                      //
+                      //   // setState(() {
+                      //   //   _profileURl2 = information;
+                      //   // });
+                      // },
                     ),
-                  ),
+                  )
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (_) => Profile()));
+                  //     print('This will redirect to Profile Page');
+                  //   },
+                  //   child: Icon(
+                  //     Icons.account_circle,
+                  //     size: 45.0,
+                  //     color: Colors.black12,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -169,6 +216,9 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                           MaterialPageRoute(builder: (_) => HomeScreen()));
                       print('This will redirect to Counseling Page');
                     },
+                    // onTap: () {
+                    //   Navigator.push(context, MaterialPageRoute(builder: (context) => ShowNotes(),));
+                    // },
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15.0),
