@@ -159,6 +159,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 60, right: 150),
+                    width: size.width,
                     child: InkWell(
                       child: Row(
                         children: [
@@ -214,7 +215,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   MaterialPageRoute(builder: (_) => ConfirmEmail(_message),));
               print("goint to confimation email for creating account");
             } else {
-              print("Login Failed");
+              print("failed to create account");
             }
           });
         } else {

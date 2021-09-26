@@ -1,4 +1,5 @@
 import 'package:chat_app/Authenticate/LoginScreen.dart';
+import 'package:chat_app/FirstTime/Screen/first_time.dart';
 import 'package:chat_app/Screens/doctorHomePage.dart';
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,6 +18,7 @@ class _AuthenticateState extends State<Authenticate> {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   String _account;
+  int _numOfLogins;
   String _name;
   String _profileURL;
 
@@ -24,6 +26,7 @@ class _AuthenticateState extends State<Authenticate> {
     try {
       await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
         _account = value.data()["accountType"];
+        // _numOfLogins = value.data()["numOfLogins"];
         // _name = value.data()["name"];
         // _profileURL = value.data()["profileURL"];
 
@@ -32,6 +35,15 @@ class _AuthenticateState extends State<Authenticate> {
 
         if(_account == "Patient"){
           print("going to patient 1");
+          // if(_numOfLogins <= 1){
+          //   print("going to first time 1");
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => FirstTime(),));
+          // } else {
+          //   print("going to patient homepage 1");
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => HomePage(),));
+          // }
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => HomePage(),));
         } else if (_account == "Doctor") {

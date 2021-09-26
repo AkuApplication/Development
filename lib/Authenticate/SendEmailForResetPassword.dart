@@ -21,89 +21,91 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(
-            height: size.height / 20,
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            width: size.width / 1.2,
-            child: IconButton(
-                icon: Icon(Icons.arrow_back_ios), onPressed: () {}),
-          ),
-          SizedBox(
-            height: size.height / 50,
-          ),
-          Container(
-            width: size.width / 1.3,
-            child: Text(
-              "Welcome",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: size.height / 20,
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              width: size.width / 1.2,
+              child: IconButton(
+                  icon: Icon(Icons.arrow_back_ios), onPressed: () {}),
+            ),
+            SizedBox(
+              height: size.height / 50,
+            ),
+            Container(
+              width: size.width / 1.3,
+              child: Text(
+                "Welcome",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: size.height / 70,
-          ),
-          Container(
-            width: size.width / 1.3,
-            child: Text(
-              "Reset your password",
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 25,
-                fontWeight: FontWeight.w500,
+            SizedBox(
+              height: size.height / 70,
+            ),
+            Container(
+              width: size.width / 1.3,
+              child: Text(
+                "Reset your password",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: size.height / 10,
-          ),
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Container(
-                  width: size.width,
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(left: 20, right: 20),
-                  child: TextFormField(
-                      validator: (value) {
-                        if(value.endsWith("@gmail.com")){
-                          return null;
-                        } else {
-                          return "Only gmail allowed";
-                        }
-                        },
-                      onChanged: (value) {
-                        setState(() {
-                          _email = value;
-                        });
-                        },
-                      decoration: decoText.copyWith(
-                          hintText: "email",
-                          prefixIcon: Icon(
-                              Icons.account_box,
-                              color: Colors.grey)
-                      )
+            SizedBox(
+              height: size.height / 10,
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Container(
+                    width: size.width,
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: TextFormField(
+                        validator: (value) {
+                          if(value.endsWith("@gmail.com")){
+                            return null;
+                          } else {
+                            return "Only gmail allowed";
+                          }
+                          },
+                        onChanged: (value) {
+                          setState(() {
+                            _email = value;
+                          });
+                          },
+                        decoration: decoText.copyWith(
+                            hintText: "email",
+                            prefixIcon: Icon(
+                                Icons.account_box,
+                                color: Colors.grey)
+                        )
+                    ),
+                    // child: field(size, "email", Icons.account_box, _email),
                   ),
-                  // child: field(size, "email", Icons.account_box, _email),
-                ),
-                SizedBox(
-                  height: size.height / 5,
-                ),
-                customButton(size),
-                SizedBox(
-                  height: size.height / 50,
-                ),
-              ],
+                  SizedBox(
+                    height: size.height / 5,
+                  ),
+                  customButton(size),
+                  SizedBox(
+                    height: size.height / 50,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

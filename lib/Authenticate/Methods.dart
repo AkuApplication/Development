@@ -26,9 +26,11 @@ class Methods {
           "contact": null,
           "condition": null,
           "records": null,
-          "status": null,
+          "status": "Offline",
           "profileURL": "https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf",
           "accountType": "Patient",
+          "uid": _auth.currentUser.uid
+          // "numOfLogins": 0
         });
 
         return user;
@@ -42,12 +44,18 @@ class Methods {
     }
   }
 
-  Future<User> logIn(String email, String password, String account) async {
+  Future<User> logIn(String email, String password) async {
     try {
       User user = (await _auth.signInWithEmailAndPassword(
           email: email, password: password)).user;
 
       if (user.emailVerified) {
+
+        await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+          "status": "Online",
+          // "numOfLogins": FieldValue.increment(1)
+        });
+
         print("Email Verified and Login Successful");
         return user;
       } else {
@@ -64,6 +72,10 @@ class Methods {
 
   Future logOut(BuildContext context) async {
     try {
+      await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+        "status": "Offline",
+      });
+
       await _auth.signOut().then((value) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
       });

@@ -1,4 +1,7 @@
 import 'package:chat_app/Authenticate/Autheticate.dart';
+import 'package:chat_app/FirstTime/Screen/first_time.dart';
+import 'package:chat_app/Screens/Counsultation/ChatRoom.dart';
+import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
 import 'package:chat_app/Screens/Counsultation/ShowNotesOfSpecificUser.dart';
 import 'package:chat_app/TherapistTimetable/timetable.dart';
 import 'package:firebase_core/firebase_core.dart';

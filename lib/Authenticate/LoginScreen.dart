@@ -2,6 +2,7 @@ import 'package:chat_app/Authenticate/CreateAccount.dart';
 import 'package:chat_app/Authenticate/Methods.dart';
 import 'package:chat_app/Authenticate/ConfirmEmail.dart';
 import 'package:chat_app/Authenticate/SendEmailForResetPassword.dart';
+import 'package:chat_app/FirstTime/Screen/first_time.dart';
 import 'package:chat_app/Screens/doctorHomePage.dart';
 import 'package:chat_app/Screens/homepage.dart';
 import 'package:chat_app/InputDecoration/Decoration.dart';
@@ -27,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
       + "to complete registration.";
 
   String _account;
+  int _numOfLogins;
   String _name;
   String _profileURL;
 
@@ -34,11 +36,22 @@ class _LoginScreenState extends State<LoginScreen> {
     try{
       await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value){
         _account = value.data()["accountType"];
+        // _numOfLogins = value.data()["numOfLogins"];
         // _name = value.data()["name"];
         // _profileURL = value.data()["profileURL"];
 
         if(_account == "Patient"){
           print("go to patient 2");
+          // if(_numOfLogins <= 1){
+          //   print("going to first time 2");
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => FirstTime(),));
+          // } else {
+          //   print("going to patient homepage 2");
+          //   Navigator.pushReplacement(context,
+          //       MaterialPageRoute(builder: (context) => HomePage(),));
+          // }
+
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => HomePage(),));
         } else if(_account == "Doctor"){
@@ -169,6 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 60, right: 150),
+                    width: size.width,
                     child: InkWell(
                       child: Row(
                         children: [
@@ -233,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return GestureDetector(
       onTap: () async {
         if (_formKey.currentState.validate()) {
-          await Methods().logIn(_email, _password, _account).then((user) {
+          await Methods().logIn(_email, _password).then((user) {
             if(user == null){
               setState(() {
                 print("Could not sign with those credentials");

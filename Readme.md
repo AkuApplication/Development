@@ -23,3 +23,9 @@
 3. Implemented the feature where user is able to save or discard changes in the profile page.
 4. Planned to add a button for going to solely going to the Homepage Screen.
 5. Next, our task would be the fixing of the Chat Feature as currently it is not working as intended and also the Manage Notes function.
+
+26th September 2021
+1. Somehow managed to fix the Chat Feature. Not much of a changes I think, the changes are mostly in the ChatRoom page and HomeScreen page.
+2. Also added a feature where user are able to pick a counsellor's gender and showing only the counsellor who fits the criteria in the HomeScreen page.
+3. Found out ways to display Images in the Circle Avatar, the example are in the ChatRoom page under the CircleAvatar widget.
+4. Next plan is to focus on the Manage Notes function while trying out the Call and Video Call feature for the Counselling Function.
