@@ -14,8 +14,9 @@ class _CreateAccountState extends State<CreateAccount> {
 
   String _email;
   String _password;
-  String _message = "An email has just been sent to you. Click the link provided in the email to "
-      + "complete registration";
+  String _message =
+      "An email has just been sent to you. Click the link provided in the email to " +
+          "complete registration";
 
   final _formKey = GlobalKey<FormState>();
 
@@ -82,7 +83,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     margin: EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
                         validator: (value) {
-                          if(value.endsWith("@gmail.com")){
+                          if (value.endsWith("@gmail.com")) {
                             return null;
                           } else {
                             return "Only gmail allowed";
@@ -95,11 +96,8 @@ class _CreateAccountState extends State<CreateAccount> {
                         },
                         decoration: decoText.copyWith(
                             hintText: "email",
-                            prefixIcon: Icon(
-                                Icons.account_box,
-                                color: Colors.grey)
-                        )
-                    ),
+                            prefixIcon:
+                                Icon(Icons.account_box, color: Colors.grey))),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 18.0),
@@ -110,25 +108,23 @@ class _CreateAccountState extends State<CreateAccount> {
                       child: TextFormField(
                           obscureText: _obscureText,
                           validator: (value) {
-                            if(value.length > 5){
+                            if (value.length > 5) {
                               return null;
                             } else {
                               return "Need at least 6 character";
                             }
-                            },
+                          },
                           onChanged: (value) {
                             setState(() {
                               _password = value;
                             });
-                            },
+                          },
                           decoration: decoText.copyWith(
                               hintText: "password",
                               prefixIcon: Icon(
                                 Icons.lock,
                                 color: Colors.grey,
-                              )
-                          )
-                      ),
+                              ))),
                     ),
                   ),
                   Container(
@@ -138,8 +134,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     child: TextFormField(
                         obscureText: _obscureText,
                         validator: (value) {
-                          if(value.length > 5){
-                            if(value == _password){
+                          if (value.length > 5) {
+                            if (value == _password) {
                               return null;
                             } else {
                               return "Password does not match";
@@ -147,15 +143,13 @@ class _CreateAccountState extends State<CreateAccount> {
                           } else {
                             return "Need at least 6 character";
                           }
-                          },
+                        },
                         decoration: decoText.copyWith(
                             hintText: "confirm password",
                             prefixIcon: Icon(
                               Icons.password,
                               color: Colors.grey,
-                            )
-                        )
-                    ),
+                            ))),
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 60, right: 150),
@@ -164,17 +158,18 @@ class _CreateAccountState extends State<CreateAccount> {
                       child: Row(
                         children: [
                           Checkbox(
+                            activeColor: Colors.teal.shade300,
                             value: !_obscureText,
                             onChanged: (value) {
                               _togglePass();
-                              },
+                            },
                           ),
                           Text("Show / Hide Password")
                         ],
                       ),
                       onTap: () {
                         _togglePass();
-                        },
+                      },
                     ),
                   ),
                   SizedBox(
@@ -185,15 +180,14 @@ class _CreateAccountState extends State<CreateAccount> {
                     height: size.height / 50,
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => LoginScreen())),
+                    onTap: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => LoginScreen())),
                     child: Text("Already have an Account ?",
                         style: TextStyle(
                           color: Colors.teal.shade400,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                        )
-                    ),
+                        )),
                   ),
                 ],
               ),
@@ -207,12 +201,14 @@ class _CreateAccountState extends State<CreateAccount> {
   Widget customButton(Size size) {
     return GestureDetector(
       onTap: () {
-        if (_formKey.currentState.validate() ){
-
+        if (_formKey.currentState.validate()) {
           Methods().createAccount(_email, _password).then((user) {
             if (user != null) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => ConfirmEmail(_message),));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ConfirmEmail(_message),
+                  ));
               print("goint to confimation email for creating account");
             } else {
               print("failed to create account");
