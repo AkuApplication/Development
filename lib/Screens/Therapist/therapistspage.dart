@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 
 class Therapists extends StatelessWidget {
-   @override
+  @override
   Widget build(BuildContext context) {
-     // Provide us total height & width of our screen
-     Size size = MediaQuery.of(context).size;
+    // Provide us total height & width of our screen
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color(0xFF337B6E),
+        backgroundColor: Colors.teal.shade300,
         title: Text('Therapists'),
-        centerTitle: true,
       ),
       body: Stack(
         children: [
           Container(
             height: 110,
             decoration: BoxDecoration(
-              color: Color(0xFF337B6E),
+              color: Colors.teal.shade300,
               borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(36.0),
-                  bottomRight: Radius.circular(36.0),
+                bottomLeft: Radius.circular(36.0),
+                bottomRight: Radius.circular(36.0),
               ),
             ),
           ),
@@ -33,7 +32,7 @@ class Therapists extends StatelessWidget {
                   //Hafizzan
                   Card(
                     shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                     elevation: 10.0,
                     child: Padding(
@@ -45,7 +44,7 @@ class Therapists extends StatelessWidget {
                             radius: 32.0,
                             backgroundColor: Colors.transparent,
                             child: Image.network(
-                                'https://image.flaticon.com/icons/png/512/3969/3969766.png',
+                              'https://image.flaticon.com/icons/png/512/3969/3969766.png',
                             ),
                           ),
                           SizedBox(
@@ -57,14 +56,14 @@ class Therapists extends StatelessWidget {
                     ),
                   ),
                   ExpansionTile(
-                      title: Text(
-                          'Details for Nur Hafizzan',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w100,
-                          letterSpacing: 0.5,
-                          color: Colors.blueGrey,
-                        ),
+                    title: Text(
+                      'Details for Nur Hafizzan',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w100,
+                        letterSpacing: 0.5,
+                        color: Colors.blueGrey,
                       ),
+                    ),
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(5.0),
@@ -75,7 +74,7 @@ class Therapists extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SelectableText(
-                                    'Full Name: ',
+                                  'Full Name: ',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w100,
                                     letterSpacing: 0.5,
@@ -112,60 +111,51 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                  'Qualification:',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  )
-                                ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
+                                SelectableText('Qualification:',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
+                                    )),
+                                SelectableText('• Ph. D. in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
+                                    )),
+                                SelectableText('• Master\'s in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
+                                    '• Master\'s Degree in Counseling',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
+                                    '• Master\'s Degree in Social Work',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
+                                SelectableText(
+                                    '• Master\'s Degree in Advance Psychiatric Nursing',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w100,
+                                      letterSpacing: 0.5,
+                                      color: Colors.black87,
+                                      height: 1.5,
+                                    )),
                               ],
                             ),
                             SizedBox(
@@ -174,33 +164,27 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Languages: ',
+                                SelectableText('Languages: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
+                                    )),
+                                SelectableText('• English',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
+                                    )),
+                                SelectableText('• Malay',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                           ],
@@ -293,60 +277,51 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Qualification:',
+                                SelectableText('Qualification:',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
+                                    )),
+                                SelectableText('• Ph. D. in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
+                                    )),
+                                SelectableText('• Master\'s in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
+                                    '• Master\'s Degree in Counseling',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
+                                    '• Master\'s Degree in Social Work',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
+                                    '• Master\'s Degree in Advance Psychiatric Nursing',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                             SizedBox(
@@ -355,33 +330,27 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Languages: ',
+                                SelectableText('Languages: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
+                                    )),
+                                SelectableText('• English',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
+                                    )),
+                                SelectableText('• Malay',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                           ],
@@ -474,60 +443,51 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Qualification:',
+                                SelectableText('Qualification:',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
+                                    )),
+                                SelectableText('• Ph. D. in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
+                                    )),
+                                SelectableText('• Master\'s in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
+                                    '• Master\'s Degree in Counseling',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
+                                    '• Master\'s Degree in Social Work',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
+                                    '• Master\'s Degree in Advance Psychiatric Nursing',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                             SizedBox(
@@ -536,33 +496,27 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Languages: ',
+                                SelectableText('Languages: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
+                                    )),
+                                SelectableText('• English',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
+                                    )),
+                                SelectableText('• Malay',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                           ],
@@ -655,60 +609,51 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Qualification:',
+                                SelectableText('Qualification:',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
+                                    )),
+                                SelectableText('• Ph. D. in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
+                                    )),
+                                SelectableText('• Master\'s in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
+                                    '• Master\'s Degree in Counseling',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
+                                    '• Master\'s Degree in Social Work',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
+                                    '• Master\'s Degree in Advance Psychiatric Nursing',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                             SizedBox(
@@ -717,33 +662,27 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Languages: ',
+                                SelectableText('Languages: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
+                                    )),
+                                SelectableText('• English',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
+                                    )),
+                                SelectableText('• Malay',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                           ],
@@ -836,60 +775,51 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Qualification:',
+                                SelectableText('Qualification:',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
+                                    )),
+                                SelectableText('• Ph. D. in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
+                                    )),
+                                SelectableText('• Master\'s in Psychology',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
+                                    '• Master\'s Degree in Counseling',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
+                                    '• Master\'s Degree in Social Work',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                                 SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
+                                    '• Master\'s Degree in Advance Psychiatric Nursing',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                             SizedBox(
@@ -898,33 +828,27 @@ class Therapists extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                SelectableText(
-                                    'Languages: ',
+                                SelectableText('Languages: ',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
+                                    )),
+                                SelectableText('• English',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
+                                    )),
+                                SelectableText('• Malay',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w100,
                                       letterSpacing: 0.5,
                                       color: Colors.black87,
                                       height: 1.5,
-                                    )
-                                ),
+                                    )),
                               ],
                             ),
                           ],

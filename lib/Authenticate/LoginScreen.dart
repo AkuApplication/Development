@@ -24,8 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _email = "";
   String _password = "";
-  String _message = "You are not yet verified. Please click on the link provided in the email "
-      + "to complete registration.";
+  String _message =
+      "You are not yet verified. Please click on the link provided in the email " +
+          "to complete registration.";
 
   String _account;
   int _numOfLogins;
@@ -33,14 +34,18 @@ class _LoginScreenState extends State<LoginScreen> {
   String _profileURL;
 
   void checkFirestore() async {
-    try{
-      await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value){
+    try {
+      await _firestore
+          .collection("users")
+          .doc(_auth.currentUser.uid)
+          .get()
+          .then((value) {
         _account = value.data()["accountType"];
         // _numOfLogins = value.data()["numOfLogins"];
         // _name = value.data()["name"];
         // _profileURL = value.data()["profileURL"];
 
-        if(_account == "Patient"){
+        if (_account == "Patient") {
           print("go to patient 2");
           // if(_numOfLogins <= 1){
           //   print("going to first time 2");
@@ -52,16 +57,21 @@ class _LoginScreenState extends State<LoginScreen> {
           //       MaterialPageRoute(builder: (context) => HomePage(),));
           // }
 
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => HomePage(),));
-        } else if(_account == "Doctor"){
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ));
+        } else if (_account == "Doctor") {
           print("go to doctor 2");
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DoctorHomePage(),
+              ));
         }
-
       });
-    } catch(e){
+    } catch (e) {
       print(e.toString());
     }
   }
@@ -128,26 +138,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.center,
                     margin: EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
-                      validator: (value) {
-                        if(value.endsWith("@gmail.com")){
-                          return null;
-                        } else {
-                          return "Only gmail allowed";
-                        }
-                      },
-                      onChanged: (value) {
-                        setState(() {
-                          _email = value;
-                        });
-                      },
-                      cursorColor: Colors.teal.shade300,
-                      decoration: decoText.copyWith(
-                          hintText: "email",
-                          prefixIcon: Icon(
-                            Icons.account_box,
-                            color: Colors.grey)
-                      )
-                    ),
+                        validator: (value) {
+                          if (value.endsWith("@gmail.com")) {
+                            return null;
+                          } else {
+                            return "Only gmail allowed";
+                          }
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _email = value;
+                          });
+                        },
+                        cursorColor: Colors.teal.shade300,
+                        decoration: decoText.copyWith(
+                            hintText: "email",
+                            prefixIcon:
+                                Icon(Icons.account_box, color: Colors.grey))),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 18.0),
@@ -156,28 +163,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(left: 20, right: 20),
                       child: TextFormField(
-                        obscureText: _obscureText,
-                        validator: (value) {
-                          if(value.length > 5){
-                            return null;
-                          } else {
-                            return "Need at least 6 character";
-                          }
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            _password = value;
-                          });
-                        },
-                        cursorColor: Colors.teal.shade300,
-                        decoration: decoText.copyWith(
-                          hintText: "password",
-                          prefixIcon: Icon(
-                            Icons.lock,
-                            color: Colors.grey,
-                          )
-                        )
-                      ),
+                          obscureText: _obscureText,
+                          validator: (value) {
+                            if (value.length > 5) {
+                              return null;
+                            } else {
+                              return "Need at least 6 character";
+                            }
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              _password = value;
+                            });
+                          },
+                          cursorColor: Colors.teal.shade300,
+                          decoration: decoText.copyWith(
+                              hintText: "password",
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Colors.grey,
+                              ))),
                     ),
                   ),
                   Container(
@@ -187,12 +192,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       title: _obscureText ? Text("Show Password")
                           : Text("Hide Password"),
                       leading: Checkbox(
+                        activeColor: Colors.teal.shade300,
                         value: !_obscureText,
                         onChanged: (value) {
                           _togglePass();
                         },
                       ),
-                    ),
+                    )
                   ),
                   SizedBox(
                     height: size.height / 7,
@@ -203,9 +209,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => CreateAccount()));
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => CreateAccount()));
                     },
-                    child: Text("Don’t have an Account ? ",
+                    child: Text(
+                      "Don’t have an Account ? ",
                       style: TextStyle(
                         color: Colors.teal.shade400,
                         fontSize: 16,
@@ -218,11 +226,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => SendEmailResetPassword()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => SendEmailResetPassword()));
                     },
-                    child: Text("Forgot your password ? ",
+                    child: Text(
+                      "Forgot your password ? ",
                       style: TextStyle(
-                         color: Colors.teal.shade400,
+                        color: Colors.teal.shade400,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
@@ -242,22 +252,24 @@ class _LoginScreenState extends State<LoginScreen> {
       onTap: () async {
         if (_formKey.currentState.validate()) {
           await Methods().logIn(_email, _password).then((user) {
-            if(user == null){
+            if (user == null) {
               setState(() {
                 print("Could not sign with those credentials");
               });
             } else {
-              if(!(user.emailVerified)){
+              if (!(user.emailVerified)) {
                 print("Email not verified");
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ConfirmEmail(_message),));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ConfirmEmail(_message),
+                    ));
               } else {
                 print("email verified");
                 checkFirestore();
               }
             }
           });
-
         } else {
           print("Please fill form correctly");
         }
@@ -281,5 +293,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 }

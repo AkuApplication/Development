@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class Profile extends StatefulWidget {
-
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -53,7 +52,11 @@ class _ProfileState extends State<Profile> {
   List<String> _genderList = ["Male", "Female"];
 
   void checkFirestore() async {
-    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+    await _firestore
+        .collection("users")
+        .doc(_auth.currentUser.uid)
+        .get()
+        .then((value) {
       setState(() {
         _name.text = value.data()["name"];
         _backupName = _name.text;
@@ -71,9 +74,7 @@ class _ProfileState extends State<Profile> {
         _imageURL = value.data()["profileURL"];
         _backupURL = _imageURL;
       });
-
     });
-
   }
 
   void uploadImage() async {
@@ -93,15 +94,14 @@ class _ProfileState extends State<Profile> {
       // });
 
       // Navigator.pop(context, _imageURL);
-    // _imageURL = await task.ref.getDownloadURL();
-    // await _firestore.collection("users").doc(_auth.currentUser.uid).update({
-    //   "profileURL": _imageURL
+      // _imageURL = await task.ref.getDownloadURL();
+      // await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+      //   "profileURL": _imageURL
     });
     // await _firestore.collection("images").add({
     //   "url": _imageURL,
     //   "name": _fileName
     // });
-
   }
 
   @override
@@ -125,9 +125,8 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        centerTitle: true,
+        backgroundColor: Colors.teal.shade300,
         title: Text('Profile'),
-        backgroundColor: Color(0xFF337B6E),
         // leading: ElevatedButton(
         //   child: Text("Homepage"),
         //   onPressed: () {
@@ -147,39 +146,46 @@ class _ProfileState extends State<Profile> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      FormField(builder: (field) {
-                           return Container(
-                             width: 100,
-                             height: 100,
-                             child: InkWell(
-                               // This is where the profile picture of the user goes into
-                               // child: CircleAvatar(
-                               //   radius: 100,
-                               //   backgroundColor: Colors.teal,
-                               // ),
-                         child: (_imageURL == null) ? Image.network("https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf")
-                               // child: (_image == null) ? CircleAvatar(
-                               //   radius: 100,
-                               // ) : Image.file(_image),
-                        : Image.network(_imageURL,fit: BoxFit.fill,),
-                               onTap: () async {
-                                 // final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
+                      FormField(
+                        builder: (field) {
+                          return Container(
+                            width: 100,
+                            height: 100,
+                            child: InkWell(
+                              // This is where the profile picture of the user goes into
+                              // child: CircleAvatar(
+                              //   radius: 100,
+                              //   backgroundColor: Colors.teal,
+                              // ),
+                              child: (_imageURL == null)
+                                  ? Image.network(
+                                      "https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf")
+                                  // child: (_image == null) ? CircleAvatar(
+                                  //   radius: 100,
+                                  // ) : Image.file(_image),
+                                  : Image.network(
+                                      _imageURL,
+                                      fit: BoxFit.fill,
+                                    ),
+                              onTap: () async {
+                                // final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
 
-                                 await uploadImage();
+                                await uploadImage();
 
-                                 // await _storage.ref().child("Images/$_picked").putFile(_image).whenComplete(() {
-                                 //   _storage.ref().getDownloadURL().then((value) {
-                                 //     print("Done: $value");
-                                 //   });
-                                 // });
-                                 // setState(() {
-                                 //   _image = File(_picked.path);
-                                 // });
-                               },
-                             ),
-                           );
-                      },
-                      key: _imageKey,),
+                                // await _storage.ref().child("Images/$_picked").putFile(_image).whenComplete(() {
+                                //   _storage.ref().getDownloadURL().then((value) {
+                                //     print("Done: $value");
+                                //   });
+                                // });
+                                // setState(() {
+                                //   _image = File(_picked.path);
+                                // });
+                              },
+                            ),
+                          );
+                        },
+                        key: _imageKey,
+                      ),
 
                       // GridView.builder(
                       //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -205,36 +211,36 @@ class _ProfileState extends State<Profile> {
                       //   },
                       // ),
 
-                   //    Container(
-                   //      width: 100,
-                   //      height: 100,
-                   //      child: InkWell(
-                   //        // This is where the profile picture of the user goes into
-                   //        // child: CircleAvatar(
-                   //        //   radius: 100,
-                   //        //   backgroundColor: Colors.teal,
-                   //        // ),
-                   //  child: (_imageURL == null) ? Image.network("https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf")
-                   //        // child: (_image == null) ? CircleAvatar(
-                   //        //   radius: 100,
-                   //        // ) : Image.file(_image),
-                   // : Image.network(_imageURL,fit: BoxFit.fill,),
-                   //        onTap: () async {
-                   //          // final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
-                   //
-                   //          uploadImage();
-                   //
-                   //          // await _storage.ref().child("Images/$_picked").putFile(_image).whenComplete(() {
-                   //          //   _storage.ref().getDownloadURL().then((value) {
-                   //          //     print("Done: $value");
-                   //          //   });
-                   //          // });
-                   //          // setState(() {
-                   //          //   _image = File(_picked.path);
-                   //          // });
-                   //        },
-                   //      ),
-                   //    ),
+                      //    Container(
+                      //      width: 100,
+                      //      height: 100,
+                      //      child: InkWell(
+                      //        // This is where the profile picture of the user goes into
+                      //        // child: CircleAvatar(
+                      //        //   radius: 100,
+                      //        //   backgroundColor: Colors.teal,
+                      //        // ),
+                      //  child: (_imageURL == null) ? Image.network("https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf")
+                      //        // child: (_image == null) ? CircleAvatar(
+                      //        //   radius: 100,
+                      //        // ) : Image.file(_image),
+                      // : Image.network(_imageURL,fit: BoxFit.fill,),
+                      //        onTap: () async {
+                      //          // final _picked = await ImagePicker().pickImage(source: ImageSource.camera);
+                      //
+                      //          uploadImage();
+                      //
+                      //          // await _storage.ref().child("Images/$_picked").putFile(_image).whenComplete(() {
+                      //          //   _storage.ref().getDownloadURL().then((value) {
+                      //          //     print("Done: $value");
+                      //          //   });
+                      //          // });
+                      //          // setState(() {
+                      //          //   _image = File(_picked.path);
+                      //          // });
+                      //        },
+                      //      ),
+                      //    ),
 
                       SizedBox(
                         height: 15,
@@ -293,8 +299,7 @@ class _ProfileState extends State<Profile> {
                             prefixIcon: Icon(
                               Icons.person,
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         controller: _name,
                         onChanged: (value) {
                           _inputName = value;
@@ -309,8 +314,7 @@ class _ProfileState extends State<Profile> {
                             prefixIcon: Icon(
                               Icons.transgender,
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         value: _gender,
                         items: _genderList.map((e) {
                           return DropdownMenuItem(
@@ -335,8 +339,7 @@ class _ProfileState extends State<Profile> {
                             prefixIcon: Icon(
                               Icons.phone,
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         controller: _contact,
                         onChanged: (value) {
                           _inputContact = value;
@@ -353,8 +356,7 @@ class _ProfileState extends State<Profile> {
                             prefixIcon: Icon(
                               Icons.medical_services,
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         controller: _condition,
                         onChanged: (value) {
                           _condition.text = value;
@@ -371,8 +373,7 @@ class _ProfileState extends State<Profile> {
                             prefixIcon: Icon(
                               Icons.add_chart,
                               color: Colors.grey,
-                            )
-                        ),
+                            )),
                         controller: _records,
                         onChanged: (value) {
                           _records.text = value;
@@ -393,29 +394,34 @@ class _ProfileState extends State<Profile> {
                               if (_formKey.currentState.validate()) {
                                 // print(_email);
                                 // print(_password);
-                                await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+                                await _firestore
+                                    .collection("users")
+                                    .doc(_auth.currentUser.uid)
+                                    .update({
                                   "profileURL": _imageURL,
                                   "name": _name.text,
                                   "gender": _gender,
                                   "contact": _contact.text,
-
                                 });
                                 print(_imageURL);
                                 print(_name.text);
                                 print(_gender);
                                 print(_contact.text);
 
-                                Navigator.pushReplacement(context,
-                                    MaterialPageRoute(builder: (context) => DoctorHomePage(),));
-
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DoctorHomePage(),
+                                    ));
                               }
                             },
                           ),
-                          SizedBox(width: 10,),
+                          SizedBox(
+                            width: 10,
+                          ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xFF337B6E),
-
                             ),
                             child: Text("Cancel"),
                             onPressed: () {
