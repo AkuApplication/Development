@@ -287,6 +287,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             },
                           ),
                           CheckboxListTile(
+                            activeColor: Colors.teal.shade300,
                             value: choseGender2,
                             title: Text("Female"),
                             onChanged: (value) {
