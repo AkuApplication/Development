@@ -181,23 +181,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 60, right: 150),
-                    width: size.width,
-                    child: InkWell(
-                      child: Row(
-                        children: [
-                          Checkbox(
-                            value: !_obscureText,
-                            onChanged: (value) {
-                              _togglePass();
-                              },
-                          ),
-                          Text("Show / Hide Password")
-                        ],
-                      ),
-                      onTap: () {
-                        _togglePass();
+                    margin: EdgeInsets.only(right: 30),
+                    width: size.width / 1.2,
+                    child: ListTile(
+                      title: _obscureText ? Text("Show Password")
+                          : Text("Hide Password"),
+                      leading: Checkbox(
+                        value: !_obscureText,
+                        onChanged: (value) {
+                          _togglePass();
                         },
+                      ),
                     ),
                   ),
                   SizedBox(

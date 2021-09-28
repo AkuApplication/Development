@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
-  Map<String, dynamic> userMap;
+  // Map<String, dynamic> userMap;
   List userList;
   // bool isLoading = false;
   // final TextEditingController _search = TextEditingController();
@@ -378,7 +380,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                           Container(
                                             child: new IconButton(
                                               icon: new Icon(Icons.call),
-                                              onPressed: () {},
+                                              onPressed: () async {
+                                                // await FlutterPhoneDirectCaller.callNumber("+673" + "2335077");
+
+                                                // if(await canLaunch("tel:" + "2335077")){
+                                                //   await launch("tel:" + "2335077");
+                                                // } else {
+                                                //   throw "Could not launch " + "tel:" + "2335077";
+                                                // }
+                                              },
                                             ),
                                           ),
 
@@ -387,7 +397,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                           Container(
                                             child: new IconButton(
                                               icon: new Icon(Icons.video_call),
-                                              onPressed: () {},
+                                              onPressed: () {
+
+                                              },
                                             ),
                                           ),
                                           // icon-1
