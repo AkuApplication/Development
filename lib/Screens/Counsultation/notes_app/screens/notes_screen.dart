@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 class NotesScreen extends StatefulWidget {
   static final String routeName = '/';
+  QueryDocumentSnpashot chosenUserData;
+  NotesScreen({this.chosenUserData});
 
   @override
   _NotesScreenState createState() => _NotesScreenState();
