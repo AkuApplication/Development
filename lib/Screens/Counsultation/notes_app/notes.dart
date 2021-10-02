@@ -19,7 +19,7 @@ class Notes extends StatelessWidget {
 
       onGenerateRoute: (RouteSettings settings) {
         var routes = <String, WidgetBuilder>{
-          NotesScreen.routeName: (context) => NotesScreen(),
+          NotesScreen.routeName: (context) => NotesScreen(chosenUserData: widget.chosenUserData),
           NoteScreen.routeName: (context) => NoteScreen(settings.arguments)
         };
         WidgetBuilder builder = routes[settings.name];
