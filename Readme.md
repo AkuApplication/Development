@@ -1,3 +1,11 @@
+Hafizzan Debugging :
+ya actually aku plan cemani if rh database 
+notesRoom -> chosenUserData -> Notes
+
+tapi bab ambil data fro chosenUser Data aku ku error
+
+
+
 7th September 2021
 1. Added a validation for TextFormFields in LoginScreen/CreateAccount.
 2. Added a Show/Hide checkbox for Password in both LoginScreen and CreateAccount
