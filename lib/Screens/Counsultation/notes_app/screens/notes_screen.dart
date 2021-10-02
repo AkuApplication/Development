@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 class NotesScreen extends StatefulWidget {
   static final String routeName = '/';
+  QueryDocumentSnpashot chosenUserData;
+  NotesScreen({this.chosenUserData});
 
   @override
   _NotesScreenState createState() => _NotesScreenState();
@@ -21,7 +23,7 @@ class _NotesScreenState extends State<NotesScreen> {
         title: Text('Notes'),
       ),
       body: ListView(
-        children: <Widget>[NotesStream(firestore: _firestore)],
+        children: <Widget>[NotesStream(firestore: _firestore, chosenUserData: widget.chosenUserData)],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
