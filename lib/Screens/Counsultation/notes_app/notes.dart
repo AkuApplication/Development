@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 class Notes extends StatelessWidget {
   // This widget is the root of your application.
+  QueryDocumentSnapshot chosenUserData;
+  Notes({this.chosenUserData});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +19,7 @@ class Notes extends StatelessWidget {
 
       onGenerateRoute: (RouteSettings settings) {
         var routes = <String, WidgetBuilder>{
-          NotesScreen.routeName: (context) => NotesScreen(),
+          NotesScreen.routeName: (context) => NotesScreen(chosenUserData: widget.chosenUserData),
           NoteScreen.routeName: (context) => NoteScreen(settings.arguments)
         };
         WidgetBuilder builder = routes[settings.name];
