@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class Notes extends StatelessWidget {
   // This widget is the root of your application.
   QueryDocumentSnapshot chosenUserData;
-  Notes({this.chosenUserData})
+  Notes({this.chosenUserData});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
