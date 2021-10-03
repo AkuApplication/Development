@@ -1,3 +1,4 @@
+import 'package:chat_app/Screens/Counsultation/notes_app/notes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   void initState() {
     checkFirestore();
+    print(widget.chosenUserData.get("uid"));
     // print(widget.userList.data());
     super.initState();
   }
@@ -71,7 +73,8 @@ class _ChatRoomState extends State<ChatRoom> {
               children: [
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(chosenUserData: widget.chosenUserData.get("uid"),),));
                   },
                   icon: Icon(
                     Icons.arrow_back,
