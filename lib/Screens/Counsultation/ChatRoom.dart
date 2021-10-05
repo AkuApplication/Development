@@ -112,7 +112,9 @@ class _ChatRoomState extends State<ChatRoom> {
                           print('This will redirect to Therapist Page');
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => Notes(chosenUserData: widget.chosenUserData),
+                              // builder: (_) => Notes(),
+                              builder: (_) =>
+                                  Notes(chosenUserData: widget.chosenUserData),
                             ),
                           );
                         },

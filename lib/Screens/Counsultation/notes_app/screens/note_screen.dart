@@ -124,8 +124,7 @@ class _NoteScreenState extends State<NoteScreen> {
           .collection('notesRoom')
           .doc(widget.chosenUserData.get("uid"))
           .collection('notes')
-          .doc(note.id)
-          .set({'title': titleString, 'note': noteString});
+          .add({'title': titleString, 'note': noteString});
     } else {
       _firestore
           .collection('notesRoom')
