@@ -73,8 +73,8 @@ class _ChatRoomState extends State<ChatRoom> {
               children: [
                 IconButton(
                   onPressed: () {
-                    // Navigator.pop(context);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(chosenUserData: widget.chosenUserData.get("uid"),),));
+                    Navigator.pop(context);
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(chosenUserData: widget.chosenUserData.get("uid"),),));
                   },
                   icon: Icon(
                     Icons.arrow_back,

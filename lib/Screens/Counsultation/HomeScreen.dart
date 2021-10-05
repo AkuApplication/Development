@@ -1,5 +1,6 @@
 import 'package:chat_app/Authenticate/Methods.dart';
 import 'package:chat_app/Screens/Counsultation/ChatRoom.dart';
+import 'package:chat_app/VideoCall/videoPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -381,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                           Container(
                                             child: new IconButton(
                                               icon: new Icon(Icons.call),
-                                              onPressed: () async {
+                                              onPressed: () {
                                                 // await FlutterPhoneDirectCaller.callNumber("+673" + "2335077");
 
                                                 // if(await canLaunch("tel:" + "2335077")){
@@ -399,7 +400,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                             child: new IconButton(
                                               icon: new Icon(Icons.video_call),
                                               onPressed: () {
-
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => VideoCall(),
+                                                    )
+                                                );
                                               },
                                             ),
                                           ),

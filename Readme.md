@@ -29,3 +29,12 @@
 2. Also added a feature where user are able to pick a counsellor's gender and showing only the counsellor who fits the criteria in the HomeScreen page.
 3. Found out ways to display Images in the Circle Avatar, the example are in the ChatRoom page under the CircleAvatar widget.
 4. Next plan is to focus on the Manage Notes function while trying out the Call and Video Call feature for the Counselling Function.
+
+5th October 2021
+1. Implemented real time communication with Video Call and Call.
+2. The steps for using the Video Call at the moment is that, first the user need to open their camera and mic using the specific button in Video Call page.
+   Then, the other user also need to open their media devices. After that, one user need to click the button to create a room and wait for the roomId to appear
+   at the bottom TextField.
+   Next, use that roomId and input it on the other user TextField and then click Join Room to start communicating.
+   To stop communicating, just click the button Hang Up.
+3.
