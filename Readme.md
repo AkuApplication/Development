@@ -37,4 +37,7 @@
    at the bottom TextField.
    Next, use that roomId and input it on the other user TextField and then click Join Room to start communicating.
    To stop communicating, just click the button Hang Up.
-3.
+3. Not fully implemented yet the video call feature. Need the 'on Speaker', mute function still, also not satisfied with
+   how the user call the other user since atm we still need the other user to input the roomId manually.
+4. Will implement an automatic call feature where all the receiver have to do is just click one button to be connected to the caller.
+5. Also, some of Hafizzan's Manage Notes function are implemented here but just different method from Hafizzan. It works exactly the same though.

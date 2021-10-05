@@ -28,7 +28,7 @@ class _NotesStreamState extends State<NotesStream> {
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: _firestore.collection("notesRoom").doc(widget.chosenUserData)
-          // .collection('notes')
+          .collection('notes')
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -37,15 +37,16 @@ class _NotesStreamState extends State<NotesStream> {
           );
         }
 
-        final notes = snapshot.data.doc();
+        final notes = snapshot.data.docs;
+        print("Notes $notes");
         // final notes = snapshot.data["arrayNote"];
 
         List<NoteCard> noteCards = [];
         for (var note in notes) {
           Note noteObject = Note(
               id: widget.chosenUserData,
-              title: notes[0],
-              note: "tex"
+              title: note["title"],
+              note: note["note"],
               // title: note.data['title'],
               // note: note.data['note']);
           );

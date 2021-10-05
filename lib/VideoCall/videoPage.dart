@@ -18,6 +18,7 @@ class _VideoCallState extends State<VideoCall> {
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String roomId;
   TextEditingController roomIdController = TextEditingController(text: "");
+  bool onSpeaker = false;
 
   @override
   void initState() {
@@ -57,6 +58,12 @@ class _VideoCallState extends State<VideoCall> {
     super.dispose();
   }
 
+  void toggleSpeaker() {
+    setState(() {
+      onSpeaker = !onSpeaker;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -73,6 +80,34 @@ class _VideoCallState extends State<VideoCall> {
 
             },
             child: Text("Open camera & microphone"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                signalingRTC.muteMic(_localRenderer);
+              });
+
+            },
+            child: Text("Mute mic"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                signalingRTC.muteVideo(_localRenderer);
+              });
+
+            },
+            child: Text("Mute Video"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              toggleSpeaker();
+              setState(() {
+                signalingRTC.onSpeaker(_localRenderer, onSpeaker);
+              });
+
+            },
+            child: Text("On Speaker"),
           ),
           ElevatedButton(
             onPressed: () async {

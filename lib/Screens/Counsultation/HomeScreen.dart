@@ -400,6 +400,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                             child: new IconButton(
                                               icon: new Icon(Icons.video_call),
                                               onPressed: () {
+                                                // chatRoomId(_auth.currentUser.uid,
+                                                //     userList[index]["uid"]);
+                                                // print(roomId);
+
                                                 Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(

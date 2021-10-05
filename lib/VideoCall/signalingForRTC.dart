@@ -253,6 +253,25 @@ class SignalingRTC {
     remoteStream.dispose();
   }
 
+  Future<void> muteMic(RTCVideoRenderer localVideo) {
+    var audioTracks = localVideo.srcObject.getAudioTracks();
+
+    audioTracks[0].setMicrophoneMute(true);
+  }
+
+  Future<void> muteVideo(RTCVideoRenderer localVideo) {
+    var videoTracks = localVideo.srcObject.getVideoTracks();
+
+    videoTracks[0].enabled = !videoTracks[0].enabled;
+  }
+
+  Future<void> onSpeaker(RTCVideoRenderer localVideo, bool enable) {
+    var audioOnSpeakerTracks = localVideo.srcObject.getAudioTracks();
+
+    // bool enable = true;
+    audioOnSpeakerTracks[0].enableSpeakerphone(enable);
+  }
+
   void registerPeerConnectionListeners() {
     peerConnection.onIceGatheringState = (RTCIceGatheringState state) {
       print("ICE gathering state changed: $state");

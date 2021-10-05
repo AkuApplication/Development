@@ -74,7 +74,6 @@ class _ChatRoomState extends State<ChatRoom> {
                 IconButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(chosenUserData: widget.chosenUserData.get("uid"),),));
                   },
                   icon: Icon(
                     Icons.arrow_back,
@@ -96,6 +95,13 @@ class _ChatRoomState extends State<ChatRoom> {
                       Text(widget.chosenUserData.get("status")),
                     ],
                   ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(chosenUserData: widget.chosenUserData.get("uid"),),));
+                  },
+                  icon: Icon(Icons.note),
+                  color: Colors.black54,
                 ),
                 Icon(
                   Icons.settings,

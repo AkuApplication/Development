@@ -37,7 +37,7 @@ class _NotesState extends State<Notes> {
       onGenerateRoute: (RouteSettings settings) {
         var routes = <String, WidgetBuilder>{
           NotesScreen.routeName: (context) => NotesScreen(chosenUserData: widget.chosenUserData),
-          NoteScreen.routeName: (context) => NoteScreen(settings.arguments)
+          NoteScreen.routeName: (context) => NoteScreen(settings.arguments, chosenUserData: widget.chosenUserData,)
         };
         WidgetBuilder builder = routes[settings.name];
         return MaterialPageRoute(builder: (ctx) => builder(ctx));
