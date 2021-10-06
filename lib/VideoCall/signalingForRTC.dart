@@ -220,11 +220,13 @@ class SignalingRTC {
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
     List<MediaStreamTrack> tracks = localVideo.srcObject.getTracks();
     tracks.forEach((track) {
+      track.enabled = false;
       track.stop();
     });
 
     if(remoteStream != null) {
       remoteStream.getTracks().forEach((element) {
+        element.enabled = false;
         element.stop();
       });
     }
@@ -253,10 +255,10 @@ class SignalingRTC {
     remoteStream.dispose();
   }
 
-  Future<void> muteMic(RTCVideoRenderer localVideo) {
+  Future<void> muteMic(RTCVideoRenderer localVideo, bool muted) {
     var audioTracks = localVideo.srcObject.getAudioTracks();
 
-    audioTracks[0].setMicrophoneMute(true);
+    audioTracks[0].setMicrophoneMute(muted);
   }
 
   Future<void> muteVideo(RTCVideoRenderer localVideo) {

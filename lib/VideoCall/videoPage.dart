@@ -19,6 +19,7 @@ class _VideoCallState extends State<VideoCall> {
   String roomId;
   TextEditingController roomIdController = TextEditingController(text: "");
   bool onSpeaker = false;
+  bool muted = false;
 
   @override
   void initState() {
@@ -64,6 +65,12 @@ class _VideoCallState extends State<VideoCall> {
     });
   }
 
+  void toggleMic() {
+    setState(() {
+      muted = !muted;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -83,8 +90,9 @@ class _VideoCallState extends State<VideoCall> {
           ),
           ElevatedButton(
             onPressed: () {
+              toggleMic();
               setState(() {
-                signalingRTC.muteMic(_localRenderer);
+                signalingRTC.muteMic(_localRenderer, muted);
               });
 
             },
