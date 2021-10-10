@@ -24,10 +24,7 @@ class _NotesScreenState extends State<NotesScreen> {
         title: Text('Notes'),
       ),
       body: ListView(
-        children: <Widget>[
-          NotesStream(
-              firestore: _firestore, chosenUserData: widget.chosenUserData)
-        ],
+        children: <Widget>[NotesStream(chosenUserData: widget.chosenUserData)],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

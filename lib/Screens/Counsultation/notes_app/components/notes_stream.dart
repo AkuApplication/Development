@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 class NotesStream extends StatefulWidget {
   QueryDocumentSnapshot chosenUserData;
 
-  final FirebaseFirestore _firestore;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  NotesStream({firestore, this.chosenUserData}) : _firestore = firestore;
+  NotesStream({this.chosenUserData});
 
   @override
   _NotesStreamState createState() => _NotesStreamState();
@@ -25,7 +25,7 @@ class _NotesStreamState extends State<NotesStream> {
           .doc(widget.chosenUserData.get("uid"))
           .collection('notes')
           .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
+      builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return CircularProgressIndicator(
             backgroundColor: Colors.limeAccent,
@@ -34,12 +34,16 @@ class _NotesStreamState extends State<NotesStream> {
 
         final notes = snapshot.data.docs;
 
+        // String doc_id = snapshot.data.DocumentId;
+
         List<NoteCard> noteCards = [];
+
         for (var note in notes) {
+          // print(snapshot.data.DocumentId);
           Note noteObject = Note(
-              id: snapshot.data.DocumentId,
-              title: note.data['title'],
-              note: note.data['note']);
+              id: widget.chosenUserData.get('uid'),
+              title: note['title'],
+              note: note['note']);
           noteCards.add(NoteCard(
             note: noteObject,
             onPressed: () {
