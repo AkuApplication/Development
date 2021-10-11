@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// var player = AudioCache();
+var player = AudioCache();
 
 Tabata get defaultTabata => Tabata(
       sets: 1,
@@ -17,7 +17,7 @@ Tabata get defaultTabata => Tabata(
     );
 
 class Settings {
-  // final SharedPreferences _prefs;
+  final SharedPreferences _prefs;
 
   bool nightMode;
   bool silentMode;
@@ -29,23 +29,23 @@ class Settings {
   String startSet;
   String endWorkout;
 
-  // Settings(this._prefs) {
-  //   Map<String, dynamic> json =
-  //       jsonDecode(_prefs.getString('settings') ?? '{}');
-  //   nightMode = json['nightMode'] ?? false;
-  //   silentMode = json['silentMode'] ?? false;
-  //   primarySwatch = Colors.primaries[
-  //       json['primarySwatch'] ?? Colors.primaries.indexOf(Colors.teal)];
-  //   countdownPip = json['countdownPip'] ?? 'pip.mp3';
-  //   startRep = json['startRep'] ?? 'boop.mp3';
-  //   startRest = json['startRest'] ?? 'boop.mp3';
-  //   startBreak = json['startBreak'] ?? 'dingdingding.mp3';
-  //   startSet = json['startSet'] ?? 'pip.mp3';
-  //   endWorkout = json['endWorkout'] ?? 'dingdingding.mp3';
-  // }
+  Settings(this._prefs) {
+    Map<String, dynamic> json =
+        jsonDecode(_prefs.getString('settings') ?? '{}');
+    nightMode = json['nightMode'] ?? false;
+    silentMode = json['silentMode'] ?? false;
+    primarySwatch = Colors.primaries[
+        json['primarySwatch'] ?? Colors.primaries.indexOf(Colors.teal)];
+    countdownPip = json['countdownPip'] ?? 'pip.mp3';
+    startRep = json['startRep'] ?? 'boop.mp3';
+    startRest = json['startRest'] ?? 'boop.mp3';
+    startBreak = json['startBreak'] ?? 'dingdingding.mp3';
+    startSet = json['startSet'] ?? 'pip.mp3';
+    endWorkout = json['endWorkout'] ?? 'dingdingding.mp3';
+  }
 
   save() {
-    // _prefs.setString('settings', jsonEncode(this));
+    _prefs.setString('settings', jsonEncode(this));
   }
 
   Map<String, dynamic> toJson() => {
@@ -206,7 +206,7 @@ class Workout {
     if (_settings.silentMode) {
       return Future.value();
     }
-    // return player.play(sound, mode: PlayerMode.LOW_LATENCY);
+    return player.play(sound, mode: PlayerMode.LOW_LATENCY);
   }
 
   _startRest() {

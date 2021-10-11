@@ -33,14 +33,16 @@ class _HomePageState extends State<HomePage> {
   String _profileURL2;
 
   void checkFirestore() async {
-    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+    await _firestore
+        .collection("users")
+        .doc(_auth.currentUser.uid)
+        .get()
+        .then((value) {
       setState(() {
         _username2 = value.data()["name"];
         _account2 = value.data()["accountType"];
         _profileURL2 = value.data()["profileURL"];
-
       });
-
     });
   }
 
@@ -55,13 +57,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addNumOfLogins() async {
-    await _firestore.collection("users").doc(_auth.currentUser.uid).update({
-      "numOfLogins": FieldValue.increment(1)
-    });
+    await _firestore
+        .collection("users")
+        .doc(_auth.currentUser.uid)
+        .update({"numOfLogins": FieldValue.increment(1)});
   }
+
   @override
   void initState() {
-
     addNumOfLogins();
     // _username2 = widget._username;
     // _account2 = widget._account;
@@ -75,13 +78,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal.shade300,
         title: Text("Homepage"),
         actions: [
-          IconButton(icon: Icon(Icons.logout), onPressed: () => Methods().logOut(context))
+          IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () => Methods().logOut(context))
         ],
       ),
       body: Container(
@@ -137,14 +141,19 @@ class _HomePageState extends State<HomePage> {
                     width: 50,
                     height: 50,
                     child: GestureDetector(
-                      child: (_profileURL2 == null) ? Icon(
-                        Icons.account_circle,
-                        size: 45.0,
-                        color: Colors.black12,
-                      ) : Image.network(_profileURL2),
+                      child: (_profileURL2 == null)
+                          ? Icon(
+                              Icons.account_circle,
+                              size: 45.0,
+                              color: Colors.black12,
+                            )
+                          : Image.network(_profileURL2),
                       onTap: () {
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => Profile(),));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Profile(),
+                            ));
                         print("This will redirect to Profile Page");
                       },
                     ),
@@ -240,9 +249,9 @@ class _HomePageState extends State<HomePage> {
                   InkWell(
                     onTap: () {
                       // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (_) => exercise(timerApp)));
+                      //     MaterialPageRoute(builder: (_) => TimerApp()));
 
-                      // MaterialPageRoute(builder: (_) => exercise()));
+                      // MaterialPageRoute(builder: (_) => exercise()))
                       print('This will redirect to Exercise Page');
                     },
                     child: Card(

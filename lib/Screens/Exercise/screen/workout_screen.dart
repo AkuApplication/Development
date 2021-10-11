@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:wakelock/wakelock.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '../models.dart';
 import '../utils.dart';
@@ -7,9 +7,9 @@ import '../utils.dart';
 String stepName(WorkoutState step) {
   switch (step) {
     case WorkoutState.exercising:
-      return 'Inhale';
+      return 'Exercise';
     case WorkoutState.resting:
-      return 'Exhale';
+      return 'Rest';
     case WorkoutState.breaking:
       return 'Break';
     case WorkoutState.finished:
@@ -44,13 +44,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   @override
   dispose() {
     _workout.dispose();
-    // Wakelock.disable();
+    Wakelock.disable();
     super.dispose();
   }
 
   _onWorkoutChanged() {
     if (_workout.step == WorkoutState.finished) {
-      // Wakelock.disable();
+      Wakelock.disable();
     }
     this.setState(() {});
   }
@@ -58,10 +58,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   _getBackgroundColor(ThemeData theme) {
     switch (_workout.step) {
       case WorkoutState.exercising:
-        return Colors.green.shade400;
+        return Colors.green;
       case WorkoutState.starting:
       case WorkoutState.resting:
-        return Colors.lightBlue.shade300;
+        return Colors.blue;
       case WorkoutState.breaking:
         return Colors.red;
       default:
@@ -71,12 +71,12 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
 
   _pause() {
     _workout.pause();
-    // Wakelock.disable();
+    Wakelock.disable();
   }
 
   _start() {
     _workout.start();
-    // Wakelock.enable();
+    Wakelock.enable();
   }
 
   Widget build(BuildContext context) {
@@ -92,18 +92,18 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(stepName(_workout.step), style: TextStyle(fontSize: 60.0))
             ]),
-            Divider(height: 32, color: Colors.white),
+            Divider(height: 32, color: lightTextColor),
             Container(
                 width: MediaQuery.of(context).size.width,
                 child: FittedBox(child: Text(formatTime(_workout.timeLeft)))),
-            Divider(height: 32, color: Colors.white),
+            Divider(height: 32, color: lightTextColor),
             Table(columnWidths: {
-              // 0: FlexColumnWidth(0.5),
-              0: FlexColumnWidth(1.0),
-              1: FlexColumnWidth(1.0)
+              0: FlexColumnWidth(0.5),
+              1: FlexColumnWidth(0.5),
+              2: FlexColumnWidth(1.0)
             }, children: [
               TableRow(children: [
-                // TableCell(child: Text('Set', style: TextStyle(fontSize: 30.0))),
+                TableCell(child: Text('Set', style: TextStyle(fontSize: 30.0))),
                 TableCell(child: Text('Rep', style: TextStyle(fontSize: 30.0))),
                 TableCell(
                     child: Text('Total Time',
@@ -111,10 +111,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                         style: TextStyle(fontSize: 30.0)))
               ]),
               TableRow(children: [
-                // TableCell(
-                //   child:
-                //       Text('${_workout.set}', style: TextStyle(fontSize: 60.0)),
-                // ),
+                TableCell(
+                  child:
+                      Text('${_workout.set}', style: TextStyle(fontSize: 60.0)),
+                ),
                 TableCell(
                   child:
                       Text('${_workout.rep}', style: TextStyle(fontSize: 60.0)),
