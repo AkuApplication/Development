@@ -1,30 +1,23 @@
-import 'package:chat_app/Authenticate/Autheticate.dart';
-import 'package:chat_app/FirstTime/Screen/first_time.dart';
-import 'package:chat_app/Screens/Counsultation/ChatRoom.dart';
-import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
-import 'package:chat_app/Screens/Counsultation/ShowNotesOfSpecificUser.dart';
-import 'package:chat_app/TherapistTimetable/timetable.dart';
-import 'package:chat_app/VideoCall/videoPage.dart';
+import 'package:chat_app/MentalHealthTest/Screen/first_time.dart';
+import 'package:chat_app/Screens/loadingLogo.dart';
+import 'package:chat_app/SystemAuthentication/Autheticate.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 
-import 'Screens/Profile/profilepage.dart';
-
+//Making sure Firebase is initialized first before running app
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
 }
 
-// First Page = Authenticate Dulu
-
+// First Page = Showing Logo for a brief moment then Authenticate
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Authenticate(),
+      home: LoadingLogo(),
     );
   }
 }

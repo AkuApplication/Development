@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chat_app/Authenticate/Methods.dart';
+import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutpage.dart';
-import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
-import 'package:chat_app/Screens/Counsultation/ShowNotesOfSpecificUser.dart';
+import 'package:chat_app/Counselling/HomeScreen.dart';
+import 'package:chat_app/Counselling/ShowNotesOfSpecificUser.dart';
 import 'package:chat_app/Screens/Exercise/exercisepage.dart';
-import 'package:chat_app/Screens/Profile/profilepage.dart';
+import 'package:chat_app/ProfileManagement/profilepage.dart';
 import 'package:chat_app/Screens/Setup%20Exercise/setupExercise.dart';
 import 'package:chat_app/Screens/Therapist/therapistspage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -91,48 +91,49 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           children: [
             Container(
               decoration: BoxDecoration(
-                // color: Color(0xFF337B6E),
                 borderRadius: BorderRadius.circular(10.0),
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Colors.grey.withOpacity(0.3),
-                //     spreadRadius: 5.0,
-                //     blurRadius: 7.0,
-                //     offset: Offset(0, 3),
-                //   ),
-                // ],
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Username: $_username2',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w200,
-                            letterSpacing: 0.30,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Text(
+                              'Username: $_username2',
+                              // textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w200,
+                                letterSpacing: 0.30,
+                              ),
+                            ),
+                            alignment: Alignment.centerLeft,
                           ),
-                        ),
-                        Text(
-                          'Account Type: $_account2',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w200,
-                            letterSpacing: 0.30,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Account Type: $_account2',
+                              // textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w200,
+                                letterSpacing: 0.30,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Spacer(
-                    flex: 1,
-                  ),
+                  // Spacer(
+                  //   flex: 1,
+                  // ),
                   Container(
                     width: 50,
                     height: 50,

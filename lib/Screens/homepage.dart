@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chat_app/Authenticate/Methods.dart';
+import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutpage.dart';
-import 'package:chat_app/Screens/Counsultation/HomeScreen.dart';
+import 'package:chat_app/Counselling/HomeScreen.dart';
 import 'package:chat_app/Screens/Exercise/exercisepage.dart';
-import 'package:chat_app/Screens/Profile/profilepage.dart';
+import 'package:chat_app/ProfileManagement/profilepage.dart';
 import 'package:chat_app/Screens/Therapist/therapistspage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -54,9 +54,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void addNumOfLogins() async {
+    await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+      "numOfLogins": FieldValue.increment(1)
+    });
+  }
   @override
   void initState() {
 
+    addNumOfLogins();
     // _username2 = widget._username;
     // _account2 = widget._account;
     // _profileURl2 = widget._profileURL;
@@ -89,34 +95,44 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Username: $_username2',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w200,
-                            letterSpacing: 0.30,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Text(
+                              'Username: $_username2',
+                              // textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w200,
+                                letterSpacing: 0.30,
+                              ),
+                            ),
+                            alignment: Alignment.centerLeft,
                           ),
-                        ),
-                        Text(
-                          'Account Type: $_account2',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w200,
-                            letterSpacing: 0.30,
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Account Type: $_account2',
+                              // textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w200,
+                                letterSpacing: 0.30,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Spacer(
-                    flex: 1,
-                  ),
+                  // Spacer(
+                  //   flex: 1,
+                  // ),
                   Container(
                     width: 50,
                     height: 50,

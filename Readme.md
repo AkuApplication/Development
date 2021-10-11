@@ -41,3 +41,8 @@
    how the user call the other user since atm we still need the other user to input the roomId manually.
 4. Will implement an automatic call feature where all the receiver have to do is just click one button to be connected to the caller.
 5. Also, some of Hafizzan's Manage Notes function are implemented here but just different method from Hafizzan. It works exactly the same though.
+
+12th October 2021
+1. Debugged fully the first function, just need to remove the dead codes to make it look nice and clean.
+2. Working on the second function still.
+3. Added Dzul's mood tracker folder into the project, havent yet debugged it.
