@@ -117,24 +117,23 @@ class Question {
   //   return quest;
   // }
 
-  void uploadQuestionToFirebase() async {
-    getJustQuestions();
-    await _firestore.collection('users').doc(_auth.currentUser.uid).update({
-      "records": [
-        {
-          "questions": justQuestions
-        }
-      ]
+  void uploadToFirebase(Map<String, dynamic> record, String condition) async {
+    await _firestore.collection('records').doc(_auth.currentUser.uid).collection("record").add({
+      "record": record,
+      "time": FieldValue.serverTimestamp()
     });
+    // await _firestore.collection("users").doc(_auth.currentUser.uid).update({
+    //   "condition":
+    // });
   }
-  List<String> justQuestions = [];
+  // List<String> justQuestions = [];
 
-  void getJustQuestions() {
-    justQuestions = [];
-    for(int i = 0; i < 10; i++){
-      justQuestions.add(allQuestion[i].question);
-    }
-  }
+  // void getJustQuestions() {
+  //   List<String> justQuestions = [];
+  //   for(int i = 0; i < 10; i++){
+  //     justQuestions.add(allQuestion[i].question);
+  //   }
+  // }
 
 }
 
