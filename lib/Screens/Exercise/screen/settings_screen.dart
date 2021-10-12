@@ -1,6 +1,6 @@
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import '../models.dart';
 
@@ -49,7 +49,7 @@ class AudioSelectListItem extends StatelessWidget {
       trailing: IconButton(
         icon: Icon(Icons.play_circle_outline),
         onPressed: () {
-          // player.play(value, mode: PlayerMode.LOW_LATENCY);
+          player.play(value, mode: PlayerMode.LOW_LATENCY);
         },
       ),
       title: Text(title, style: Theme.of(context).textTheme.subtitle2),
@@ -108,15 +108,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     content: SingleChildScrollView(
-                      // child: BlockPicker(
-                      //   availableColors: Colors.primaries,
-                      //   pickerColor: widget.settings.primarySwatch,
-                      //   onColorChanged: (Color color) {
-                      //     widget.settings.primarySwatch =
-                      //         color as MaterialColor;
-                      //     widget.onSettingsChanged();
-                      //   },
-                      // ),
+                      child: BlockPicker(
+                        availableColors: Colors.primaries,
+                        pickerColor: widget.settings.primarySwatch,
+                        onColorChanged: (Color color) {
+                          widget.settings.primarySwatch =
+                              color as MaterialColor;
+                          widget.onSettingsChanged();
+                        },
+                      ),
                     ),
                   );
                 },
