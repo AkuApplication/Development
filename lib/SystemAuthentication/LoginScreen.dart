@@ -1,4 +1,3 @@
-import 'package:chat_app/MentalHealthTest/components/Box.dart';
 import 'package:chat_app/SystemAuthentication/CreateAccount.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/SystemAuthentication/SendEmailForResetPassword.dart';
@@ -16,61 +15,40 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //Getting related Firebase instances to be able to interact with Firebase
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  //Created a FormKey to interact with the Form
   final _formKey = GlobalKey<FormState>();
 
+  //Initializing variables
   bool _obscureText = true;
-
   String _email;
   String _password;
-  String _message = "You are not yet verified." +
-      "Please click on the latest link provided in your email to complete registration.";
-
+  String _message = "You are not yet verified. Please click on the latest link provided in your email to complete registration.";
   String _account;
   int _numOfLogins;
 
+  //Getting data from Firestore
   void checkFirestore() async {
-    try {
-      await _firestore
-          .collection("users")
-          .doc(_auth.currentUser.uid)
-          .get()
-          .then((value) {
-        _account = value.data()["accountType"];
-        _numOfLogins = value.data()["numOfLogins"];
+    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+      _account = value.data()["accountType"];
+      _numOfLogins = value.data()["numOfLogins"];
 
-        if (_account == "Patient") {
-          print("go to patient 2");
-          if(_numOfLogins < 1){
-            print("going to first time 2");
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => FirstTime(),));
-          } else {
-            print("going to patient homepage 2");
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => HomePage(),));
-          }
-
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => HomePage(),
-          //     ));
-        } else if (_account == "Doctor") {
-          print("go to doctor 2");
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DoctorHomePage(),
-              ));
+      if (_account == "Patient") {
+        if(_numOfLogins < 1){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
+        } else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(),));
         }
-      });
-    } catch (e) {
-      print(e.toString());
-    }
+      } else if (_account == "Doctor") {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+      }
+    });
   }
 
+  //Method for Showing or Hiding Password
   void _togglePass() {
     setState(() {
       _obscureText = !_obscureText;
@@ -140,8 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           cursorColor: Colors.teal.shade300,
                           decoration: decoText.copyWith(
                               hintText: "Email",
-                              prefixIcon:
-                                  Icon(Icons.email, color: Colors.grey))),
+                              prefixIcon: Icon(Icons.email, color: Colors.grey)
+                          )
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0, bottom: 10),
@@ -169,12 +148,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 prefixIcon: Icon(
                                   Icons.password,
                                   color: Colors.grey,
-                                ))),
+                                )
+                            )
+                        ),
                       ),
                     ),
                     ListTile(
-                      title: _obscureText ? Text("Show Password")
-                          : Text("Hide Password"),
+                      title: _obscureText ? Text("Show Password") : Text("Hide Password"),
                       leading: Checkbox(
                         activeColor: Colors.teal.shade300,
                         value: !_obscureText,
@@ -192,8 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => CreateAccount()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccount(),));
                       },
                       child: Text(
                         "Don’t have an Account ? ",
@@ -209,8 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => SendEmailResetPassword()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SendEmailResetPassword(),));
                       },
                       child: Text(
                         "Forgot your password ? ",
@@ -231,6 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  //A custom widget
   Widget customButton(Size size) {
     return GestureDetector(
       onTap: () async {
@@ -254,17 +233,19 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         },);
 
+        //To validate the form
         if (_formKey.currentState.validate()) {
           await Methods().logIn(_email, _password).then((user) {
             if (user == null) {
-              Navigator.of(context).pop();
+              Navigator.pop(context);
               showDialog(context: context, barrierDismissible: false, builder: (context) {
                 return WillPopScope(
                   onWillPop: () {},
                   child: AlertDialog(
                     content: Text(
                       "Could not sign in with those credentials",
-                      textAlign: TextAlign.center,),
+                      textAlign: TextAlign.center,
+                    ),
                     actions: [
                       Center(
                         child: TextButton(
@@ -280,14 +261,15 @@ class _LoginScreenState extends State<LoginScreen> {
               },);
             } else {
               if (!(user.emailVerified)) {
-                Navigator.of(context).pop();
+                Navigator.pop(context);
                 showDialog(context: context, barrierDismissible: false, builder: (context) {
                   return WillPopScope(
                     onWillPop: () {},
                     child: AlertDialog(
                       content: Text(
                         _message,
-                        textAlign: TextAlign.center,),
+                        textAlign: TextAlign.center,
+                      ),
                       actions: [
                         Center(
                           child: TextButton(
@@ -302,13 +284,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 },);
               } else {
+                Navigator.pop(context);
                 checkFirestore();
               }
             }
           });
         } else {
-          // print("Please fill form correctly");
-          Navigator.of(context).pop();
+          Navigator.pop(context);
           showDialog(context: context, barrierDismissible: false, builder: (context) {
             return WillPopScope(
               onWillPop: () {},
@@ -324,7 +306,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ],
-
               ),
             );
           },);

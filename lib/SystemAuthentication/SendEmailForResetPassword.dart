@@ -9,15 +9,17 @@ class SendEmailResetPassword extends StatefulWidget {
 }
 
 class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
+  //Getting related Firebase instances to be able to interact with Firebase
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  //Initializing variables
   String account;
   String _email;
   String _firestoreEmail;
-  String _message = "An email has just been sent to you." +
-      " Click the link provided in your email to reset your password";
+  String _message = "An email has just been sent to you. Click the latest link provided in your email to reset your password";
 
+  //Created a FormKey to interact with the Form
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -87,20 +89,20 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
                             } else {
                               return "Only gmail allowed";
                             }
-                            },
+                          },
                           onChanged: (value) {
                             setState(() {
                               _email = value;
                             });
-                            },
+                          },
                           decoration: decoText.copyWith(
                               hintText: "Email",
                               prefixIcon: Icon(
                                   Icons.account_box,
-                                  color: Colors.grey)
+                                  color: Colors.grey
+                              )
                           )
                       ),
-                      // child: field(size, "email", Icons.account_box, _email),
                     ),
                     SizedBox(
                       height: size.height / 5,
@@ -142,6 +144,7 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
           );
         },);
 
+        //Validate the form
         if (_formKey.currentState.validate() ){
           await _firestore.collection("users").where("email", isEqualTo: _email).get().then((value) {
             value.docs.forEach((element) {
@@ -149,47 +152,47 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
                 _firestoreEmail = element.data()["email"];
               });
             });
-            // print(_firestoreEmail);
           });
-          if(_firestoreEmail == _email){
-            try{
-              _formKey.currentState.save();
-              await _auth.sendPasswordResetEmail(email: _email);
-              print("Sent Password Reset Email");
 
-              Navigator.of(context).pop();
-              showDialog(context: context, barrierDismissible: false, builder: (context) {
-                return WillPopScope(
-                  onWillPop: () {},
-                  child: AlertDialog(
-                    content: Text(
-                      _message,
-                      textAlign: TextAlign.center,),
-                    actions: [
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Close"),
-                        ),
-                      ),
-                    ],
+          //Find out if the email being inputted exists in the database
+          if(_firestoreEmail == _email){
+            _formKey.currentState.save();
+
+            //SendPasswordResetEmail to the inputted email
+            await _auth.sendPasswordResetEmail(email: _email);
+
+            Navigator.pop(context);
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () {},
+                child: AlertDialog(
+                  content: Text(
+                    _message,
+                    textAlign: TextAlign.center,
                   ),
-                );
-              },);
-            }catch(e){
-              print(e);
-            }
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
           } else {
-            Navigator.of(context).pop();
+            Navigator.pop(context);
             showDialog(context: context, barrierDismissible: false, builder: (context) {
               return WillPopScope(
                 onWillPop: () {},
                 child: AlertDialog(
                   content: Text(
                     "Email doesn't exist in database",
-                    textAlign: TextAlign.center,),
+                    textAlign: TextAlign.center,
+                  ),
                   actions: [
                     Center(
                       child: TextButton(
@@ -204,10 +207,8 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
               );
             },);
           }
-          // print(_email);
-
         } else {
-          Navigator.of(context).pop();
+          Navigator.pop(context);
           showDialog(context: context, barrierDismissible: false, builder: (context) {
             return WillPopScope(
               onWillPop: () {},
@@ -223,7 +224,6 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
                     ),
                   ),
                 ],
-
               ),
             );
           },);
@@ -248,5 +248,4 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
       ),
     );
   }
-
 }

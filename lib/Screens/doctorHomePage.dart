@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutpage.dart';
 import 'package:chat_app/Counselling/HomeScreen.dart';
-import 'package:chat_app/Counselling/ShowNotesOfSpecificUser.dart';
-import 'package:chat_app/Screens/Exercise/exercisepage.dart';
 import 'package:chat_app/ProfileManagement/profilepage.dart';
 import 'package:chat_app/Screens/Setup%20Exercise/setupExercise.dart';
 import 'package:chat_app/Screens/Therapist/therapistspage.dart';
@@ -16,21 +14,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class DoctorHomePage extends StatefulWidget {
 
-  // String _username;
-  // String _account;
-  // String _profileURL;
-  //
-  // DoctorHomePage(this._username, this._account, this._profileURL);
-
   @override
   _DoctorHomePageState createState() => _DoctorHomePageState();
 }
 
 class _DoctorHomePageState extends State<DoctorHomePage> {
-  final _wordController = TextEditingController();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  final _wordController = TextEditingController();
   String _username2;
   String _account2;
   String _profileURL2;

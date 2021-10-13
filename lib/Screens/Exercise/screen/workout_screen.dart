@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -37,6 +38,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   @override
   initState() {
     super.initState();
+
     _workout = Workout(widget.settings, widget.tabata, _onWorkoutChanged);
     _start();
   }

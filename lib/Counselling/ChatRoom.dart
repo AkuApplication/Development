@@ -83,7 +83,6 @@ class _ChatRoomState extends State<ChatRoom> {
                 SizedBox(width: 2,),
                 CircleAvatar(
                   backgroundImage: NetworkImage(widget.chosenUserData.get("profileURL")),
-                  maxRadius: 20,
                 ),
                 SizedBox(width: 12,),
                 Expanded(

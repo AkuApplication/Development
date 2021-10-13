@@ -46,3 +46,8 @@
 1. Debugged fully the first function, just need to remove the dead codes to make it look nice and clean.
 2. Working on the second function still.
 3. Added Dzul's mood tracker folder into the project, havent yet debugged it.
+
+13th October 2021
+1. Debugged fully the second function and remove the dead codes from the first function and second fucntion.
+2. Working on the Homepage and DoctorHomepage at the moment
+3. This commit is mostly for giving the UI to Hafizzan for the promotional video.

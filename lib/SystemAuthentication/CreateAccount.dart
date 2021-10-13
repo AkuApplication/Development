@@ -1,8 +1,5 @@
-import 'package:chat_app/SystemAuthentication/LoginScreen.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/assets/InputDecoration/Decoration.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -11,27 +8,25 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
+  //Initializing variables
   List<String> _genderList = ["Male", "Female"];
-
   bool _obscureText = true;
-
   String _name;
   String _gender;
   String _email;
   String _password;
-  String _message = "An email has just been sent to you. Click the link provided in your email to " +
-          "complete registration";
+  String _message = "An email has just been sent to you. Click the link provided in your email to complete registration";
 
+  //Created a FormKey to interact with the Form
   final _formKey = GlobalKey<FormState>();
 
+  //Created a default Gender Icon to be able to change its state later on accordingly
   Icon icon = Icon(
     Icons.transgender,
     color: Colors.grey,
   );
 
+  //Method for Showing and Hiding Password
   void _togglePass() {
     setState(() {
       _obscureText = !_obscureText;
@@ -40,6 +35,7 @@ class _CreateAccountState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
+    //Getting the size according to the device being used to ryn the app
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -114,7 +110,9 @@ class _CreateAccountState extends State<CreateAccount> {
                           decoration: decoText.copyWith(
                               hintText: "Name",
                               prefixIcon:
-                              Icon(Icons.person, color: Colors.grey))),
+                              Icon(Icons.person, color: Colors.grey)
+                          )
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 18.0),
@@ -132,9 +130,6 @@ class _CreateAccountState extends State<CreateAccount> {
                             return DropdownMenuItem(
                               value: e,
                               child: Text(e),
-                              // child: TextFormField(
-                              //   controller: _gender,
-                              // ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -184,8 +179,12 @@ class _CreateAccountState extends State<CreateAccount> {
                           },
                           decoration: decoText.copyWith(
                               hintText: "Email",
-                              prefixIcon:
-                                  Icon(Icons.email, color: Colors.grey))),
+                              prefixIcon: Icon(
+                                  Icons.email,
+                                  color: Colors.grey
+                              )
+                          )
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 18.0),
@@ -212,7 +211,9 @@ class _CreateAccountState extends State<CreateAccount> {
                                 prefixIcon: Icon(
                                   Icons.password,
                                   color: Colors.grey,
-                                ))),
+                                )
+                            )
+                        ),
                       ),
                     ),
                     Container(
@@ -237,11 +238,12 @@ class _CreateAccountState extends State<CreateAccount> {
                               prefixIcon: Icon(
                                 Icons.password,
                                 color: Colors.grey,
-                              ))),
+                              )
+                          )
+                      ),
                     ),
                     ListTile(
-                      title: _obscureText ? Text("Show Password")
-                          : Text("Hide Password"),
+                      title: _obscureText ? Text("Show Password") : Text("Hide Password"),
                       leading: Checkbox(
                         activeColor: Colors.teal.shade300,
                         value: !_obscureText,
@@ -259,12 +261,14 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
-                      child: Text("Already have an Account ?",
+                      child: Text(
+                          "Already have an Account ?",
                           style: TextStyle(
                             color: Colors.teal.shade400,
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                          )),
+                          )
+                      ),
                     ),
                   ],
                 ),
@@ -276,6 +280,7 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  //A custom Widget
   Widget customButton(Size size) {
     return GestureDetector(
       onTap: () {
@@ -299,40 +304,19 @@ class _CreateAccountState extends State<CreateAccount> {
           );
         },);
 
+        //To validate the form
         if (_formKey.currentState.validate()) {
-          Methods().createAccount(_email, _password, _name, _gender).then((user) {
+          Methods().createAccount(_email, _password, _name, _gender, context).then((user) {
             if (user != null) {
-              Navigator.of(context).pop();
+              Navigator.pop(context);
               showDialog(context: context, barrierDismissible: false, builder: (context) {
                 return WillPopScope(
                   onWillPop: () {},
                   child: AlertDialog(
                     content: Text(
                       _message,
-                      textAlign: TextAlign.center,),
-                    actions: [
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Close"),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },);
-              print("going to confimation email for creating account");
-            } else {
-              Navigator.of(context).pop();
-              showDialog(context: context, barrierDismissible: false, builder: (context) {
-                return WillPopScope(
-                  onWillPop: () {},
-                  child: AlertDialog(
-                    content: Text(
-                      "Failed to create an account",
-                      textAlign: TextAlign.center,),
+                      textAlign: TextAlign.center,
+                    ),
                     actions: [
                       Center(
                         child: TextButton(
@@ -349,12 +333,15 @@ class _CreateAccountState extends State<CreateAccount> {
             }
           });
         } else {
-          Navigator.of(context).pop();
+          Navigator.pop(context);
           showDialog(context: context, barrierDismissible: false, builder: (context) {
             return WillPopScope(
               onWillPop: () {},
               child: AlertDialog(
-                content: Text("Please fill the form correctly", textAlign: TextAlign.center,),
+                content: Text(
+                  "Please fill the form correctly",
+                  textAlign: TextAlign.center,
+                ),
                 actions: [
                   Center(
                     child: TextButton(
@@ -365,7 +352,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                   ),
                 ],
-
               ),
             );
           },);

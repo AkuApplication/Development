@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Custom widget
 class Box extends StatelessWidget {
   const Box({Key key, @required this.child}) : super(key: key);
 
