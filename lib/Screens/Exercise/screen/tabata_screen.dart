@@ -50,8 +50,8 @@ class _TabataScreenState extends State<TabataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tabata Timer'),
-        leading: Icon(Icons.timer),
+        backgroundColor: Colors.teal.shade300,
+        title: Text('Breathing Exercise'),
         actions: <Widget>[
           Builder(
             builder: (context) => IconButton(
@@ -90,48 +90,48 @@ class _TabataScreenState extends State<TabataScreen> {
       ),
       body: ListView(
         children: <Widget>[
-          ListTile(
-            title: Text('Sets'),
-            subtitle: Text('${_tabata.sets}'),
-            leading: Icon(Icons.fitness_center),
-            onTap: () {
-              int _value = _tabata.sets;
-              showDialog<int>(
-                context: context,
-                builder: (BuildContext context) {
-                  return StatefulBuilder(builder: (context, setState) {
-                    return AlertDialog(
-                      title: Text('Sets in the workout'),
-                      content: NumberPicker(
-                        value: _value,
-                        minValue: 1,
-                        maxValue: 10,
-                        onChanged: (value) {
-                          setState(() {
-                            _value = value;
-                          });
-                        },
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text('CANCEL'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(_value),
-                          child: Text('OK'),
-                        )
-                      ],
-                    );
-                  });
-                },
-              ).then((sets) {
-                if (sets == null) return;
-                _tabata.sets = sets;
-                _onTabataChanged();
-              });
-            },
-          ),
+          // ListTile(
+          //   title: Text('Sets'),
+          //   subtitle: Text('${_tabata.sets}'),
+          //   leading: Icon(Icons.fitness_center),
+          //   onTap: () {
+          //     int _value = _tabata.sets;
+          //     showDialog<int>(
+          //       context: context,
+          //       builder: (BuildContext context) {
+          //         return StatefulBuilder(builder: (context, setState) {
+          //           return AlertDialog(
+          //             title: Text('Sets in the workout'),
+          //             content: NumberPicker(
+          //               value: _value,
+          //               minValue: 1,
+          //               maxValue: 10,
+          //               onChanged: (value) {
+          //                 setState(() {
+          //                   _value = value;
+          //                 });
+          //               },
+          //             ),
+          //             actions: [
+          //               TextButton(
+          //                 onPressed: () => Navigator.of(context).pop(),
+          //                 child: Text('CANCEL'),
+          //               ),
+          //               TextButton(
+          //                 onPressed: () => Navigator.of(context).pop(_value),
+          //                 child: Text('OK'),
+          //               )
+          //             ],
+          //           );
+          //         });
+          //       },
+          //     ).then((sets) {
+          //       if (sets == null) return;
+          //       _tabata.sets = sets;
+          //       _onTabataChanged();
+          //     });
+          //   },
+          // ),
           ListTile(
             title: Text('Reps'),
             subtitle: Text('${_tabata.reps}'),
@@ -143,7 +143,7 @@ class _TabataScreenState extends State<TabataScreen> {
                 builder: (BuildContext context) {
                   return StatefulBuilder(builder: (context, setState) {
                     return AlertDialog(
-                      title: Text('Repetitions in each set'),
+                      title: Text('Repetition of Exercise'),
                       content: NumberPicker(
                         value: _value,
                         minValue: 1,
@@ -187,7 +187,7 @@ class _TabataScreenState extends State<TabataScreen> {
                 builder: (BuildContext context) {
                   return DurationPickerDialog(
                     initialDuration: _tabata.startDelay,
-                    title: Text('Countdown before starting workout'),
+                    title: Text('Countdown before starting exerciset'),
                   );
                 },
               ).then((startDelay) {
@@ -198,7 +198,7 @@ class _TabataScreenState extends State<TabataScreen> {
             },
           ),
           ListTile(
-            title: Text('Exercise Time'),
+            title: Text('Breath In'),
             subtitle: Text(formatTime(_tabata.exerciseTime)),
             leading: Icon(Icons.timer),
             onTap: () {
@@ -207,7 +207,7 @@ class _TabataScreenState extends State<TabataScreen> {
                 builder: (BuildContext context) {
                   return DurationPickerDialog(
                     initialDuration: _tabata.exerciseTime,
-                    title: Text('Excercise time per repetition'),
+                    title: Text('Inhale time'),
                   );
                 },
               ).then((exerciseTime) {
@@ -218,7 +218,7 @@ class _TabataScreenState extends State<TabataScreen> {
             },
           ),
           ListTile(
-            title: Text('Rest Time'),
+            title: Text('Breath Out'),
             subtitle: Text(formatTime(_tabata.restTime)),
             leading: Icon(Icons.timer),
             onTap: () {
@@ -227,7 +227,7 @@ class _TabataScreenState extends State<TabataScreen> {
                 builder: (BuildContext context) {
                   return DurationPickerDialog(
                     initialDuration: _tabata.restTime,
-                    title: Text('Rest time between repetitions'),
+                    title: Text('Exhale time'),
                   );
                 },
               ).then((restTime) {
@@ -237,26 +237,26 @@ class _TabataScreenState extends State<TabataScreen> {
               });
             },
           ),
-          ListTile(
-            title: Text('Break Time'),
-            subtitle: Text(formatTime(_tabata.breakTime)),
-            leading: Icon(Icons.timer),
-            onTap: () {
-              showDialog<Duration>(
-                context: context,
-                builder: (BuildContext context) {
-                  return DurationPickerDialog(
-                    initialDuration: _tabata.breakTime,
-                    title: Text('Break time between sets'),
-                  );
-                },
-              ).then((breakTime) {
-                if (breakTime == null) return;
-                _tabata.breakTime = breakTime;
-                _onTabataChanged();
-              });
-            },
-          ),
+          // ListTile(
+          //   title: Text('Break Time'),
+          //   subtitle: Text(formatTime(_tabata.breakTime)),
+          //   leading: Icon(Icons.timer),
+          //   onTap: () {
+          //     showDialog<Duration>(
+          //       context: context,
+          //       builder: (BuildContext context) {
+          //         return DurationPickerDialog(
+          //           initialDuration: _tabata.breakTime,
+          //           title: Text('Break time between sets'),
+          //         );
+          //       },
+          //     ).then((breakTime) {
+          //       if (breakTime == null) return;
+          //       _tabata.breakTime = breakTime;
+          //       _onTabataChanged();
+          //     });
+          //   },
+          // ),
           Divider(height: 10),
           ListTile(
             title: Text(
