@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:chat_app/Counselling/HomeScreen.dart';
+import 'package:chat_app/Counselling/Chat/HomeScreen.dart';
 import 'package:chat_app/Counselling/VideoCall/signalingForRTC.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

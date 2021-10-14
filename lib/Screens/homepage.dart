@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutpage.dart';
-import 'package:chat_app/Counselling/HomeScreen.dart';
+import 'package:chat_app/Counselling/Chat/HomeScreen.dart';
 import 'package:chat_app/Screens/Exercise/exercisepage.dart';
 import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
 import 'package:chat_app/Screens/Therapist/therapistspage.dart';

@@ -6,7 +6,7 @@ import 'package:chat_app/Screens/Patients/patientspage.dart';
 import 'package:chat_app/Screens/SetupExercise/setupExercise.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutpage.dart';
-import 'package:chat_app/Counselling/HomeScreen.dart';
+import 'package:chat_app/Counselling/Chat/HomeScreen.dart';
 import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
