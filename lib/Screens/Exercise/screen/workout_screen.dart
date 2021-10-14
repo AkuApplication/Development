@@ -8,9 +8,9 @@ import '../utils.dart';
 String stepName(WorkoutState step) {
   switch (step) {
     case WorkoutState.exercising:
-      return 'Exercise';
+      return 'Breath In';
     case WorkoutState.resting:
-      return 'Rest';
+      return 'Breath Out';
     case WorkoutState.breaking:
       return 'Break';
     case WorkoutState.finished:
@@ -94,18 +94,18 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(stepName(_workout.step), style: TextStyle(fontSize: 60.0))
             ]),
-            Divider(height: 32, color: lightTextColor),
+            Divider(height: 32, color: Colors.white),
             Container(
                 width: MediaQuery.of(context).size.width,
                 child: FittedBox(child: Text(formatTime(_workout.timeLeft)))),
-            Divider(height: 32, color: lightTextColor),
+            Divider(height: 32, color: Colors.white),
             Table(columnWidths: {
-              0: FlexColumnWidth(0.5),
-              1: FlexColumnWidth(0.5),
-              2: FlexColumnWidth(1.0)
+              // 0: FlexColumnWidth(0.5),
+              0: FlexColumnWidth(1.0),
+              1: FlexColumnWidth(1.0)
             }, children: [
               TableRow(children: [
-                TableCell(child: Text('Set', style: TextStyle(fontSize: 30.0))),
+                // TableCell(child: Text('Set', style: TextStyle(fontSize: 30.0))),
                 TableCell(child: Text('Rep', style: TextStyle(fontSize: 30.0))),
                 TableCell(
                     child: Text('Total Time',
@@ -113,10 +113,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                         style: TextStyle(fontSize: 30.0)))
               ]),
               TableRow(children: [
-                TableCell(
-                  child:
-                      Text('${_workout.set}', style: TextStyle(fontSize: 60.0)),
-                ),
+                // TableCell(
+                //   child:
+                //       Text('${_workout.set}', style: TextStyle(fontSize: 60.0)),
+                // ),
                 TableCell(
                   child:
                       Text('${_workout.rep}', style: TextStyle(fontSize: 60.0)),

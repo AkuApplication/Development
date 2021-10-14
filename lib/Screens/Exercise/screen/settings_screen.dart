@@ -61,6 +61,9 @@ class AudioSelectListItem extends StatelessWidget {
           DropdownMenuItem(child: Text('High Beep'), value: 'boop.mp3'),
           DropdownMenuItem(
               child: Text('Ding Ding Ding!'), value: 'dingdingding.mp3'),
+          DropdownMenuItem(child: Text('Breath In!'), value: 'breathin.mp3'),
+          DropdownMenuItem(child: Text('Breath out!'), value: 'breathout.mp3'),
+          DropdownMenuItem(child: Text('Finished!'), value: 'finsished.mp3'),
         ],
         isExpanded: true,
         onChanged: onChanged,
@@ -167,14 +170,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             title: 'Start next set',
             onChanged: (String value) {
               widget.settings.startSet = value;
-              widget.onSettingsChanged();
-            },
-          ),
-          AudioSelectListItem(
-            value: widget.settings.endWorkout,
-            title: 'End workout (plays twice)',
-            onChanged: (String value) {
-              widget.settings.endWorkout = value;
               widget.onSettingsChanged();
             },
           ),

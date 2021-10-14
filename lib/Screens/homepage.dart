@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatefulWidget {
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -31,7 +30,11 @@ class _HomePageState extends State<HomePage> {
 
   //Getting data from Firestore and inserting it to a new variable to be displayed at the screen
   void checkFirestore() async {
-    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+    await _firestore
+        .collection("users")
+        .doc(_auth.currentUser.uid)
+        .get()
+        .then((value) {
       setState(() {
         _username2 = value.data()["name"];
         _account2 = value.data()["accountType"];
@@ -53,9 +56,10 @@ class _HomePageState extends State<HomePage> {
 
   //Updating the numOfLogins of the user everytime the user reached this page
   void addNumOfLogins() async {
-    await _firestore.collection("users").doc(_auth.currentUser.uid).update({
-      "numOfLogins": FieldValue.increment(1)
-    });
+    await _firestore
+        .collection("users")
+        .doc(_auth.currentUser.uid)
+        .update({"numOfLogins": FieldValue.increment(1)});
   }
 
   //Initial state of the page
@@ -84,9 +88,10 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            height: size.height  / 0.8,
+            height: size.height / 0.8,
             width: size.width,
-            margin: EdgeInsets.symmetric(vertical: size.height / 50, horizontal: size.width / 30),
+            margin: EdgeInsets.symmetric(
+                vertical: size.height / 50, horizontal: size.width / 30),
             child: Column(
               children: [
                 Container(
@@ -135,17 +140,21 @@ class _HomePageState extends State<HomePage> {
                           width: size.width / 8,
                           height: size.height / 8,
                           child: GestureDetector(
-                            child: (_profileURL2 == null) ?
-                            Icon(
-                              Icons.account_circle,
-                              size: 45.0,
-                              color: Colors.black12,
-                            ) :
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(_profileURL2),
-                            ),
+                            child: (_profileURL2 == null)
+                                ? Icon(
+                                    Icons.account_circle,
+                                    size: 45.0,
+                                    color: Colors.black12,
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: NetworkImage(_profileURL2),
+                                  ),
                             onTap: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Profile(),
+                                  ));
                             },
                           ),
                         )
@@ -162,7 +171,8 @@ class _HomePageState extends State<HomePage> {
                     child: Align(
                       alignment: Alignment.center,
                       child: TextField(
-                        decoration: InputDecoration(isDense: true, border: InputBorder.none),
+                        decoration: InputDecoration(
+                            isDense: true, border: InputBorder.none),
                         maxLines: 2,
                         controller: _wordController,
                         enabled: false,
@@ -191,7 +201,11 @@ class _HomePageState extends State<HomePage> {
                       InkWell(
                         // Tap to move to Counsultation/Homescreen
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -261,7 +275,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Therapists(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Therapists(),
+                              ));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -293,13 +311,17 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => About(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => About(),
+                              ));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
-                          color: Colors.green,
+                          color: Colors.green.shade100,
                           elevation: 10.0,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -317,7 +339,7 @@ class _HomePageState extends State<HomePage> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                 ),
-                                textAlign: TextAlign.justify,
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
@@ -325,13 +347,17 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StartPage(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StartPage(),
+                              ));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
-                          color: Colors.lightBlueAccent,
+                          color: Colors.lightBlue.shade200,
                           elevation: 10.0,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -356,7 +382,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => About(),));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => About(),
+                              ));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
