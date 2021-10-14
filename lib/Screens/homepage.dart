@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutpage.dart';
 import 'package:chat_app/Counselling/HomeScreen.dart';
 import 'package:chat_app/Screens/Exercise/exercisepage.dart';
-import 'package:chat_app/ProfileManagement/profilepage.dart';
+import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
 import 'package:chat_app/Screens/Therapist/therapistspage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -92,61 +93,64 @@ class _HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Username: $_username2',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w200,
-                                    letterSpacing: 0.30,
+                  child: Container(
+                    margin: EdgeInsets.only(right: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Username: $_username2',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w200,
+                                      letterSpacing: 0.30,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Account Type: $_account2',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w200,
-                                    letterSpacing: 0.30,
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Account Type: $_account2',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w200,
+                                      letterSpacing: 0.30,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: size.width / 8,
-                        height: size.height / 8,
-                        child: GestureDetector(
-                          child: (_profileURL2 == null) ?
-                          Icon(
-                            Icons.account_circle,
-                            size: 45.0,
-                            color: Colors.black12,
-                          ) :
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(_profileURL2),
+                        Container(
+                          width: size.width / 8,
+                          height: size.height / 8,
+                          child: GestureDetector(
+                            child: (_profileURL2 == null) ?
+                            Icon(
+                              Icons.account_circle,
+                              size: 45.0,
+                              color: Colors.black12,
+                            ) :
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(_profileURL2),
+                            ),
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
+                            },
                           ),
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Profile(),));
-                          },
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -321,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => About(),));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => StartPage(),));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(

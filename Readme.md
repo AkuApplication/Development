@@ -51,3 +51,8 @@
 1. Debugged fully the second function and remove the dead codes from the first function and second fucntion.
 2. Working on the Homepage and DoctorHomepage at the moment
 3. This commit is mostly for giving the UI to Hafizzan for the promotional video.
+
+15th October 2021
+1. Debugged fully the third function and remove the dead codes from the third function.
+2. Also now, we are able to see the records of the Mental Health Test in the Profile Page.
+3. Working on the 4th Function now still.

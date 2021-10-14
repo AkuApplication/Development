@@ -1,10 +1,71 @@
-import 'package:flutter/cupertino.dart';
+import 'package:chat_app/MoodTracker/page_1.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class page_three extends StatelessWidget {
+class page_three extends StatefulWidget {
+
+  @override
+  State<page_three> createState() => _page_threeState();
+}
+
+class _page_threeState extends State<page_three> {
+  // The data fetched will be put inside these new variables
+  int a = 0;
+  int b = 0;
+  int c = 0;
+  int d = 0;
+  String i = "";
+  String j = "";
+  String k = "";
+  String l = "";
+
+  // Instances // 3 different instances cuz I have 3 different documents
+  final userRef1 = FirebaseFirestore.instance.collection('score');
+  final userRef2 = FirebaseFirestore.instance.collection('score');
+  final userRef3 = FirebaseFirestore.instance.collection('score');
+
+  @override
+  void initState() {
+    fetchData();
+    super.initState();
+  }
+
+  fetchData() async {
+    await userRef1.doc('Document 1').get().then((value) => setState(() {
+          a = value.data()['Mark1'];
+        }));
+    await userRef2.doc('Document 2').get().then((value) => setState(() {
+          b = value.data()['Mark2'];
+          c = value.data()['Mark3'];
+          d = value.data()['Mark4'];
+        }));
+    await userRef3.doc('Document 3').get().then((value) => setState(() {
+          i = value.data()['Comment1'];
+          j = value.data()['Comment2'];
+          k = value.data()['Comment3'];
+          l = value.data()['Comment4'];
+        }));
+  }
 
   @override
   Widget build(BuildContext context) {
+    //Calculation, Comment & Condition logic
+    int score = a + b + c + d;
+    String comment = "";
+
+    if (score >= 48 && score <= 66) {
+      comment = l; // For best condition
+    }
+    if ((score >= 41 && score <= 47) || (score >= 21 && score <= 27)) {
+      comment = j; // For in-between condition; improving or regressing
+    }
+    if (score >= 28 && score <= 40) {
+      comment = k; // For average condition
+    }
+    if (score >= 8 && score <= 20) {
+      comment = i; //For bad condition
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
@@ -32,12 +93,12 @@ class page_three extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 8.0,
+              height: 15.0,
             ),
             SizedBox(
               width: 280,
               child: Text(
-                'What time would you like to be reminded to check in on your day everyday?',
+                'Here are your feedbacks. Please be mindful that the following feedbacks only served as a guide, not actual diagnosis.',
                 style: TextStyle(
                   fontSize: 14.0,
                   color: Colors.blueGrey,
@@ -48,7 +109,7 @@ class page_three extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 20.0,
+              height: 15.0,
             ),
             SizedBox(
               width: double.infinity,
@@ -57,17 +118,43 @@ class page_three extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
-                child: Text('This here will display time.'),
+                child: Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Score: ' + score.toString(),
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        'Feedback: ' + comment.toString(),
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             SizedBox(
-              height: 50.0,
+              height: 40.0,
             ),
             ElevatedButton(
               onPressed: () {
-                print('This will submit the logic');
+                // This will let patient to take the test again
+                Navigator.push(context, MaterialPageRoute(builder: (context) => page_one(),));
               },
-              child: Text('Submit'),
+              child: Text('Try Again'),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(350, 10),
                 primary: Colors.teal,

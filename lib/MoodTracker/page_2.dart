@@ -1,3 +1,5 @@
+import 'package:chat_app/MoodTracker/page_3.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class page_two extends StatefulWidget {
@@ -14,6 +16,11 @@ class _page_twoState extends State<page_two> {
   String info2 = '';
   var _value3 = 0.0;
   String info3 = '';
+
+  // This is used to get data
+  int patient_ans1;
+  int patient_ans2;
+  int patient_ans3;
 
   @override
   Widget build(BuildContext context) {
@@ -81,33 +88,43 @@ class _page_twoState extends State<page_two> {
                           _value2 = newValue;
                           if (_value2 == 0.0) {
                             info2 = 'I\'d rather not answer';
+                            patient_ans1 = 2;
                           }
                           if (_value2 == 1.0) {
                             info2 = 'Never';
+                            patient_ans1 = 4;
                           }
                           if (_value2 == 2.0) {
                             info2 = 'Rarely';
+                            patient_ans1 = 6;
                           }
                           if (_value2 == 3.0) {
                             info2 = 'Seldom';
+                            patient_ans1 = 8;
                           }
                           if (_value2 == 4.0) {
                             info2 = 'Occasionally';
+                            patient_ans1 = 10;
                           }
                           if (_value2 == 5.0) {
                             info2 = 'Sometimes';
+                            patient_ans1 = 12;
                           }
                           if (_value2 == 6.0) {
                             info2 = 'Frequently';
+                            patient_ans1 = 14;
                           }
                           if (_value2 == 7.0) {
                             info2 = 'Normally';
+                            patient_ans1 = 16;
                           }
                           if (_value2 == 8.0) {
                             info2 = 'Usually';
+                            patient_ans1 = 18;
                           }
                           if (_value2 == 9.0) {
                             info2 = 'Always';
+                            patient_ans1 = 20;
                           }
                         });
                       },
@@ -152,24 +169,31 @@ class _page_twoState extends State<page_two> {
                           _value = newValue;
                           if (_value == 0.0) {
                             info = 'I\'d rather not answer';
+                            patient_ans2 = 2;
                           }
                           if (_value == 1.0) {
                             info = 'Worst';
+                            patient_ans2 = 4;
                           }
                           if (_value == 2.0) {
                             info = 'Worse';
+                            patient_ans2 = 6;
                           }
                           if (_value == 3.0) {
                             info = 'Bad';
+                            patient_ans2 = 8;
                           }
                           if (_value == 4.0) {
                             info = 'Good';
+                            patient_ans2 = 10;
                           }
                           if (_value == 5.0) {
                             info = 'Better';
+                            patient_ans2 = 12;
                           }
                           if (_value == 6.0) {
                             info = 'Best';
+                            patient_ans2 = 14;
                           }
                         });
                       },
@@ -214,33 +238,43 @@ class _page_twoState extends State<page_two> {
                           _value3 = newValue;
                           if (_value3 == 0.0) {
                             info3 = 'I\'d rather not answer';
+                            patient_ans3 = 2;
                           }
                           if (_value3 == 1.0) {
                             info3 = 'Never';
+                            patient_ans3 = 4;
                           }
                           if (_value3 == 2.0) {
                             info3 = 'Rarely';
+                            patient_ans3 = 6;
                           }
                           if (_value3 == 3.0) {
                             info3 = 'Seldom';
+                            patient_ans3 = 8;
                           }
                           if (_value3 == 4.0) {
                             info3 = 'Occasionally';
+                            patient_ans3 = 10;
                           }
                           if (_value3 == 5.0) {
                             info3 = 'Sometimes';
+                            patient_ans3 = 12;
                           }
                           if (_value3 == 6.0) {
                             info3 = 'Frequently';
+                            patient_ans3 = 14;
                           }
                           if (_value3 == 7.0) {
                             info3 = 'Normally';
+                            patient_ans3 = 16;
                           }
                           if (_value3 == 8.0) {
                             info3 = 'Usually';
+                            patient_ans3 = 18;
                           }
                           if (_value3 == 9.0) {
                             info3 = 'Always';
+                            patient_ans3 = 20;
                           }
                         });
                       },
@@ -254,7 +288,15 @@ class _page_twoState extends State<page_two> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/page3');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => page_three(),)); // Function 1
+                Map<String, dynamic> data = {
+                  'Mark2': patient_ans1,
+                  'Mark3': patient_ans2,
+                  'Mark4': patient_ans3,
+                }; //Function 2
+                FirebaseFirestore.instance
+                    .collection('score').doc('Document 2')
+                    .set(data); //Send data to database
               },
               child: Text('Proceed'),
               style: ElevatedButton.styleFrom(
