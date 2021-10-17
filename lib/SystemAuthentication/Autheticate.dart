@@ -1,7 +1,7 @@
 import 'package:chat_app/SystemAuthentication/LoginScreen.dart';
 import 'package:chat_app/MentalHealthTest/Screen/first_time.dart';
-import 'package:chat_app/Screens/doctorHomePage.dart';
-import 'package:chat_app/Screens/homepage.dart';
+import 'package:chat_app/Screens/counselorHomePage.dart';
+import 'package:chat_app/Screens/patientHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,15 +24,15 @@ class _AuthenticateState extends State<Authenticate> {
   void checkFirestore() async {
     await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
       _account = value.data()["accountType"];
-      _numOfLogins = value.data()["numOfLogins"];
 
       if(_account == "Patient"){
+        _numOfLogins = value.data()["numOfLogins"];
         if(_numOfLogins < 1){
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
         } else {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(),));
         }
-      } else if (_account == "Doctor") {
+      } else if (_account == "Counselor") {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
       }
     });

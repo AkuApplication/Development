@@ -30,19 +30,16 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   void initState() {
-    // ignore: todo
-    // TODO: implement initState
-    super.initState();
-
     note = widget.note;
     if (note != null) {
       titleString = note.title;
       noteString = note.note;
     }
 
-    controllerTitle =
-        TextEditingController(text: note != null ? note.title : '');
+    controllerTitle = TextEditingController(text: note != null ? note.title : '');
     controllerNote = TextEditingController(text: note != null ? note.note : '');
+
+    super.initState();
   }
 
   @override

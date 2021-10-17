@@ -1,4 +1,5 @@
 import 'package:chat_app/MoodTracker/page_1.dart';
+import 'package:chat_app/Screens/patientHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -11,8 +12,6 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   //Instances
   final userRef = FirebaseFirestore.instance.collection('score');
-
-  // String lol = "";
 
   Map<String, dynamic> feedback = {
     'Comment1': "It appears that you are not doing very well, but don't worry. Let us "
@@ -60,6 +59,7 @@ class _StartPageState extends State<StartPage> {
   sendComment() {
     userRef.doc('Document 3').set(feedback);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +79,7 @@ class _StartPageState extends State<StartPage> {
               CircleAvatar(
                 backgroundColor: Colors.transparent,
                 radius: 210.0,
-                child: Image.asset('assets/q2.png'),
+                child: Image.asset('lib/assets/images/q2.png'),
               ),
               Text(
                 'Hello there, have a few minutes to reflect on how you\'ve felt today?',
@@ -91,7 +91,7 @@ class _StartPageState extends State<StartPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => page_one(),));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StartPage(),));
                   //sendComment(); //Send the data to firebase
                 },
                 child: Text('Let\'s do it'),
@@ -105,7 +105,7 @@ class _StartPageState extends State<StartPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  print('This will redirect to home');
+                  Navigator.pop(context);
                 },
                 child: Text('Not Now'),
                 style: ElevatedButton.styleFrom(

@@ -1,18 +1,16 @@
 import 'dart:convert';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../models.dart';
-import '../utils.dart';
-import '../widgets/durationpicker.dart';
-import 'settings_screen.dart';
-import 'workout_screen.dart';
+import 'package:chat_app/Screens/Exercise/models.dart';
+import 'package:chat_app/Screens/Exercise/utils.dart';
+import 'package:chat_app/Screens/Exercise/widgets/durationpicker.dart';
+import 'package:chat_app/Screens/Exercise/screen/settings_screen.dart';
+import 'package:chat_app/Screens/Exercise/screen/workout_screen.dart';
 
 class TabataScreen extends StatefulWidget {
-  final Settings settings;
+  final CustomSettings settings;
   final SharedPreferences prefs;
   final Function onSettingsChanged;
 
@@ -90,48 +88,6 @@ class _TabataScreenState extends State<TabataScreen> {
       ),
       body: ListView(
         children: <Widget>[
-          // ListTile(
-          //   title: Text('Sets'),
-          //   subtitle: Text('${_tabata.sets}'),
-          //   leading: Icon(Icons.fitness_center),
-          //   onTap: () {
-          //     int _value = _tabata.sets;
-          //     showDialog<int>(
-          //       context: context,
-          //       builder: (BuildContext context) {
-          //         return StatefulBuilder(builder: (context, setState) {
-          //           return AlertDialog(
-          //             title: Text('Sets in the workout'),
-          //             content: NumberPicker(
-          //               value: _value,
-          //               minValue: 1,
-          //               maxValue: 10,
-          //               onChanged: (value) {
-          //                 setState(() {
-          //                   _value = value;
-          //                 });
-          //               },
-          //             ),
-          //             actions: [
-          //               TextButton(
-          //                 onPressed: () => Navigator.of(context).pop(),
-          //                 child: Text('CANCEL'),
-          //               ),
-          //               TextButton(
-          //                 onPressed: () => Navigator.of(context).pop(_value),
-          //                 child: Text('OK'),
-          //               )
-          //             ],
-          //           );
-          //         });
-          //       },
-          //     ).then((sets) {
-          //       if (sets == null) return;
-          //       _tabata.sets = sets;
-          //       _onTabataChanged();
-          //     });
-          //   },
-          // ),
           ListTile(
             title: Text('Reps'),
             subtitle: Text('${_tabata.reps}'),
@@ -237,26 +193,6 @@ class _TabataScreenState extends State<TabataScreen> {
               });
             },
           ),
-          // ListTile(
-          //   title: Text('Break Time'),
-          //   subtitle: Text(formatTime(_tabata.breakTime)),
-          //   leading: Icon(Icons.timer),
-          //   onTap: () {
-          //     showDialog<Duration>(
-          //       context: context,
-          //       builder: (BuildContext context) {
-          //         return DurationPickerDialog(
-          //           initialDuration: _tabata.breakTime,
-          //           title: Text('Break time between sets'),
-          //         );
-          //       },
-          //     ).then((breakTime) {
-          //       if (breakTime == null) return;
-          //       _tabata.breakTime = breakTime;
-          //       _onTabataChanged();
-          //     });
-          //   },
-          // ),
           Divider(height: 10),
           ListTile(
             title: Text(

@@ -23,7 +23,7 @@ String stepName(WorkoutState step) {
 }
 
 class WorkoutScreen extends StatefulWidget {
-  final Settings settings;
+  final CustomSettings settings;
   final Tabata tabata;
 
   WorkoutScreen({this.settings, this.tabata});

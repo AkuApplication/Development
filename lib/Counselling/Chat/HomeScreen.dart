@@ -1,10 +1,10 @@
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
 import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
+import 'package:chat_app/Screens/counselorHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -22,12 +22,29 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   bool choseGender2 = false;
   String roomId;
 
+  Map<String, dynamic> ref;
+
   String chatRoomId(String user1, String user2) {
     if (user1.hashCode <= user2.hashCode) {
       roomId = "$user1-$user2";
     } else {
       roomId = "$user2-$user1";
     }
+  }
+
+
+  void getDocument() async {
+    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+      setState(() {
+        ref = value.data();
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getDocument();
+    super.initState();
   }
 
   //Getting all of the online users
@@ -37,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .where("status", isEqualTo: "Online")
         .where("gender", whereIn: ["Male", "Female"])
         .where("uid", isNotEqualTo: _auth.currentUser.uid)
-        .where("accountType", isEqualTo: "Counsellor")
+        // .where("accountType", isEqualTo: "Counsellor")
         .get()
         .then((value) {
       setState(() {
@@ -53,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .where("status", isEqualTo: "Online")
         .where("gender", isEqualTo: "Female")
         .where("uid", isNotEqualTo: _auth.currentUser.uid)
-        .where("accountType", isEqualTo: "Counsellor")
+        // .where("accountType", isEqualTo: "Counsellor")
         .get()
         .then((value) {
       setState(() {
@@ -69,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .where("status", isEqualTo: "Online")
         .where("gender", isEqualTo: "Male")
         .where("uid", isNotEqualTo: _auth.currentUser.uid)
-        .where("accountType", isEqualTo: "Counsellor")
+        // .where("accountType", isEqualTo: "Counsellor")
         .get()
         .then((value) {
       setState(() {
@@ -77,6 +94,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       });
     });
   }
+
+  String first;
+  String second;
 
   @override
   Widget build(BuildContext context) {
@@ -200,10 +220,60 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             Container(
                               child: new IconButton(
                                 icon: new Icon(Icons.message),
-                                onPressed: () {
+                                onPressed: () async {
                                   chatRoomId(_auth.currentUser.uid, userList[index]["uid"]);
 
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: userList[index],),),);
+                                  setState(() {
+                                    first = _auth.currentUser.uid;
+                                    second = userList[index]["uid"];
+                                  });
+
+                                  await _firestore.collection("autoChat").doc(userList[index]["uid"]).set({
+                                    "firstUser": first,
+                                    "secondUser": null,
+                                    "other": ref,
+                                    "roomId": roomId,
+                                  });
+
+
+
+                                  // _firestore.collection("autoChat").doc(userList[index]["uid"]).update({
+                                  //   "firstUser": first,
+                                  // });
+
+                                  DocumentSnapshot test = userList[index];
+
+                                  //Listening
+                                  var l =  await _firestore.collection("autoChat").doc(userList[index]["uid"]).snapshots();
+                                  l.listen((event) {
+                                    if(event.data()["firstUser"] == first && event.data()["secondUser"] == null){
+                                      showDialog(context: context, barrierDismissible: false, builder: (context) {
+                                        return WillPopScope(
+                                          onWillPop: () {},
+                                          child: Dialog(
+                                            insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                                            child: Container(
+                                              height: size.height / 10,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  CircularProgressIndicator(),
+                                                  SizedBox(width: size.width / 40,),
+                                                  Text("Loading...", textAlign: TextAlign.center,)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },);
+                                    } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
+                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: test.data(), connectId: userList[index]["uid"],),),);
+                                    } else {
+                                      return null;
+                                    }
+                                  });
+                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: userList[index],),),);
                                 },
                               ),
                             ),

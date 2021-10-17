@@ -2,12 +2,10 @@ import 'package:chat_app/ManageNotes/notes_app/components/note_card.dart';
 import 'package:chat_app/ManageNotes/notes_app/model/note.dart';
 import 'package:chat_app/ManageNotes/notes_app/screens/note_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NotesStream extends StatefulWidget {
   String chosenUserData;
-
 
   NotesStream({this.chosenUserData});
 
@@ -18,12 +16,6 @@ class NotesStream extends StatefulWidget {
 class _NotesStreamState extends State<NotesStream> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  @override
-  void initState() {
-    print("3");
-    print(widget.chosenUserData);
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -39,7 +31,6 @@ class _NotesStreamState extends State<NotesStream> {
 
         final notes = snapshot.data.docs;
         print("Notes $notes");
-        // final notes = snapshot.data["arrayNote"];
 
         List<NoteCard> noteCards = [];
         for (var note in notes) {
@@ -47,8 +38,6 @@ class _NotesStreamState extends State<NotesStream> {
               id: widget.chosenUserData,
               title: note["title"],
               note: note["note"],
-              // title: note.data['title'],
-              // note: note.data['note']);
           );
           noteCards.add(NoteCard(
             note: noteObject,

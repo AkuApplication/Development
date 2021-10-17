@@ -1,8 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-
-import '../models.dart';
+import 'package:chat_app/Screens/Exercise/models.dart';
 
 /// Names of colours in Colors.primaries
 var colorNames = {
@@ -27,7 +26,7 @@ var colorNames = {
 };
 
 class SettingsScreen extends StatefulWidget {
-  final Settings settings;
+  final CustomSettings settings;
 
   final Function onSettingsChanged;
 

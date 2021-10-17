@@ -1,6 +1,34 @@
+import 'package:chat_app/MentalHealthTest/testRecords/recordCard.dart';
+import 'package:chat_app/MentalHealthTest/testRecords/recordModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Patients extends StatelessWidget {
+class Patients extends StatefulWidget {
+  @override
+  _PatientsState createState() => _PatientsState();
+}
+
+class _PatientsState extends State<Patients> {
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  List patientList = [];
+
+  void getDataFromFirestore() async {
+    await _firestore.collection("users").where("accountType", isEqualTo: "Patient").get().then((value) {
+      setState(() {
+        patientList = value.docs.toList();
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getDataFromFirestore();
+    super.initState();
+  }
+
    @override
   Widget build(BuildContext context) {
      // Provide us total height & width of our screen
@@ -9,7 +37,7 @@ class Patients extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Color(0xFF337B6E),
-        title: Text('Therapists'),
+        title: Text('Patients'),
         centerTitle: true,
       ),
       body: Stack(
@@ -26,1057 +54,169 @@ class Patients extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(45.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  //Hafizzan
-                  Card(
-                    shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 10.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 32.0,
-                            backgroundColor: Colors.transparent,
-                            child: Image.network(
-                                'https://image.flaticon.com/icons/png/512/3969/3969766.png',
+            child: ListView.builder(
+              itemCount: patientList.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      elevation: 10.0,
+                      child: Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              radius: 32.0,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: NetworkImage(patientList[index]["profileURL"]),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text('Nur Hafizzan'),
-                        ],
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Text(patientList[index]["name"]),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  ExpansionTile(
+                    ExpansionTile(
                       title: Text(
-                          'Details for Nur Hafizzan',
+                        'Details for ${patientList[index]["name"]}',
                         style: TextStyle(
                           fontWeight: FontWeight.w100,
                           letterSpacing: 0.5,
                           color: Colors.blueGrey,
                         ),
                       ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Full Name: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SelectableText(
+                                'Full Name: ${patientList[index]["name"]}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black87,
+                                  height: 1.5,
                                 ),
-                                SelectableText(
-                                  'Muhammad Nur Hafizzan bin Kadir',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            SelectableText(
-                              'Gender: Male',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                letterSpacing: 0.5,
-                                color: Colors.black87,
-                                height: 1.5,
                               ),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                  'Qualification:',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  )
-                                ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Languages: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  //Hafiz
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 10.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 32.0,
-                            backgroundColor: Colors.transparent,
-                            child: Image.network(
-                              'https://image.flaticon.com/icons/png/512/3969/3969724.png',
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text('Hafiz'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      'Details for Hafiz',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        letterSpacing: 0.5,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                  'Full Name: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                                SelectableText(
-                                  'Muhammad Hafiz bin Daud',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            SelectableText(
-                              'Gender: Male',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                letterSpacing: 0.5,
-                                color: Colors.black87,
-                                height: 1.5,
+                              SizedBox(
+                                height: 5.0,
                               ),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Qualification:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
+                              SelectableText(
+                                'Gender: ${patientList[index]["gender"]}}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black87,
+                                  height: 1.5,
                                 ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Languages: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  //Mahdi
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 10.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 32.0,
-                            backgroundColor: Colors.transparent,
-                            child: Image.network(
-                              'https://image.flaticon.com/icons/png/512/3969/3969772.png',
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text('Mahdi'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      'Details for Mahdi',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        letterSpacing: 0.5,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                  'Full Name: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                                SelectableText(
-                                  'Muhammad Mahdi bin Haji Mohammad Yaakub',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            SelectableText(
-                              'Gender: Male',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                letterSpacing: 0.5,
-                                color: Colors.black87,
-                                height: 1.5,
                               ),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Qualification:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Languages: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  //Shanna
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 10.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 32.0,
-                            backgroundColor: Colors.transparent,
-                            child: Image.network(
-                              'https://image.flaticon.com/icons/png/512/3969/3969730.png',
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text('Shanna Rania'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      'Details for Shanna Rania',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        letterSpacing: 0.5,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                  'Full Name: ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                                SelectableText(
-                                  'Shanna Rania binti Hussin',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            SelectableText(
-                              'Gender: Female',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                letterSpacing: 0.5,
-                                color: Colors.black87,
-                                height: 1.5,
+                              SizedBox(
+                                height: 5.0,
                               ),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Qualification:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
+                              SelectableText(
+                                'Contact: ${patientList[index]["contact"]}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black87,
+                                  height: 1.5,
                                 ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Languages: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  //Amal
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    elevation: 10.0,
-                    child: Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            radius: 32.0,
-                            backgroundColor: Colors.transparent,
-                            child: Image.network(
-                              'https://image.flaticon.com/icons/png/512/3969/3969733.png',
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          Text('Amal'),
-                        ],
-                      ),
-                    ),
-                  ),
-                  ExpansionTile(
-                    title: Text(
-                      'Details for Amal',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w100,
-                        letterSpacing: 0.5,
-                        color: Colors.blueGrey,
-                      ),
-                    ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                  'Full Name:',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                                SelectableText(
-                                  'Amal Nurul Nazirah binti Haji Mohammad Adi Yusli',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w100,
-                                    letterSpacing: 0.5,
-                                    color: Colors.black87,
-                                    height: 1.5,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            SelectableText(
-                              'Gender: Female',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w100,
-                                letterSpacing: 0.5,
-                                color: Colors.black87,
-                                height: 1.5,
                               ),
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Qualification:',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              SelectableText(
+                                'Email: ${patientList[index]["email"]}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black87,
+                                  height: 1.5,
                                 ),
-                                SelectableText(
-                                    '• Ph. D. in Psychology',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              SelectableText(
+                                'Condition: ${patientList[index]["condition"]}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black87,
+                                  height: 1.5,
                                 ),
-                                SelectableText(
-                                    '• Master\'s in Psychology' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              SelectableText(
+                                'No. of logins: ${patientList[index]["numOfLogins"]}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black87,
+                                  height: 1.5,
                                 ),
-                                SelectableText(
-                                    '• Master\'s Degree in Counseling' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              SelectableText(
+                                'Mental Health Test Records: ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w100,
+                                  letterSpacing: 0.5,
+                                  color: Colors.black87,
+                                  height: 1.5,
                                 ),
-                                SelectableText(
-                                    '• Master\'s Degree in Social Work' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Master\'s Degree in Advance Psychiatric Nursing' ,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SelectableText(
-                                    'Languages: ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• English',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                                SelectableText(
-                                    '• Malay',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w100,
-                                      letterSpacing: 0.5,
-                                      color: Colors.black87,
-                                      height: 1.5,
-                                    )
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              StreamBuilder(
+                                stream: _firestore.collection("records").doc(patientList[index]["uid"]).collection("record").snapshots(),
+                                builder: (context, snapshot) {
+                                  if(snapshot.hasData){
+                                    final records = snapshot.data.docs;
+
+                                    List<RecordCard> recordCards = [];
+                                    for (var record in records) {
+                                      Record recordObject = Record(
+                                          questions: record["record"]["questions"],
+                                          answers: record["record"]["answers"],
+                                          timestamp: record["time"]
+                                      );
+
+                                      recordCards.add(RecordCard(
+                                        record: recordObject,
+                                      ));
+                                    }
+
+                                    return Column(
+                                      children: recordCards,
+                                    );
+                                  } else {
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  // InkWell(
-                  //   onTap: () {  print('This will show the therapist\'s catalog'); },
-                  //   child: Card(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(15.0),
-                  //     ),
-                  //     elevation: 10.0,
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(15.0),
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           CircleAvatar(
-                  //             radius: 32.0,
-                  //             backgroundColor: Colors.transparent,
-                  //             child: Image.network(
-                  //               'https://image.flaticon.com/icons/png/512/3969/3969738.png',
-                  //             ),
-                  //           ),
-                  //           SizedBox(
-                  //             height: 10.0,
-                  //           ),
-                  //           Text('Hafizzan'),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // InkWell(
-                  //   onTap: () {  print('This will show the therapist\'s catalog'); },
-                  //   child: Card(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(15.0),
-                  //     ),
-                  //     elevation: 10.0,
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(15.0),
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           CircleAvatar(
-                  //             radius: 32.0,
-                  //             backgroundColor: Colors.transparent,
-                  //             child: Image.network(
-                  //               'https://image.flaticon.com/icons/png/512/3969/3969741.png',
-                  //             ),
-                  //           ),
-                  //           SizedBox(
-                  //             height: 10.0,
-                  //           ),
-                  //           Text('Hafizzan'),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // InkWell(
-                  //   onTap: () {  print('This will show the therapist\'s catalog'); },
-                  //   child: Card(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(15.0),
-                  //     ),
-                  //     elevation: 10.0,
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(15.0),
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           CircleAvatar(
-                  //             radius: 32.0,
-                  //             backgroundColor: Colors.transparent,
-                  //             child: Image.network(
-                  //               'https://image.flaticon.com/icons/png/512/3969/3969743.png',
-                  //             ),
-                  //           ),
-                  //           SizedBox(
-                  //             height: 10.0,
-                  //           ),
-                  //           Text('Hafizzan'),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // InkWell(
-                  //   onTap: () {  print('This will show the therapist\'s catalog'); },
-                  //   child: Card(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(15.0),
-                  //     ),
-                  //     elevation: 10.0,
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(15.0),
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           CircleAvatar(
-                  //             radius: 32.0,
-                  //             backgroundColor: Colors.transparent,
-                  //             child: Image.network(
-                  //               'https://image.flaticon.com/icons/png/512/3969/3969750.png',
-                  //             ),
-                  //           ),
-                  //           SizedBox(
-                  //             height: 10.0,
-                  //           ),
-                  //           Text('Hafizzan'),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // InkWell(
-                  //   onTap: () {  print('This will show the therapist\'s catalog'); },
-                  //   child: Card(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(15.0),
-                  //     ),
-                  //     elevation: 10.0,
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(15.0),
-                  //       child: Column(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           CircleAvatar(
-                  //             radius: 32.0,
-                  //             backgroundColor: Colors.transparent,
-                  //             child: Image.network(
-                  //               'https://image.flaticon.com/icons/png/512/3969/3969755.png',
-                  //             ),
-                  //           ),
-                  //           SizedBox(
-                  //             height: 10.0,
-                  //           ),
-                  //           Text('Hafizzan'),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                  ],
+                );
+              },
             ),
           ),
         ],

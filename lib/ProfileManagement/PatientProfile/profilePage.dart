@@ -312,7 +312,7 @@ class _ProfileState extends State<Profile> {
                                 return WillPopScope(
                                   onWillPop: () {},
                                   child: Dialog(
-                                    insetPadding: EdgeInsets.only(left: 140, right: 140),
+                                    insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
                                     child: Container(
                                       height: size.height / 10,
                                       child: Row(

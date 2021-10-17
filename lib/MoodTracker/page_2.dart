@@ -1,4 +1,5 @@
 import 'package:chat_app/MoodTracker/page_3.dart';
+import 'package:chat_app/Screens/patientHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +38,7 @@ class _page_twoState extends State<page_two> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CircleAvatar(
-              child: Image.asset("assets/q5.gif"),
+              child: Image.asset("lib/assets/images/q5.gif"),
               backgroundColor: Colors.transparent,
               radius: 50.0,
             ),
@@ -286,9 +287,11 @@ class _page_twoState extends State<page_two> {
             SizedBox(
               height: 50.0,
             ),
+            (_value == 0.0 && _value2 == 0.0 && _value3 == 0.0)
+                || (_value == 0.0 || _value2 == 0.0 || _value3 == 0.0) ? SizedBox() :
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => page_three(),)); // Function 1
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page_three(),)); // Function 1
                 Map<String, dynamic> data = {
                   'Mark2': patient_ans1,
                   'Mark3': patient_ans2,
@@ -309,7 +312,7 @@ class _page_twoState extends State<page_two> {
             ),
             ElevatedButton(
               onPressed: () {
-                print('This will redirect to home');
+               Navigator.pop(context);
               },
               child: Text('Discard'),
               style: ElevatedButton.styleFrom(

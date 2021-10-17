@@ -1,6 +1,5 @@
 import 'package:chat_app/ManageNotes/notes_app/components/notes_stream.dart';
 import 'package:chat_app/ManageNotes/notes_app/screens/note_screen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -13,14 +12,7 @@ class NotesScreen extends StatefulWidget {
 }
 
 class _NotesScreenState extends State<NotesScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  @override
-  void initState() {
-    print("2");
-    print(widget.chosenUserData);
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

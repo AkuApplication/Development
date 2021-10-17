@@ -1,4 +1,5 @@
 import 'package:chat_app/MoodTracker/page_1.dart';
+import 'package:chat_app/Screens/patientHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -80,7 +81,7 @@ class _page_threeState extends State<page_three> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              child: Image.asset('assets/q6.gif'),
+              child: Image.asset('lib/assets/images/q6.gif'),
               backgroundColor: Colors.transparent,
               radius: 50.0,
             ),
@@ -152,7 +153,7 @@ class _page_threeState extends State<page_three> {
             ElevatedButton(
               onPressed: () {
                 // This will let patient to take the test again
-                Navigator.push(context, MaterialPageRoute(builder: (context) => page_one(),));
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page_one(),));
               },
               child: Text('Try Again'),
               style: ElevatedButton.styleFrom(
@@ -165,7 +166,7 @@ class _page_threeState extends State<page_three> {
             ),
             ElevatedButton(
               onPressed: () {
-                print('This will redirect to home');
+                Navigator.pop(context);
               },
               child: Text('Discard'),
               style: ElevatedButton.styleFrom(

@@ -28,7 +28,7 @@ class _page_oneState extends State<page_one> {
         child: Column(
           children: [
             CircleAvatar(
-              child: Image.asset('assets/q3.gif'),
+              child: Image.asset('lib/assets/images/q3.gif'),
               backgroundColor: Colors.transparent,
               radius: 50.0,
             ),
@@ -159,9 +159,10 @@ class _page_oneState extends State<page_one> {
             SizedBox(
               height: 20.0,
             ),
+            _value == 7 ? SizedBox() :
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => page_two(),));// Function 1
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page_two(),));// Function 1
                 Map<String, dynamic> data = {'Mark1': patient_ans}; //Function 2
                 FirebaseFirestore.instance
                     .collection('score').doc('Document 1')
@@ -178,7 +179,7 @@ class _page_oneState extends State<page_one> {
             ),
             ElevatedButton(
               onPressed: () {
-                print('This will redirect to home');
+                Navigator.pop(context);
               },
               child: Text('Discard'),
               style: ElevatedButton.styleFrom(

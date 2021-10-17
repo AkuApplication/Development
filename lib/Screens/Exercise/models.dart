@@ -16,7 +16,7 @@ Tabata get defaultTabata => Tabata(
       breakTime: Duration(seconds: 0),
     );
 
-class Settings {
+class CustomSettings {
   final SharedPreferences _prefs;
 
   bool nightMode;
@@ -29,7 +29,7 @@ class Settings {
   String startSet;
   String endWorkout;
 
-  Settings(this._prefs) {
+  CustomSettings(this._prefs) {
     Map<String, dynamic> json =
         jsonDecode(_prefs.getString('settings') ?? '{}');
     nightMode = json['nightMode'] ?? false;
@@ -116,7 +116,7 @@ class Tabata {
 enum WorkoutState { initial, starting, exercising, resting, breaking, finished }
 
 class Workout {
-  Settings _settings;
+  CustomSettings _settings;
 
   Tabata _config;
 

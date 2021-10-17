@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Just a little info about Aku Application
 class About extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

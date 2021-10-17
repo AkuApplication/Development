@@ -1,5 +1,5 @@
 import 'package:chat_app/MentalHealthTest/Screen/first_time.dart';
-import 'package:chat_app/Screens/homepage.dart';
+import 'package:chat_app/Screens/patientHomePage.dart';
 import 'package:flutter/material.dart';
 
 //The 3rd page of MentalHealthTest after finished answering all questions
