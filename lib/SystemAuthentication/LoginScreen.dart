@@ -288,6 +288,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 checkFirestore();
               }
             }
+          }).onError((error, stackTrace) {
+            Navigator.pop(context);
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () {},
+                child: AlertDialog(
+                  content: Text(
+                    error.message,
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
           });
         } else {
           Navigator.pop(context);

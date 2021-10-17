@@ -51,6 +51,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     });
   }
 
+  //Get the other user data and roomId to connect to
   void getDocument() async {
     await _firestore.collection("autoChat").doc(_auth.currentUser.uid).get().then((value) {
       k = value.data()["other"];
@@ -58,6 +59,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     });
   }
 
+  //Listening for changes in the firestore
   void listeningForCounselling() async {
     var l = await _firestore.collection("autoChat").doc(_auth.currentUser.uid).snapshots();
 
@@ -85,7 +87,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
-                          _firestore.collection("autoChat").doc(_auth.currentUser.uid).update({
+                          _firestore.collection("autoChat").doc(_auth.currentUser.uid).set({
                             "firstUser": null,
                             "secondUser": null
                           });

@@ -53,145 +53,16 @@ class _ChatRoomState extends State<ChatRoom> {
     }
   }
 
-  bool _prompt = false;
-
   //Variables for the one hour time limit session timer
   Timer timer;
-  int _start = 10;
-
-  void delayedPatient() {
-    var p = _firestore.collection("endSession").doc(widget.chatRoomId).snapshots();
-    p.listen((event) {
-      if(event.data()["current"] == widget.chosenUserData["uid"] && event.data()["done"] == false){
-        showDialog(context: context, barrierDismissible: false, builder: (context) {
-          return WillPopScope(
-            onWillPop: () {},
-            child: AlertDialog(
-              content: Text("Counsellor deemed that you need extra sessions, would you like to have the same counsellor again?", textAlign: TextAlign.center,),
-              actions: [
-                Center(
-                  child: Row(
-                    children: [
-                      TextButton(
-                        onPressed: (){
-
-                        },
-                        child: Text("Yes"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-
-                        },
-                        child: Text("No"),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },);
-
-      } else if(event.data()["current"] == widget.chosenUserData["uid"] && event.data()["done"] == true){
-        showDialog(context: context, barrierDismissible: false, builder: (context) {
-          return WillPopScope(
-            onWillPop: () {},
-            child: AlertDialog(
-              content: Text("Do you feel another session is needed?", textAlign: TextAlign.center,),
-              actions: [
-                Center(
-                  child: Row(
-                    children: [
-                      TextButton(
-                        child: Text("Yes"),
-                        onPressed: (){
-                          Navigator.pop(context);
-
-                        },
-                      ),
-                      TextButton(
-                        child: Text("No"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },);
-
-      } else {
-        return null;
-      }
-    });
-    return null;
-  }
-
-  void methodInTimer() {
-    if(_accountType2 == "Counsellor"){
-      showDialog(context: context, barrierDismissible: false, builder: (context) {
-        return WillPopScope(
-          onWillPop: () {},
-          child: AlertDialog(
-            content: Text("Do you feel another session is needed with this patient?", textAlign: TextAlign.center,),
-            actions: [
-              Center(
-                child: Row(
-                  children: [
-                    TextButton(
-                      onPressed: (){
-                        Navigator.pop(context);
-                        _firestore.collection("endSession").doc(widget.chatRoomId).update({
-                          "current": _auth.currentUser.uid,
-                          "done": _prompt
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: Text("Yes"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        setState(() {
-                          _prompt = true;
-                        });
-                        _firestore.collection("endSession").doc(widget.chatRoomId).update({
-                          "current": _auth.currentUser.uid,
-                          "done": _prompt
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: Text("No"),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },);
-
-    } else if(_accountType2 == "Patient"){
-      delayedPatient();
-    }
-  }
+  int _start = 3600;
 
   //Method for starting a countdown timer of 1 hour session of counselling
   void startTimer() {
-    _firestore.collection("endSession").doc(widget.chatRoomId).set({
-      "current": null,
-      "done": null,
-    });
-
     const oneSec = const Duration(seconds: 1);
     timer = Timer.periodic(oneSec, (timer) {
       if(_start == 0){
-        // methodInTimer();
-
+        Navigator.pop(context);
         setState(() {
           timer.cancel();
         });
@@ -229,6 +100,7 @@ class _ChatRoomState extends State<ChatRoom> {
     super.initState();
   }
 
+  //To reset the connection
   void setToNull() async {
     await _firestore.collection("autoChat").doc(widget.connectId).update({
       "firstUser": null,
@@ -263,30 +135,25 @@ class _ChatRoomState extends State<ChatRoom> {
         title: Row(
           children: [
             Expanded(
-              child: InkWell(
-                onTap: () {
-
-                },
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(widget.chosenUserData["profileURL"],),
-                    ),
-                    SizedBox(width: 12,),
-                    Expanded(
-                      child: InkWell(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(widget.chosenUserData["name"]),
-                            Text(widget.chosenUserData["status"]),
-                          ],
-                        ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(widget.chosenUserData["profileURL"],),
+                  ),
+                  SizedBox(width: 12,),
+                  Expanded(
+                    child: InkWell(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(widget.chosenUserData["name"]),
+                          Text(widget.chosenUserData["status"]),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

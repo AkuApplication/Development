@@ -1,6 +1,4 @@
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
-import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
-import 'package:chat_app/Screens/counselorHomePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,9 +19,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   bool choseGender1 = false;
   bool choseGender2 = false;
   String roomId;
-
+  String first;
+  String second;
   Map<String, dynamic> ref;
 
+  //For getting roomId between the two users
   String chatRoomId(String user1, String user2) {
     if (user1.hashCode <= user2.hashCode) {
       roomId = "$user1-$user2";
@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     }
   }
 
-
+  //Getting the current user document in Map<String, dynamic>
   void getDocument() async {
     await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
       setState(() {
@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .where("status", isEqualTo: "Online")
         .where("gender", whereIn: ["Male", "Female"])
         .where("uid", isNotEqualTo: _auth.currentUser.uid)
-        // .where("accountType", isEqualTo: "Counsellor")
+        .where("accountType", isEqualTo: "Counselor")
         .get()
         .then((value) {
       setState(() {
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .where("status", isEqualTo: "Online")
         .where("gender", isEqualTo: "Female")
         .where("uid", isNotEqualTo: _auth.currentUser.uid)
-        // .where("accountType", isEqualTo: "Counsellor")
+        .where("accountType", isEqualTo: "Counselor")
         .get()
         .then((value) {
       setState(() {
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         .where("status", isEqualTo: "Online")
         .where("gender", isEqualTo: "Male")
         .where("uid", isNotEqualTo: _auth.currentUser.uid)
-        // .where("accountType", isEqualTo: "Counsellor")
+        .where("accountType", isEqualTo: "Counselor")
         .get()
         .then((value) {
       setState(() {
@@ -95,8 +95,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     });
   }
 
-  String first;
-  String second;
+
 
   @override
   Widget build(BuildContext context) {
@@ -235,15 +234,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     "roomId": roomId,
                                   });
 
-
-
-                                  // _firestore.collection("autoChat").doc(userList[index]["uid"]).update({
-                                  //   "firstUser": first,
-                                  // });
-
                                   DocumentSnapshot test = userList[index];
 
-                                  //Listening
+                                  //Listening to the event changes in firestore
                                   var l =  await _firestore.collection("autoChat").doc(userList[index]["uid"]).snapshots();
                                   l.listen((event) {
                                     if(event.data()["firstUser"] == first && event.data()["secondUser"] == null){
@@ -270,37 +263,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       Navigator.pop(context);
                                       Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: test.data(), connectId: userList[index]["uid"],),),);
                                     } else {
+                                      Navigator.pop(context);
                                       return null;
                                     }
                                   });
-                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: userList[index],),),);
                                 },
                               ),
                             ),
 
-                            // Call Based Counsultation
-                            Container(
-                              child: new IconButton(
-                                icon: new Icon(Icons.call),
-                                onPressed: () {
-
-                                },
-                              ),
-                            ),
-
-                            // Video Call Based Counsultation
-                            Container(
-                              child: new IconButton(
-                                icon: new Icon(Icons.video_call),
-                                onPressed: () {
-                                  // chatRoomId(_auth.currentUser.uid,
-                                  //     userList[index]["uid"]);
-                                  // print(roomId);
-
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => VideoCall(),));
-                                },
-                              ),
-                            ),
                           ],
                         ),
                       ),
