@@ -39,8 +39,8 @@ class _CreateAccountState extends State<CreateAccount> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Column(
             children: [
               SizedBox(
@@ -194,13 +194,6 @@ class _CreateAccountState extends State<CreateAccount> {
                         margin: EdgeInsets.only(left: 20, right: 20),
                         child: TextFormField(
                             obscureText: _obscureText,
-                            validator: (value) {
-                              if (value.length > 5) {
-                                return null;
-                              } else {
-                                return "Need at least 6 character";
-                              }
-                            },
                             onChanged: (value) {
                               setState(() {
                                 _password = value;
@@ -223,14 +216,10 @@ class _CreateAccountState extends State<CreateAccount> {
                       child: TextFormField(
                           obscureText: _obscureText,
                           validator: (value) {
-                            if (value.length > 5) {
-                              if (value == _password) {
-                                return null;
-                              } else {
-                                return "Password does not match";
-                              }
+                            if (value == _password) {
+                              return null;
                             } else {
-                              return "Need at least 6 character";
+                              return "Password does not match";
                             }
                           },
                           decoration: decoText.copyWith(
@@ -283,78 +272,76 @@ class _CreateAccountState extends State<CreateAccount> {
   //A custom Widget
   Widget customButton(Size size) {
     return GestureDetector(
-      onTap: () {
-        showDialog(context: context, barrierDismissible: false, builder: (context) {
-          return WillPopScope(
-            onWillPop: () {},
-            child: Dialog(
-              insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
-              child: Container(
-                height: size.height / 10,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(width: size.width / 40,),
-                    Text("Loading...", textAlign: TextAlign.center,)
-                  ],
-                ),
-              ),
-            ),
-          );
-        },);
-
+      onTap: () async {
         //To validate the form
         if (_formKey.currentState.validate()) {
-          Methods().createAccount(_email, _password, _name, _gender, context).then((user) {
-            if (user != null) {
-              Navigator.pop(context);
-              showDialog(context: context, barrierDismissible: false, builder: (context) {
-                return WillPopScope(
-                  onWillPop: () {},
-                  child: AlertDialog(
-                    content: Text(
-                      _message,
-                      textAlign: TextAlign.center,
-                    ),
-                    actions: [
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Close"),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },);
-            }
-          });
-        } else {
-          Navigator.pop(context);
           showDialog(context: context, barrierDismissible: false, builder: (context) {
             return WillPopScope(
-              onWillPop: () {},
-              child: AlertDialog(
-                content: Text(
-                  "Please fill the form correctly",
-                  textAlign: TextAlign.center,
-                ),
-                actions: [
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("Close"),
-                    ),
+              onWillPop: () => null,
+              child: Dialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                child: Container(
+                  height: size.height / 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: size.width / 40,),
+                      Text("Loading...", textAlign: TextAlign.center,)
+                    ],
                   ),
-                ],
+                ),
               ),
             );
           },);
+
+          await Methods().createAccount(_email, _password, _name, _gender, context).then((user) {
+            Navigator.pop(context);
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () => null,
+                child: AlertDialog(
+                  content: Text(
+                    _message,
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
+          }).onError((error, stackTrace) {
+            Navigator.pop(context);
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () => null,
+                child: AlertDialog(
+                  content: Text(
+                    error.message,
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
+          });
         }
       },
       child: Container(

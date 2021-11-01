@@ -14,7 +14,7 @@ class Authenticate extends StatefulWidget {
 class _AuthenticateState extends State<Authenticate> {
   //Getting related Firebase instances to be able to interact with Firebase
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _store = FirebaseFirestore.instance;
 
   //Initializing variables
   String _account;
@@ -22,7 +22,7 @@ class _AuthenticateState extends State<Authenticate> {
 
   //Getting data from Firestore
   void checkFirestore() async {
-    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+    await _store.collection("users").doc(_auth.currentUser.uid).get().then((value) {
       _account = value.data()["accountType"];
 
       if(_account == "Patient"){

@@ -56,3 +56,12 @@
 1. Debugged fully the third function and remove the dead codes from the third function.
 2. Also now, we are able to see the records of the Mental Health Test in the Profile Page.
 3. Working on the 4th Function now still.
+
+1st November 2021
+1. Able to do autoVideo where counselor doesn't have to input the roomId by themselves.
+2. Working on the VideoCall user interface to make it look nice.
+3. Also debugged the System Authentication again to remove the unnecessary codes used for error handling.
+4. The Call part will be done after I finish the VideoCall user interface.
+   It is just a matter of copying the getUserMedia method in signalingForRTC and
+   creating a new one for call and then removing the 'video: true' part where
+   navigator.getUserMedia things are.

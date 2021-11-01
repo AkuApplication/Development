@@ -4,11 +4,11 @@ import 'dart:math';
 import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/Screens/Exercise/models.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
-import 'package:chat_app/Screens/About/aboutpage.dart';
+import 'package:chat_app/Screens/About/aboutPage.dart';
 import 'package:chat_app/Counselling/Chat/HomeScreen.dart';
-import 'package:chat_app/Screens/Exercise/exercisepage.dart';
+import 'package:chat_app/Screens/Exercise/exercisePage.dart';
 import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
-import 'package:chat_app/Screens/Counselors/counselorsDetails.dart';
+import 'package:chat_app/Screens/Counselors/allCounselorsDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  //Gettind Quotes from Firestore to be displayed periodically and its changing
+  //Getting Quotes from Firestore to be displayed periodically and its changing
   void checkQuotes() async {
     await _firestore.collection("quotes").doc("words").get().then((value) {
       Timer.periodic(Duration(seconds: 3), (timer) {
@@ -84,16 +84,18 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
               icon: Icon(Icons.logout),
-              onPressed: () => Methods().logOut(context))
+              onPressed: () => Methods().logOut(context)
+          )
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Container(
             height: size.height / 0.8,
             width: size.width,
             margin: EdgeInsets.symmetric(
-                vertical: size.height / 50, horizontal: size.width / 30),
+                vertical: size.height / 50, horizontal: size.width / 30
+            ),
             child: Column(
               children: [
                 Container(
@@ -201,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                     childAspectRatio: size.aspectRatio / 0.5,
                     children: [
                       InkWell(
-                        // Tap to move to Counsultation/Homescreen
+                        // Tap to move to Counseling HomeScreen
                         onTap: () {
                           Navigator.push(
                               context,

@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
+import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:chat_app/Counselling/VideoCall/signalingForRTC.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -23,12 +28,15 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   String second;
   Map<String, dynamic> ref;
 
-  //For getting roomId between the two users
+  StreamSubscription listenerForChat;
+  StreamSubscription listenerForVideo;
+
+  //Method for getting String roomId between the two users
   String chatRoomId(String user1, String user2) {
     if (user1.hashCode <= user2.hashCode) {
-      roomId = "$user1-$user2";
+      return roomId = "$user1-$user2";
     } else {
-      roomId = "$user2-$user1";
+      return roomId = "$user2-$user1";
     }
   }
 
@@ -95,7 +103,36 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     });
   }
 
+  //Variables for VideoCall and Call
+  SignalingRTC signalingRTC;
+  RTCVideoRenderer _localRenderer;
+  RTCVideoRenderer _remoteRenderer;
 
+  void videoCallMethod() async {
+    signalingRTC = SignalingRTC();
+    _localRenderer = RTCVideoRenderer();
+    _remoteRenderer = RTCVideoRenderer();
+
+    _localRenderer.initialize();
+    _remoteRenderer.initialize();
+    print("init");
+
+    signalingRTC.onAddRemoteStream = ((stream) {
+      _remoteRenderer.srcObject = stream;
+    });
+    print("listening");
+
+    signalingRTC.openUserMedia(_localRenderer, _remoteRenderer);
+    print("open media");
+  }
+
+  void createdRoom() async {
+    roomId = await signalingRTC.createRoom(_remoteRenderer);
+
+    await _firestore.collection("autoVideo").doc(second).update({
+      "roomId": roomId,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     } else {
                       showDialog(context: context, barrierDismissible: false, builder: (context) {
                         return WillPopScope(
-                          onWillPop: () {},
+                          onWillPop: () => null,
                           child: AlertDialog(
                             content: Text("Please choose at least one gender", textAlign: TextAlign.center,),
                             actions: [
@@ -215,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                         ),
                         trailing: Wrap(
                           children: <Widget>[
-                            // Chat Based Counsultation
+                            // Chat Based Counseling
                             Container(
                               child: new IconButton(
                                 icon: new Icon(Icons.message),
@@ -227,7 +264,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     second = userList[index]["uid"];
                                   });
 
-                                  await _firestore.collection("autoChat").doc(userList[index]["uid"]).set({
+                                  await _firestore.collection("autoChat").doc(second).set({
                                     "firstUser": first,
                                     "secondUser": null,
                                     "other": ref,
@@ -237,12 +274,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                   DocumentSnapshot test = userList[index];
 
                                   //Listening to the event changes in firestore
-                                  var l =  await _firestore.collection("autoChat").doc(userList[index]["uid"]).snapshots();
-                                  l.listen((event) {
+                                  listenerForChat = _firestore.collection("autoChat").doc(second).snapshots().listen((event) {
                                     if(event.data()["firstUser"] == first && event.data()["secondUser"] == null){
                                       showDialog(context: context, barrierDismissible: false, builder: (context) {
                                         return WillPopScope(
-                                          onWillPop: () {},
+                                          onWillPop: () => null,
                                           child: Dialog(
                                             insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
                                             child: Container(
@@ -262,8 +298,76 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
                                       Navigator.pop(context);
                                       Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: test.data(), connectId: userList[index]["uid"],),),);
+                                      listenerForChat.cancel();
                                     } else {
                                       Navigator.pop(context);
+                                      listenerForChat.cancel();
+                                      return null;
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+
+                            //Call Based Counselling
+                            Container(
+                              child: new IconButton(
+                                icon: new Icon(Icons.phone),
+                                onPressed: () {
+
+                                },
+                              ),
+                            ),
+
+                            //Video Call Counselling
+                            Container(
+                              child: new IconButton(
+                                icon: new Icon(Icons.video_call),
+                                onPressed: () async {
+                                  setState(() {
+                                    first = _auth.currentUser.uid;
+                                    second = userList[index]["uid"];
+                                  });
+
+                                  videoCallMethod();
+
+                                  await _firestore.collection("autoVideo").doc(second).set({
+                                    "firstUser": first,
+                                    "secondUser": null,
+                                    "other": ref,
+                                    "roomId": null,
+                                  });
+
+                                  //Listening to the event changes in firestore
+                                  listenerForVideo = _firestore.collection("autoVideo").doc(second).snapshots().listen((event){
+                                    if(event.data()["firstUser"] == first && event.data()["secondUser"] == null){
+                                      showDialog(context: context, barrierDismissible: false, builder: (context) {
+                                        return WillPopScope(
+                                          onWillPop: () => null,
+                                          child: Dialog(
+                                            insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                                            child: Container(
+                                              height: size.height / 10,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  CircularProgressIndicator(),
+                                                  SizedBox(width: size.width / 40,),
+                                                  Text("Loading...", textAlign: TextAlign.center,)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },);
+                                    } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
+                                      createdRoom();
+                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"],),));
+                                      listenerForVideo.cancel();
+                                    } else {
+                                      Navigator.pop(context);
+                                      listenerForVideo.cancel();
                                       return null;
                                     }
                                   });

@@ -60,8 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Column(
             children: [
               SizedBox(
@@ -213,37 +213,37 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget customButton(Size size) {
     return GestureDetector(
       onTap: () async {
-        showDialog(context: context, barrierDismissible: false, builder: (context) {
-          return WillPopScope(
-            onWillPop: () {},
-            child: Dialog(
-              insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
-              child: Container(
-                height: size.height / 10,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(width: size.width / 40,),
-                    Text("Loading...", textAlign: TextAlign.center,)
-                  ],
-                ),
-              ),
-            ),
-          );
-        },);
-
         //To validate the form
         if (_formKey.currentState.validate()) {
+          showDialog(context: context, barrierDismissible: false, builder: (context) {
+            return WillPopScope(
+              onWillPop: () => null,
+              child: Dialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                child: Container(
+                  height: size.height / 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: size.width / 40,),
+                      Text("Loading...", textAlign: TextAlign.center,)
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },);
+
           await Methods().logIn(_email, _password).then((user) {
-            if (user == null) {
+            if (!(user.emailVerified)) {
               Navigator.pop(context);
               showDialog(context: context, barrierDismissible: false, builder: (context) {
                 return WillPopScope(
-                  onWillPop: () {},
+                  onWillPop: () => null,
                   child: AlertDialog(
                     content: Text(
-                      "Could not sign in with those credentials",
+                      _message,
                       textAlign: TextAlign.center,
                     ),
                     actions: [
@@ -260,39 +260,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               },);
             } else {
-              if (!(user.emailVerified)) {
-                Navigator.pop(context);
-                showDialog(context: context, barrierDismissible: false, builder: (context) {
-                  return WillPopScope(
-                    onWillPop: () {},
-                    child: AlertDialog(
-                      content: Text(
-                        _message,
-                        textAlign: TextAlign.center,
-                      ),
-                      actions: [
-                        Center(
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("Close"),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },);
-              } else {
-                Navigator.pop(context);
-                checkFirestore();
-              }
+              Navigator.pop(context);
+              checkFirestore();
             }
           }).onError((error, stackTrace) {
             Navigator.pop(context);
             showDialog(context: context, barrierDismissible: false, builder: (context) {
               return WillPopScope(
-                onWillPop: () {},
+                onWillPop: () => null,
                 child: AlertDialog(
                   content: Text(
                     error.message,
@@ -312,26 +287,6 @@ class _LoginScreenState extends State<LoginScreen> {
               );
             },);
           });
-        } else {
-          Navigator.pop(context);
-          showDialog(context: context, barrierDismissible: false, builder: (context) {
-            return WillPopScope(
-              onWillPop: () {},
-              child: AlertDialog(
-                content: Text("Please fill the form correctly", textAlign: TextAlign.center,),
-                actions: [
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("Close"),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },);
         }
       },
       child: Container(

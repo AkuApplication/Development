@@ -1,5 +1,4 @@
 import 'package:chat_app/assets/InputDecoration/Decoration.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -11,12 +10,10 @@ class SendEmailResetPassword extends StatefulWidget {
 class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
   //Getting related Firebase instances to be able to interact with Firebase
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //Initializing variables
   String account;
   String _email;
-  String _firestoreEmail;
   String _message = "An email has just been sent to you. Click the latest link provided in your email to reset your password";
 
   //Created a FormKey to interact with the Form
@@ -27,8 +24,8 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Column(
             children: [
               SizedBox(
@@ -124,47 +121,34 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
   Widget customButton(Size size) {
     return GestureDetector(
       onTap: () async {
-        showDialog(context: context, barrierDismissible: false, builder: (context) {
-          return WillPopScope(
-            onWillPop: () {},
-            child: Dialog(
-              insetPadding: EdgeInsets.only(left: 140, right: 140),
-              child: Container(
-                height: size.height / 10,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(width: size.width / 40,),
-                    Text("Loading...", textAlign: TextAlign.center,)
-                  ],
-                ),
-              ),
-            ),
-          );
-        },);
-
         //Validate the form
         if (_formKey.currentState.validate() ){
-          await _firestore.collection("users").where("email", isEqualTo: _email).get().then((value) {
-            value.docs.forEach((element) {
-              setState(() {
-                _firestoreEmail = element.data()["email"];
-              });
-            });
-          });
+          showDialog(context: context, barrierDismissible: false, builder: (context) {
+            return WillPopScope(
+              onWillPop: () => null,
+              child: Dialog(
+                insetPadding: EdgeInsets.only(left: 140, right: 140),
+                child: Container(
+                  height: size.height / 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: size.width / 40,),
+                      Text("Loading...", textAlign: TextAlign.center,)
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },);
 
-          //Find out if the email being inputted exists in the database
-          if(_firestoreEmail == _email){
-            _formKey.currentState.save();
-
-            //SendPasswordResetEmail to the inputted email
-            await _auth.sendPasswordResetEmail(email: _email);
-
+          //SendPasswordResetEmail to the inputted email
+          await _auth.sendPasswordResetEmail(email: _email).then((value) {
             Navigator.pop(context);
             showDialog(context: context, barrierDismissible: false, builder: (context) {
               return WillPopScope(
-                onWillPop: () {},
+                onWillPop: () => null,
                 child: AlertDialog(
                   content: Text(
                     _message,
@@ -183,14 +167,14 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
                 ),
               );
             },);
-          } else {
+          }).onError((error, stackTrace) {
             Navigator.pop(context);
             showDialog(context: context, barrierDismissible: false, builder: (context) {
               return WillPopScope(
-                onWillPop: () {},
+                onWillPop: () => null,
                 child: AlertDialog(
                   content: Text(
-                    "Email doesn't exist in database",
+                    error.message,
                     textAlign: TextAlign.center,
                   ),
                   actions: [
@@ -206,27 +190,7 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
                 ),
               );
             },);
-          }
-        } else {
-          Navigator.pop(context);
-          showDialog(context: context, barrierDismissible: false, builder: (context) {
-            return WillPopScope(
-              onWillPop: () {},
-              child: AlertDialog(
-                content: Text("Please fill the form correctly", textAlign: TextAlign.center,),
-                actions: [
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("Close"),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },);
+          });
         }
       },
       child: Container(

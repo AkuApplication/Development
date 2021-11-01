@@ -10,57 +10,31 @@ class Methods {
 
   //Method for creating a 'Patient' user account
   Future<User> createAccount(String email, String password, String name, String gender, BuildContext context) async {
-    try {
-      User user = (await _auth.createUserWithEmailAndPassword(
-          email: email, password: password)).user;
+    User user = (await _auth.createUserWithEmailAndPassword(
+        email: email, password: password)).user;
 
-      //Updating the account displayName for when receiving email from Aku App
-      user.updateDisplayName(name);
+    //Updating the account displayName for when receiving email from Aku App
+    user.updateDisplayName(name);
 
-      //Send email for verification of the account
-      await user.sendEmailVerification();
+    //Send email for verification of the account
+    await user.sendEmailVerification();
 
-      await _firestore.collection('users').doc(_auth.currentUser.uid).set({
-        "name": name,
-        "email": email,
-        "password": password,
-        "gender": gender,
-        "contact": "",
-        "condition": null,
-        "status": "Offline",
-        "profileURL": "https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf",
-        "accountType": "Patient",
-        "uid": _auth.currentUser.uid,
-        "numOfLogins": 0
-      });
+    //Setting the Patient User Data in Firestore
+    await _firestore.collection('users').doc(_auth.currentUser.uid).set({
+      "name": name,
+      "email": email,
+      "password": password,
+      "gender": gender,
+      "contact": "",
+      "condition": null,
+      "status": "Offline",
+      "profileURL": "https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf",
+      "accountType": "Patient",
+      "uid": _auth.currentUser.uid,
+      "numOfLogins": 0
+    });
 
-      return user;
-    } catch (e) {
-      Navigator.pop(context);
-      showDialog(context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return WillPopScope(
-            onWillPop: () {},
-            child: AlertDialog(
-              content: Text(
-                e.message,
-                textAlign: TextAlign.center,
-              ),
-              actions: [
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Close"),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },);
-    }
+    return user;
   }
 
   //Method for logging in to the app after created an account
@@ -91,6 +65,35 @@ class Methods {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginScreen()));
     });
   }
+
+  //TODO: decide if want to create admin or not
+  // //Method for creating a 'Counselor' user account
+  // Future<User> createCounselor(String email, String password, String name, String gender, BuildContext context) async {
+  //   User user = (await _auth.createUserWithEmailAndPassword(
+  //       email: email, password: password)).user;
+  //
+  //   //Updating the account displayName for when receiving email from Aku App
+  //   user.updateDisplayName(name);
+  //
+  //   //Send email for verification of the account
+  //   await user.sendEmailVerification();
+  //
+  //   //Setting the Patient User Data in Firestore
+  //   await _firestore.collection('users').doc(_auth.currentUser.uid).set({
+  //     "name": name,
+  //     "email": email,
+  //     "password": password,
+  //     "gender": gender,
+  //     "contact": "",
+  //     "profession": "",
+  //     "status": "Offline",
+  //     "profileURL": "https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf",
+  //     "accountType": "Counselor",
+  //     "uid": _auth.currentUser.uid,
+  //   });
+  //
+  //   return user;
+  // }
 
 }
 

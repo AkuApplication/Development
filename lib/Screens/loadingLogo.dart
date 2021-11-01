@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:chat_app/SystemAuthentication/Autheticate.dart';
+import 'package:chat_app/SystemAuthentication/Authenticate.dart';
 import 'package:flutter/material.dart';
 
 class LoadingLogo extends StatefulWidget {
@@ -13,13 +13,8 @@ class _LoadingLogoState extends State<LoadingLogo> {
   @override
   //Showing logo just for a few second at the start of the app
   void initState() {
-    Timer(Duration(seconds: 3), navigateToAuthenticate);
+    Timer(Duration(seconds: 3), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate(),)));
     super.initState();
-  }
-
-  //Created a function callback just for the timer to work as intended
-  void navigateToAuthenticate() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Authenticate(),));
   }
 
   @override

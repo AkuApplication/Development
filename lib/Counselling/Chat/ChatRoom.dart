@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:chat_app/ManageNotes/notes_app/notes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class ChatRoom extends StatefulWidget {
   //The data that will be taken when calling the constructor in a different page
-  Map<String, dynamic> chosenUserData;
+  final Map<String, dynamic> chosenUserData;
   final String chatRoomId;
   final String connectId;
 
@@ -25,7 +24,6 @@ class _ChatRoomState extends State<ChatRoom> {
 
   //Initializing variables
   String _username2;
-  String _accountType2;
   final TextEditingController _message = TextEditingController();
   ScrollController _scrollController = ScrollController();
 
@@ -34,7 +32,6 @@ class _ChatRoomState extends State<ChatRoom> {
     await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
       setState(() {
         _username2 = value.data()["name"];
-        _accountType2 = value.data()["accountType"];
       });
     });
   }

@@ -2,13 +2,16 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
+import 'package:chat_app/Counselling/VideoCall/signalingForRTC.dart';
+import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
 import 'package:chat_app/ProfileManagement/CounsellorProfile/counsellorProfilePage.dart';
-import 'package:chat_app/Screens/Patients/patientspage.dart';
+import 'package:chat_app/Screens/Patients/allPatientsDetails.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
-import 'package:chat_app/Screens/About/aboutpage.dart';
+import 'package:chat_app/Screens/About/aboutPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 class DoctorHomePage extends StatefulWidget {
 
@@ -27,7 +30,11 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   String _account2;
   String _profileURL2;
   String roomId;
-  Map<String, dynamic> k;
+
+  StreamSubscription listenerForChat;
+  StreamSubscription listenerForVideo;
+
+  Size size;
 
   //Getting data from Firestore and inserting it to a new variable to be displayed at the screen
   void checkFirestore() async {
@@ -40,7 +47,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     });
   }
 
-  //Gettind Quotes from Firestore to be displayed periodically and its changing
+  //Getting Quotes from Firestore to be displayed periodically and its changing
   void checkQuotes() async {
     await _firestore.collection("quotes").doc("words").get().then((value) {
       Timer.periodic(Duration(seconds: 3), (timer) {
@@ -54,40 +61,49 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   //Get the other user data and roomId to connect to
   void getDocument() async {
     await _firestore.collection("autoChat").doc(_auth.currentUser.uid).get().then((value) {
-      k = value.data()["other"];
-      roomId = value.data()["roomId"];
+      setState(() {
+        roomId = value.data()["roomId"];
+      });
+    });
+  }
+
+  void getVideoDocument() async {
+    await _firestore.collection("autoVideo").doc(_auth.currentUser.uid).get().then((value) {
+      setState(() {
+        roomId = value.data()["roomId"];
+      });
+      signalingRTC.joinRoom(roomId);
     });
   }
 
   //Listening for changes in the firestore
-  void listeningForCounselling() async {
-    var l = await _firestore.collection("autoChat").doc(_auth.currentUser.uid).snapshots();
-
-    l.listen((event) {
+  void listeningForChatCounselling() {
+    listenerForChat = _firestore.collection("autoChat").doc(_auth.currentUser.uid).snapshots().listen((event) {
       getDocument();
-      if(event.data()["firstUser"] == k["uid"] && event.data()["secondUser"] == null){
+
+      if(event.data()["firstUser"] == event.data()["other"]["uid"] && event.data()["secondUser"] == null){
         showDialog(context: context, barrierDismissible: false, builder: (context) {
           return WillPopScope(
-            onWillPop: () {},
+            onWillPop: () => null,
             child: AlertDialog(
-              content: Text("${k["name"]} would like to counsel with you, Do you accept?" , textAlign: TextAlign.center,),
+              content: Text("${event.data()["other"]["name"]} would like to counsel with you, Do you accept?" , textAlign: TextAlign.center,),
               actions: [
                 Center(
                   child: Row(
                     children: [
                       TextButton(
-                        onPressed: (){
+                        onPressed: () async {
                           Navigator.pop(context);
-                          _firestore.collection("autoChat").doc(_auth.currentUser.uid).update({
+                          await _firestore.collection("autoChat").doc(_auth.currentUser.uid).update({
                             "secondUser": _auth.currentUser.uid,
                           });
                         },
                         child: Text("Yes"),
                       ),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.pop(context);
-                          _firestore.collection("autoChat").doc(_auth.currentUser.uid).set({
+                          await _firestore.collection("autoChat").doc(_auth.currentUser.uid).update({
                             "firstUser": null,
                             "secondUser": null
                           });
@@ -101,8 +117,104 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
             ),
           );
         },);
-      } else if(event.data()["firstUser"] == k["uid"] && event.data()["secondUser"] == _auth.currentUser.uid){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: k, connectId: _auth.currentUser.uid,),),);
+      } else if(event.data()["firstUser"] == event.data()["other"]["uid"] && event.data()["secondUser"] == _auth.currentUser.uid){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ChatRoom(chatRoomId: roomId, chosenUserData: event.data()["other"], connectId: _auth.currentUser.uid,),),);
+      } else {
+        return null;
+      }
+    });
+
+  }
+  //Variables for VideoCall and Call
+  SignalingRTC signalingRTC;
+  RTCVideoRenderer localRenderer;
+  RTCVideoRenderer remoteRenderer;
+
+  void videoCallMethod() async {
+    signalingRTC = SignalingRTC();
+    localRenderer = RTCVideoRenderer();
+    remoteRenderer = RTCVideoRenderer();
+
+    localRenderer.initialize();
+    remoteRenderer.initialize();
+
+    signalingRTC.onAddRemoteStream = ((stream) {
+      setState(() {
+        remoteRenderer.srcObject = stream;
+      });
+    });
+
+    signalingRTC.openUserMedia(localRenderer, remoteRenderer);
+  }
+
+  void listeningForVideoCounselling() {
+    listenerForVideo = _firestore.collection("autoVideo").doc(_auth.currentUser.uid).snapshots().listen((event) {
+      if(event.data()["firstUser"] == event.data()["other"]["uid"] && event.data()["secondUser"] == null){
+        showDialog(context: context, barrierDismissible: false, builder: (context) {
+          return WillPopScope(
+            onWillPop: () => null,
+            child: AlertDialog(
+              content: Text("${event.data()["other"]["name"]} would like to counsel with you using video, Do you accept?" , textAlign: TextAlign.center,),
+              actions: [
+                Center(
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+
+                          videoCallMethod();
+
+                          await _firestore.collection("autoVideo").doc(_auth.currentUser.uid).update({
+                            "secondUser": _auth.currentUser.uid,
+                          });
+
+                        },
+                        child: Text("Yes"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          await _firestore.collection("autoVideo").doc(_auth.currentUser.uid).update({
+                            "firstUser": null,
+                            "secondUser": null
+                          });
+                        },
+                        child: Text("No"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },);
+      } else if(event.data()["firstUser"] == event.data()["other"]["uid"] && event.data()["secondUser"] == _auth.currentUser.uid){
+        if(event.data()["roomId"] == null){
+          showDialog(context: context, barrierDismissible: false, builder: (context) {
+            return WillPopScope(
+              onWillPop: () => null,
+              child: Dialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                child: Container(
+                  height: size.height / 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: size.width / 40,),
+                      Text("Loading...", textAlign: TextAlign.center,)
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },);
+        } else {
+          getVideoDocument();
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid,),));
+        }
       } else {
         return null;
       }
@@ -115,13 +227,21 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   void initState() {
     checkFirestore();
     checkQuotes();
-    listeningForCounselling();
+    listeningForChatCounselling();
+    listeningForVideoCounselling();
     super.initState();
   }
 
   @override
+  void dispose() {
+    listenerForChat.cancel();
+    listenerForVideo.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -134,8 +254,8 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           )
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Container(
             height: size.height / 1,
             width: size.width,

@@ -91,7 +91,7 @@ class _StartPageState extends State<StartPage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StartPage(),));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page_one(),));
                   //sendComment(); //Send the data to firebase
                 },
                 child: Text('Let\'s do it'),
