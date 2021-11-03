@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
 import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
+import 'package:chat_app/Counselling/VoiceCall/callPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:chat_app/Counselling/VideoCall/signalingForRTC.dart';
+import 'package:chat_app/Counselling/signalingForRTC.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
 
   StreamSubscription listenerForChat;
   StreamSubscription listenerForVideo;
+  StreamSubscription listenerForCall;
 
   //Method for getting String roomId between the two users
   String chatRoomId(String user1, String user2) {
@@ -108,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   RTCVideoRenderer _localRenderer;
   RTCVideoRenderer _remoteRenderer;
 
-  void videoCallMethod() async {
+  void videoCallMethod() {
     signalingRTC = SignalingRTC();
     _localRenderer = RTCVideoRenderer();
     _remoteRenderer = RTCVideoRenderer();
@@ -126,10 +128,36 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     print("open media");
   }
 
-  void createdRoom() async {
+  void voiceCallMethod() {
+    signalingRTC = SignalingRTC();
+    _localRenderer = RTCVideoRenderer();
+    _remoteRenderer = RTCVideoRenderer();
+
+    _localRenderer.initialize();
+    _remoteRenderer.initialize();
+    print("init");
+
+    signalingRTC.onAddRemoteStream = ((stream) {
+      _remoteRenderer.srcObject = stream;
+    });
+    print("listening");
+
+    signalingRTC.openUserMediaAudioOnly(_localRenderer, _remoteRenderer);
+    print("open media");
+  }
+
+  void createdVideoRoom() async {
     roomId = await signalingRTC.createRoom(_remoteRenderer);
 
     await _firestore.collection("autoVideo").doc(second).update({
+      "roomId": roomId,
+    });
+  }
+
+  void createdCallRoom() async {
+    roomId = await signalingRTC.createRoom(_remoteRenderer);
+
+    await _firestore.collection("autoCall").doc(second).update({
       "roomId": roomId,
     });
   }
@@ -313,8 +341,54 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             Container(
                               child: new IconButton(
                                 icon: new Icon(Icons.phone),
-                                onPressed: () {
+                                onPressed: () async {
+                                  setState(() {
+                                    first = _auth.currentUser.uid;
+                                    second = userList[index]["uid"];
+                                  });
 
+                                  voiceCallMethod();
+
+                                  await _firestore.collection("autoCall").doc(second).set({
+                                    "firstUser": first,
+                                    "secondUser": null,
+                                    "other": ref,
+                                    "roomId": null,
+                                  });
+
+                                  //Listening to the event changes in firestore
+                                  listenerForCall = _firestore.collection("autoCall").doc(second).snapshots().listen((event){
+                                    if(event.data()["firstUser"] == first && event.data()["secondUser"] == null){
+                                      showDialog(context: context, barrierDismissible: false, builder: (context) {
+                                        return WillPopScope(
+                                          onWillPop: () => null,
+                                          child: Dialog(
+                                            insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                                            child: Container(
+                                              height: size.height / 10,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  CircularProgressIndicator(),
+                                                  SizedBox(width: size.width / 40,),
+                                                  Text("Loading...", textAlign: TextAlign.center,)
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },);
+                                    } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
+                                      createdCallRoom();
+                                      Navigator.pop(context);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"], otherUserProfileURL: userList[index]["profileURL"], otherUserName: userList[index]["name"],),));
+                                      listenerForCall.cancel();
+                                    } else {
+                                      Navigator.pop(context);
+                                      listenerForCall.cancel();
+                                      return null;
+                                    }
+                                  });
                                 },
                               ),
                             ),
@@ -361,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                         );
                                       },);
                                     } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
-                                      createdRoom();
+                                      createdVideoRoom();
                                       Navigator.pop(context);
                                       Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"],),));
                                       listenerForVideo.cancel();

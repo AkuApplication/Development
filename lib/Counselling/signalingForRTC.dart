@@ -180,6 +180,21 @@ class SignalingRTC {
     remoteVideo.srcObject = await createLocalMediaStream("key");
   }
 
+  //Open userMediaAudio only
+  Future<void> openUserMediaAudioOnly(
+      RTCVideoRenderer localVideo,
+      RTCVideoRenderer remoteVideo,
+      ) async {
+    var stream = await navigator.mediaDevices.getUserMedia(
+      {"audio": true,},
+    );
+
+    localVideo.srcObject = stream;
+    localStream = stream;
+
+    remoteVideo.srcObject = await createLocalMediaStream("key");
+  }
+
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
     List<MediaStreamTrack> tracks = localVideo.srcObject.getTracks();
     tracks.forEach((track) {

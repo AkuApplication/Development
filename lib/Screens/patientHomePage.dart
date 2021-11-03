@@ -5,7 +5,7 @@ import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/Screens/Exercise/models.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutPage.dart';
-import 'package:chat_app/Counselling/Chat/HomeScreen.dart';
+import 'package:chat_app/Counselling/HomeScreen.dart';
 import 'package:chat_app/Screens/Exercise/exercisePage.dart';
 import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
 import 'package:chat_app/Screens/Counselors/allCounselorsDetails.dart';

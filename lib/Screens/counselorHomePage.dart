@@ -2,8 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
-import 'package:chat_app/Counselling/VideoCall/signalingForRTC.dart';
+import 'package:chat_app/Counselling/signalingForRTC.dart';
 import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
+import 'package:chat_app/Counselling/VoiceCall/callPage.dart';
 import 'package:chat_app/ProfileManagement/CounsellorProfile/counsellorProfilePage.dart';
 import 'package:chat_app/Screens/Patients/allPatientsDetails.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
@@ -33,6 +34,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
 
   StreamSubscription listenerForChat;
   StreamSubscription listenerForVideo;
+  StreamSubscription listenerForCall;
 
   Size size;
 
@@ -69,6 +71,15 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
 
   void getVideoDocument() async {
     await _firestore.collection("autoVideo").doc(_auth.currentUser.uid).get().then((value) {
+      setState(() {
+        roomId = value.data()["roomId"];
+      });
+      signalingRTC.joinRoom(roomId);
+    });
+  }
+
+  void getCallDocument() async {
+    await _firestore.collection("autoCall").doc(_auth.currentUser.uid).get().then((value) {
       setState(() {
         roomId = value.data()["roomId"];
       });
@@ -147,6 +158,23 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     signalingRTC.openUserMedia(localRenderer, remoteRenderer);
   }
 
+  void voiceCallMethod() async {
+    signalingRTC = SignalingRTC();
+    localRenderer = RTCVideoRenderer();
+    remoteRenderer = RTCVideoRenderer();
+
+    localRenderer.initialize();
+    remoteRenderer.initialize();
+
+    signalingRTC.onAddRemoteStream = ((stream) {
+      setState(() {
+        remoteRenderer.srcObject = stream;
+      });
+    });
+
+    signalingRTC.openUserMediaAudioOnly(localRenderer, remoteRenderer);
+  }
+
   void listeningForVideoCounselling() {
     listenerForVideo = _firestore.collection("autoVideo").doc(_auth.currentUser.uid).snapshots().listen((event) {
       if(event.data()["firstUser"] == event.data()["other"]["uid"] && event.data()["secondUser"] == null){
@@ -219,7 +247,80 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         return null;
       }
     });
+  }
 
+  void listeningForCallCounselling() {
+    listenerForCall = _firestore.collection("autoCall").doc(_auth.currentUser.uid).snapshots().listen((event) {
+      if(event.data()["firstUser"] == event.data()["other"]["uid"] && event.data()["secondUser"] == null){
+        showDialog(context: context, barrierDismissible: false, builder: (context) {
+          return WillPopScope(
+            onWillPop: () => null,
+            child: AlertDialog(
+              content: Text("${event.data()["other"]["name"]} would like to counsel with you using voice only, Do you accept?" , textAlign: TextAlign.center,),
+              actions: [
+                Center(
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+
+                          voiceCallMethod();
+
+                          await _firestore.collection("autoCall").doc(_auth.currentUser.uid).update({
+                            "secondUser": _auth.currentUser.uid,
+                          });
+
+                        },
+                        child: Text("Yes"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          await _firestore.collection("autoCall").doc(_auth.currentUser.uid).update({
+                            "firstUser": null,
+                            "secondUser": null
+                          });
+                        },
+                        child: Text("No"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },);
+      } else if(event.data()["firstUser"] == event.data()["other"]["uid"] && event.data()["secondUser"] == _auth.currentUser.uid){
+        if(event.data()["roomId"] == null){
+          showDialog(context: context, barrierDismissible: false, builder: (context) {
+            return WillPopScope(
+              onWillPop: () => null,
+              child: Dialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                child: Container(
+                  height: size.height / 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: size.width / 40,),
+                      Text("Loading...", textAlign: TextAlign.center,)
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },);
+        } else {
+          getCallDocument();
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid, otherUserProfileURL: event.data()["other"]["profileURL"], otherUserName: event.data()["other"]["name"],),));
+        }
+      } else {
+        return null;
+      }
+    });
   }
 
   //Initial state of the page
@@ -229,6 +330,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     checkQuotes();
     listeningForChatCounselling();
     listeningForVideoCounselling();
+    listeningForCallCounselling();
     super.initState();
   }
 
@@ -236,6 +338,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   void dispose() {
     listenerForChat.cancel();
     listenerForVideo.cancel();
+    listenerForCall.cancel();
     super.dispose();
   }
 

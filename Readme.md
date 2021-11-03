@@ -65,3 +65,7 @@
    It is just a matter of copying the getUserMedia method in signalingForRTC and
    creating a new one for call and then removing the 'video: true' part where
    navigator.getUserMedia things are.
+
+3rd November 2021
+1. Fully functional VideoCall and Call part of the Counselling Feature with improved User Interface.
+2. Moving on to the Notifications feature next by using the flutter_local_notifications plugin

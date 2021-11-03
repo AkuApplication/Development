@@ -94,6 +94,7 @@ class _ChatRoomState extends State<ChatRoom> {
   void initState() {
     startTimer();
     checkFirestore();
+    listeningPop();
     super.initState();
   }
 
@@ -105,10 +106,23 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
+  StreamSubscription listenerForPop;
+
+  void listeningPop(){
+    listenerForPop = _firestore.collection("autoChat").doc(widget.connectId).snapshots().listen((event) {
+      if(event.data()["firstUser"] == null && event.data()["secondUser"] == null){
+        Navigator.pop(context);
+      } else {
+        return null;
+      }
+    });
+  }
+
   @override
   void dispose() {
     setToNull();
     timer.cancel();
+    listenerForPop.cancel();
     super.dispose();
   }
 

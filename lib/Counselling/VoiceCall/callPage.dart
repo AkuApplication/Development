@@ -5,23 +5,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
-class VideoCall extends StatefulWidget {
+class VoiceCall extends StatefulWidget {
   final String connectId;
   final SignalingRTC signalingRTC;
   final RTCVideoRenderer localRenderer;
   final RTCVideoRenderer remoteRenderer;
+  final String otherUserProfileURL;
+  final String otherUserName;
 
-  VideoCall({this.signalingRTC, this.localRenderer, this.remoteRenderer, this.connectId});
+  VoiceCall({this.signalingRTC, this.localRenderer, this.remoteRenderer, this.connectId, this.otherUserName, this.otherUserProfileURL});
 
   @override
-  _VideoCallState createState() => _VideoCallState();
+  _VoiceCallState createState() => _VoiceCallState();
 }
 
-class _VideoCallState extends State<VideoCall> {
+class _VoiceCallState extends State<VoiceCall> {
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool onSpeaker = true;
-  bool onToggleVideo = false;
   bool onToggleMic = false;
   Color defaultColor = (Colors.teal.shade300);
   Color onChange = (Colors.grey);
@@ -29,7 +30,7 @@ class _VideoCallState extends State<VideoCall> {
   StreamSubscription listenerForPop;
 
   void listeningPop(){
-    listenerForPop = _firestore.collection("autoVideo").doc(widget.connectId).snapshots().listen((event) {
+    listenerForPop = _firestore.collection("autoCall").doc(widget.connectId).snapshots().listen((event) {
       if(event.data()["firstUser"] == null && event.data()["secondUser"] == null){
         Navigator.pop(context);
       } else {
@@ -40,7 +41,7 @@ class _VideoCallState extends State<VideoCall> {
 
   void setToNull() async {
     widget.signalingRTC.hangUp(widget.localRenderer);
-    await _firestore.collection("autoVideo").doc(widget.connectId).update({
+    await _firestore.collection("autoCall").doc(widget.connectId).update({
       "firstUser": null,
       "secondUser": null,
     });
@@ -67,12 +68,6 @@ class _VideoCallState extends State<VideoCall> {
     });
   }
 
-  void toggleVideo() {
-    setState(() {
-      onToggleVideo = !onToggleVideo;
-    });
-  }
-
   void toggleMic() {
     setState(() {
       onToggleMic = !onToggleMic;
@@ -86,31 +81,39 @@ class _VideoCallState extends State<VideoCall> {
     return  Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal.shade300,
-        title: Text("For Video Call"),
+        title: Text("For Voice Call"),
       ),
       body: Stack(
-        textDirection: TextDirection.rtl,
         children: [
-          RTCVideoView(
-            widget.remoteRenderer,
-            objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-          ),
-          Positioned(
-            height: size.height / 4,
-            width: size.width / 4,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: size.width / 100),
-              ),
-              child: RTCVideoView(
-                widget.localRenderer, mirror: true,
-                objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-              ),
+          Container(
+            color: Colors.brown,
+            height: size.height,
+            width: size.width,
+            child: Column(
+              children: [
+                SizedBox(height: size.height / 20,),
+                CircleAvatar(
+                  backgroundImage: NetworkImage(widget.otherUserProfileURL),
+                  radius: size.height / 5,
+                ),
+                SizedBox(height: size.height / 20,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(
+                    widget.otherUserName,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: size.height / 20,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Positioned(
             bottom: size.height / 30,
-            right: size.width / 5,
+            right: size.width / 3.6,
             child: Row(
               children: [
                 FloatingActionButton(
@@ -123,18 +126,6 @@ class _VideoCallState extends State<VideoCall> {
                     });
                   },
                   child:  onToggleMic == false ? Icon(Icons.mic): Icon(Icons.mic_off),
-                ),
-                SizedBox(width: size.width / 50,),
-                FloatingActionButton(
-                  heroTag: null,
-                  backgroundColor: onToggleVideo == false ? defaultColor: onChange,
-                  onPressed: () {
-                    toggleVideo();
-                    setState(() {
-                      widget.signalingRTC.muteVideo(widget.localRenderer);
-                    });
-                  },
-                  child: onToggleVideo == false ? Icon(Icons.videocam): Icon(Icons.videocam_off),
                 ),
                 SizedBox(width: size.width / 50,),
                 FloatingActionButton(
