@@ -1,3 +1,4 @@
+import 'package:chat_app/Notifications/notificationsMethods.dart';
 import 'package:chat_app/SystemAuthentication/CreateAccount.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/SystemAuthentication/SendEmailForResetPassword.dart';
@@ -8,6 +9,7 @@ import 'package:chat_app/assets/InputDecoration/Decoration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -29,6 +31,18 @@ class _LoginScreenState extends State<LoginScreen> {
   String _message = "You are not yet verified. Please click on the latest link provided in your email to complete registration.";
   String _account;
   int _numOfLogins;
+  SharedPreferences sharedPreferences;
+
+  //Getting SharedPreferences instance
+  void getPref() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void initState() {
+    getPref();
+    super.initState();
+  }
 
   //Getting data from Firestore
   void checkFirestore() async {
@@ -40,12 +54,40 @@ class _LoginScreenState extends State<LoginScreen> {
         if(_numOfLogins < 1){
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
         } else {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(),));
+          firstNotification();
+          secondNotification();
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
         }
       } else if (_account == "Counselor") {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
       }
     });
+  }
+
+  //Variables for the notifications value
+  bool firstReminder;
+  bool secondReminder;
+
+  void firstNotification() async {
+    setState(() {
+      firstReminder = sharedPreferences.getBool("firstReminder") ?? true;
+    });
+    if(firstReminder ==  true){
+      await CustomNotification().showNotificationForTODOChecklist();
+    } else {
+      await CustomNotification().cancelNotificationForTODO();
+    }
+  }
+
+  void secondNotification() async {
+    setState(() {
+      secondReminder = sharedPreferences.getBool("secondReminder") ?? true;
+    });
+    if(secondReminder ==  true){
+      await CustomNotification().showNotificationDaily();
+    } else {
+      await CustomNotification().cancelNotificationForMoodTracker();
+    }
   }
 
   //Method for Showing or Hiding Password
@@ -60,8 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(

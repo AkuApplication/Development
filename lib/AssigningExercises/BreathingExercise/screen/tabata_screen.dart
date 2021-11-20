@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:chat_app/Screens/Exercise/models.dart';
-import 'package:chat_app/Screens/Exercise/utils.dart';
-import 'package:chat_app/Screens/Exercise/widgets/durationpicker.dart';
-import 'package:chat_app/Screens/Exercise/screen/settings_screen.dart';
-import 'package:chat_app/Screens/Exercise/screen/workout_screen.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/models.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/utils.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/widgets/durationpicker.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/screen/settings_screen.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/screen/workout_screen.dart';
 
 class TabataScreen extends StatefulWidget {
   final CustomSettings settings;

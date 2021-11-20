@@ -10,9 +10,12 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   //Initializing variables
   List<String> _genderList = ["Male", "Female"];
+  List<String> _phoneCodeList = ["+673"];
   bool _obscureText = true;
   String _name;
   String _gender;
+  String _phoneCode;
+  String _contact;
   String _email;
   String _password;
   String _message = "An email has just been sent to you. Click the link provided in your email to complete registration";
@@ -39,8 +42,8 @@ class _CreateAccountState extends State<CreateAccount> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
@@ -164,24 +167,105 @@ class _CreateAccountState extends State<CreateAccount> {
                       width: size.width,
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: size.width / 4,
+                            child: DropdownButtonFormField(
+                              decoration: decoText.copyWith(
+                                  labelText: "Code",
+                              ),
+                              value: _phoneCode,
+                              items: _phoneCodeList.map((e) {
+                                return DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _phoneCode = value as String;
+                                });
+                              },
+                              validator: (value) {
+                                if(value != null){
+                                  return null;
+                                } else {
+                                  return "Please pick a phone code";
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(width: size.width / 20,),
+                          Flexible(
+                            child: TextFormField(
+                                validator: (value) {
+                                  if (value.length < 7) {
+                                    return "Please insert your real phone number";
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    _contact = value;
+                                  });
+                                },
+                                decoration: decoText.copyWith(
+                                    hintText: "Phone Number",
+                                    prefixIcon:
+                                    Icon(Icons.phone, color: Colors.grey)
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 18.0),
+                      child: Container(
+                        width: size.width,
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        child: TextFormField(
+                            validator: (value) {
+                              if (value.endsWith("@gmail.com")) {
+                                return null;
+                              } else {
+                                return "Only gmail allowed";
+                              }
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _email = value;
+                              });
+                            },
+                            decoration: decoText.copyWith(
+                                hintText: "Email",
+                                prefixIcon: Icon(
+                                    Icons.email,
+                                    color: Colors.grey
+                                )
+                            )
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: size.width,
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(left: 20, right: 20),
                       child: TextFormField(
-                          validator: (value) {
-                            if (value.endsWith("@gmail.com")) {
-                              return null;
-                            } else {
-                              return "Only gmail allowed";
-                            }
-                          },
+                          obscureText: _obscureText,
                           onChanged: (value) {
                             setState(() {
-                              _email = value;
+                              _password = value;
                             });
                           },
                           decoration: decoText.copyWith(
-                              hintText: "Email",
+                              hintText: "Password",
                               prefixIcon: Icon(
-                                  Icons.email,
-                                  color: Colors.grey
+                                Icons.password,
+                                color: Colors.grey,
                               )
                           )
                       ),
@@ -194,41 +278,21 @@ class _CreateAccountState extends State<CreateAccount> {
                         margin: EdgeInsets.only(left: 20, right: 20),
                         child: TextFormField(
                             obscureText: _obscureText,
-                            onChanged: (value) {
-                              setState(() {
-                                _password = value;
-                              });
+                            validator: (value) {
+                              if (value == _password) {
+                                return null;
+                              } else {
+                                return "Password does not match";
+                              }
                             },
                             decoration: decoText.copyWith(
-                                hintText: "Password",
+                                hintText: "Confirm Password",
                                 prefixIcon: Icon(
                                   Icons.password,
                                   color: Colors.grey,
                                 )
                             )
                         ),
-                      ),
-                    ),
-                    Container(
-                      width: size.width,
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: TextFormField(
-                          obscureText: _obscureText,
-                          validator: (value) {
-                            if (value == _password) {
-                              return null;
-                            } else {
-                              return "Password does not match";
-                            }
-                          },
-                          decoration: decoText.copyWith(
-                              hintText: "Confirm Password",
-                              prefixIcon: Icon(
-                                Icons.password,
-                                color: Colors.grey,
-                              )
-                          )
                       ),
                     ),
                     ListTile(
@@ -295,7 +359,12 @@ class _CreateAccountState extends State<CreateAccount> {
             );
           },);
 
-          await Methods().createAccount(_email, _password, _name, _gender, context).then((user) {
+          //Combined the code with the phone number to complete the contact
+          setState(() {
+            _contact = _phoneCode + _contact;
+          });
+
+          await Methods().createAccount(_email, _password, _name, _gender, _contact).then((user) {
             Navigator.pop(context);
             showDialog(context: context, barrierDismissible: false, builder: (context) {
               return WillPopScope(

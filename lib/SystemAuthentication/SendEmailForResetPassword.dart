@@ -24,8 +24,8 @@ class _SendEmailResetPasswordState extends State<SendEmailResetPassword> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(

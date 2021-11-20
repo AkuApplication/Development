@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:chat_app/AssigningExercises/allExercisesPage.dart';
 import 'package:chat_app/MoodTracker/start_page.dart';
-import 'package:chat_app/Screens/Exercise/models.dart';
+import 'package:chat_app/Notifications/notificationSettingsPage.dart';
+import 'package:chat_app/Notifications/notificationsMethods.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutPage.dart';
 import 'package:chat_app/Counselling/HomeScreen.dart';
-import 'package:chat_app/Screens/Exercise/exercisePage.dart';
 import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
 import 'package:chat_app/Screens/Counselors/allCounselorsDetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
+  final SharedPreferences sharedPreferences;
+
+  HomePage({this.sharedPreferences});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -29,6 +34,45 @@ class _HomePageState extends State<HomePage> {
   String _username2;
   String _account2;
   String _profileURL2;
+
+  // //Variables for the notifications value
+  // bool firstReminder;
+  // bool secondReminder;
+  //
+  // void firstNotification() async {
+  //   setState(() {
+  //     firstReminder = widget.sharedPreferences.getBool("firstReminder") ?? true;
+  //   });
+  //   if(firstReminder ==  true){
+  //     await CustomNotification().showNotificationForTODOChecklist();
+  //   } else {
+  //     await CustomNotification().cancelNotificationForTODO();
+  //   }
+  // }
+  //
+  // void secondNotification() async {
+  //   setState(() {
+  //     secondReminder = widget.sharedPreferences.getBool("secondReminder") ?? true;
+  //   });
+  //   if(secondReminder ==  true){
+  //     await CustomNotification().showNotificationEveryMinute();
+  //   } else {
+  //     await CustomNotification().cancelNotificationForMoodTracker();
+  //   }
+  // }
+
+  //Method for stopping notifications when logged out
+  void stopAllNotifications() async {
+    await widget.sharedPreferences.clear().then((value) async {
+      await CustomNotification().cancelNotificationForTODO().then((value) async {
+        await CustomNotification().cancelNotificationForMoodTracker();
+      });
+    });
+  }
+  // //Method for stopping notifications when logged out
+  // void stopSecondNotifications() async {
+  //
+  // }
 
   //Getting data from Firestore and inserting it to a new variable to be displayed at the screen
   void checkFirestore() async {
@@ -64,12 +108,20 @@ class _HomePageState extends State<HomePage> {
         .update({"numOfLogins": FieldValue.increment(1)});
   }
 
+  //Getting SharedPreferences instance
+  // void getPref() async {
+  //   sharedPreferences = await SharedPreferences.getInstance();
+  // }
+
   //Initial state of the page
   @override
   void initState() {
+    // getPref();
     addNumOfLogins();
     checkFirestore();
     checkQuotes();
+    // firstNotification();
+    // secondNotification();
     super.initState();
   }
 
@@ -83,8 +135,15 @@ class _HomePageState extends State<HomePage> {
         title: Text("Patient Homepage"),
         actions: [
           IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationSettingsPage(sharedPreferences: widget.sharedPreferences,),)),
+          ),
+          IconButton(
               icon: Icon(Icons.logout),
-              onPressed: () => Methods().logOut(context)
+              onPressed: () {
+                Methods().logOut(context);
+                stopAllNotifications();
+              },
           )
         ],
       ),
@@ -240,10 +299,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       InkWell(
-                        onTap: () async {
-                          var prefs = await SharedPreferences.getInstance();
+                        onTap: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => TimerApp(settings: CustomSettings(prefs), prefs: prefs,)));
+                              MaterialPageRoute(builder: (context) => AllExercises()));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(

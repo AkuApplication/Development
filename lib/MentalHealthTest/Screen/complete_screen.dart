@@ -1,9 +1,56 @@
 import 'package:chat_app/MentalHealthTest/Screen/first_time.dart';
+import 'package:chat_app/Notifications/notificationsMethods.dart';
 import 'package:chat_app/Screens/patientHomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //The 3rd page of MentalHealthTest after finished answering all questions
-class CompleteScreen extends StatelessWidget {
+class CompleteScreen extends StatefulWidget {
+
+  @override
+  _CompleteScreenState createState() => _CompleteScreenState();
+}
+
+class _CompleteScreenState extends State<CompleteScreen> {
+
+  SharedPreferences sharedPreferences;
+
+  //Getting SharedPreferences instance
+  void getPref() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void initState() {
+    getPref();
+    super.initState();
+  }
+
+  //Variables for the notifications value
+  bool firstReminder;
+  bool secondReminder;
+
+  void firstNotification() async {
+    setState(() {
+      firstReminder = sharedPreferences.getBool("firstReminder") ?? true;
+    });
+    if(firstReminder ==  true){
+      await CustomNotification().showNotificationForTODOChecklist();
+    } else {
+      await CustomNotification().cancelNotificationForTODO();
+    }
+  }
+
+  void secondNotification() async {
+    setState(() {
+      secondReminder = sharedPreferences.getBool("secondReminder") ?? true;
+    });
+    if(secondReminder ==  true){
+      await CustomNotification().showNotificationDaily();
+    } else {
+      await CustomNotification().cancelNotificationForMoodTracker();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +106,9 @@ class CompleteScreen extends StatelessWidget {
                         SizedBox(width: 50,),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+                            firstNotification();
+                            secondNotification();
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,)));
                           },
                           child: Text('Continue',
                             style: TextStyle(

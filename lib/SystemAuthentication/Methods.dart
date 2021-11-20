@@ -9,7 +9,7 @@ class Methods {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //Method for creating a 'Patient' user account
-  Future<User> createAccount(String email, String password, String name, String gender, BuildContext context) async {
+  Future<User> createAccount(String email, String password, String name, String gender, String contact) async {
     User user = (await _auth.createUserWithEmailAndPassword(
         email: email, password: password)).user;
 
@@ -25,7 +25,7 @@ class Methods {
       "email": email,
       "password": password,
       "gender": gender,
-      "contact": "",
+      "contact": contact,
       "condition": null,
       "status": "Offline",
       "profileURL": "https://firebasestorage.googleapis.com/v0/b/aku-application-a7dda.appspot.com/o/logo.jpeg?alt=media&token=50035771-7905-43a3-8b51-256f71e506cf",

@@ -1,8 +1,8 @@
-import 'package:chat_app/Screens/Exercise/screen/tabata_screen.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/screen/tabata_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:chat_app/Screens/Exercise/models.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/models.dart';
 
 //The start of the Exercise page
 class TimerApp extends StatefulWidget {

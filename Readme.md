@@ -69,3 +69,9 @@
 3rd November 2021
 1. Fully functional VideoCall and Call part of the Counselling Feature with improved User Interface.
 2. Moving on to the Notifications feature next by using the flutter_local_notifications plugin
+
+20th November 2021
+1. Inserted Dzulfaridz's latest Assigning Exercises work.
+2. Just pushing to GitHub so that Dzulfaridz can see how I implemented the assigning exercises part.
+3. Also, Notifications feature is pretty much done in terms of functionality, it is just the place where that function is put into not yet since its connected to Assigning Exercises and some in Counselor Timetable functional requirements.
+4. Working on the Activity Log, verifying phone number for Notifications SMS send feature for the Counselor Timetable functional requirement, also working on some part of Assigning Exercises since its connected to Notifications.

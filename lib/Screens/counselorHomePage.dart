@@ -5,6 +5,7 @@ import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
 import 'package:chat_app/Counselling/signalingForRTC.dart';
 import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
 import 'package:chat_app/Counselling/VoiceCall/callPage.dart';
+import 'package:chat_app/Notifications/notificationSettingsPage.dart';
 import 'package:chat_app/ProfileManagement/CounsellorProfile/counsellorProfilePage.dart';
 import 'package:chat_app/Screens/Patients/allPatientsDetails.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
@@ -13,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DoctorHomePage extends StatefulWidget {
 
@@ -326,12 +328,19 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   //Initial state of the page
   @override
   void initState() {
+    getPref();
     checkFirestore();
     checkQuotes();
     listeningForChatCounselling();
     listeningForVideoCounselling();
     listeningForCallCounselling();
     super.initState();
+  }
+
+  SharedPreferences sharedPreferences;
+  // Getting SharedPreferences instance
+  void getPref() async {
+    sharedPreferences = await SharedPreferences.getInstance();
   }
 
   @override
@@ -351,6 +360,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         backgroundColor: Colors.teal.shade300,
         title: Text("Counselor Homepage"),
         actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationSettingsPage(sharedPreferences: sharedPreferences,),)),
+          ),
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () => Methods().logOut(context),

@@ -1,7 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:chat_app/Screens/Exercise/models.dart';
+import 'package:chat_app/AssigningExercises/BreathingExercise/models.dart';
 
 /// Names of colours in Colors.primaries
 var colorNames = {

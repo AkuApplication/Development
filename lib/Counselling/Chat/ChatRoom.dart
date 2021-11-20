@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chat_app/AssigningExercises/counselorAssigningExercisesToPatient.dart';
 import 'package:chat_app/ManageNotes/notes_app/notes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +27,7 @@ class _ChatRoomState extends State<ChatRoom> {
   String _username2;
   final TextEditingController _message = TextEditingController();
   ScrollController _scrollController = ScrollController();
+  DateTime timeSessionStarted;
 
   //Method for getting data of the current user for the message
   void checkFirestore() async {
@@ -92,10 +94,16 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   void initState() {
+    startOfLog();
     startTimer();
     checkFirestore();
     listeningPop();
     super.initState();
+  }
+
+  //Start the log of the session
+  void startOfLog() {
+    timeSessionStarted = DateTime.now();
   }
 
   //To reset the connection
@@ -118,8 +126,39 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
+  //Adding activityLog once finished session
+  void addActivityLog() async {
+    // List docList;
+    // List exercisesList;
+    CollectionReference collectionReference;
+    collectionReference = _firestore.collection("chatroom").doc(widget.chatRoomId).collection("chats");
+    await collectionReference.orderBy("time", descending: false).get().then((value) async {
+      // print(value.docs.length);
+      List docList = value.docs;
+
+      await _firestore.collection("activityLog").doc(_auth.currentUser.uid).collection("sessions").add({
+        "type": "Chat",
+        "otherUser": widget.chosenUserData["name"],
+        "timeStarted": Timestamp.fromDate(timeSessionStarted),
+        "timeEnded": Timestamp.now(),
+        "conversationRecords": docList,
+        // "assignedExercises": exercisesList,
+      });
+
+      await _firestore.collection('chatroom').doc(widget.chatRoomId).delete();
+
+      await _firestore.collection('chatroom').doc(widget.chatRoomId).collection("chats").get().then((value) {
+        value.docs.forEach((element) {
+          element.reference.delete();
+        });
+      });
+
+    });
+  }
+
   @override
   void dispose() {
+    addActivityLog();
     setToNull();
     timer.cancel();
     listenerForPop.cancel();
@@ -138,6 +177,14 @@ class _ChatRoomState extends State<ChatRoom> {
           IconButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(chosenUserData: widget.chosenUserData["uid"],),));
+            },
+            icon: Icon(Icons.note),
+            color: Colors.black54,
+          ),
+          //Just for testing assigning exercises
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CounselorAssigningExercisesToPatient(chosenUserData: widget.chosenUserData["uid"],),));
             },
             icon: Icon(Icons.note),
             color: Colors.black54,
