@@ -10,6 +10,7 @@ import 'package:chat_app/Screens/About/aboutPage.dart';
 import 'package:chat_app/Counselling/HomeScreen.dart';
 import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
 import 'package:chat_app/Screens/Counselors/allCounselorsDetails.dart';
+import 'package:chat_app/Timetable/timetable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -64,7 +65,9 @@ class _HomePageState extends State<HomePage> {
   //Method for stopping notifications when logged out
   void stopAllNotifications() async {
     await widget.sharedPreferences.clear().then((value) async {
-      await CustomNotification().cancelNotificationForTODO().then((value) async {
+      await CustomNotification()
+          .cancelNotificationForTODO()
+          .then((value) async {
         await CustomNotification().cancelNotificationForMoodTracker();
       });
     });
@@ -136,14 +139,20 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationSettingsPage(sharedPreferences: widget.sharedPreferences,),)),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NotificationSettingsPage(
+                    sharedPreferences: widget.sharedPreferences,
+                  ),
+                )),
           ),
           IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () {
-                Methods().logOut(context);
-                stopAllNotifications();
-              },
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              Methods().logOut(context);
+              stopAllNotifications();
+            },
           )
         ],
       ),
@@ -153,8 +162,7 @@ class _HomePageState extends State<HomePage> {
             height: size.height / 0.8,
             width: size.width,
             margin: EdgeInsets.symmetric(
-                vertical: size.height / 50, horizontal: size.width / 30
-            ),
+                vertical: size.height / 50, horizontal: size.width / 30),
             child: Column(
               children: [
                 Container(
@@ -300,8 +308,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => AllExercises()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllExercises()));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -428,6 +438,41 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Text(
                                 'About',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Timetable(),
+                              ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.grey.shade300,
+                          elevation: 10.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                'https://cdn-icons-png.flaticon.com/512/2693/2693507.png',
+                                height: size.height / 10,
+                              ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              Text(
+                                'Timetable',
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   color: Colors.black,
