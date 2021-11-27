@@ -120,9 +120,9 @@ class _PhoneAuthFormState extends State<PhoneAuthForm> {
   _onVerificationCompleted(PhoneAuthCredential authCredential) async {
     print("verification completed ${authCredential.smsCode}");
     User user = FirebaseAuth.instance.currentUser;
-    setState(() {
-      this.otpCode.text = authCredential.smsCode;
-    });
+    // setState(() {
+    //   this.otpCode.text = authCredential.smsCode;
+    // });
     if (authCredential.smsCode != null) {
       try {
         UserCredential credential =
@@ -146,9 +146,9 @@ class _PhoneAuthFormState extends State<PhoneAuthForm> {
   }
 
   _onCodeSent(String verificationId, int forceResendingToken) {
-    this.verificationId = verificationId;
-    print(forceResendingToken);
-    print("code sent");
+    // this.verificationId = verificationId;
+    // print(forceResendingToken);
+    // print("code sent");
   }
 
   _onCodeTimeout(String timeout) {

@@ -1,8 +1,10 @@
 import 'package:chat_app/ActivityLog/patientLogPage.dart';
 import 'package:chat_app/AssigningExercises/allExercisesPage.dart';
+import 'package:chat_app/CounselorTimetable/timetable.dart';
 import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/Notifications/notificationSettingsPage.dart';
 import 'package:chat_app/Notifications/notificationsMethods.dart';
+import 'package:chat_app/ReportGeneration/homepage.dart';
 import 'package:chat_app/Screens/loadingLogo.dart';
 import 'package:chat_app/SystemAuthentication/PhoneAuthenticationForm.dart';
 import 'package:firebase_core/firebase_core.dart';

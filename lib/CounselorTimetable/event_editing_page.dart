@@ -1,6 +1,6 @@
-import 'package:chat_app/Timetable/model/event.dart';
-import 'package:chat_app/Timetable/provider/event_provider.dart';
-import 'package:chat_app/Timetable/utils.dart';
+import 'package:chat_app/CounselorTimetable/model/event.dart';
+import 'package:chat_app/CounselorTimetable/provider/event_provider.dart';
+import 'package:chat_app/CounselorTimetable/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -235,6 +235,15 @@ class _EventEditingPageState extends State<EventEditingPage> {
         isAllDay: false,
       );
 
+      //This is what I added
+      Map<String, dynamic> toJson() => {
+        'title': titleController.text,
+        'description': "Description",
+        'from': fromDate,
+        'to': toDate,
+        'isAllDay': false,
+      };
+
       // Event events = Event(
       //   title: titleController.text,
       //   description: 'Description',
@@ -246,7 +255,8 @@ class _EventEditingPageState extends State<EventEditingPage> {
       final provider = Provider.of<EventProvider>(context, listen: false);
       provider.addEvent(event);
 
-      // FirebaseFirestore.instance.collection('timetable').add(event);
+      //Also this is what I uncommented
+      FirebaseFirestore.instance.collection('timetable').add(toJson());
 
       Navigator.of(context).pop();
     }

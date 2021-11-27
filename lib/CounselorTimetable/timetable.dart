@@ -1,6 +1,6 @@
-import 'package:chat_app/Timetable/event_editing_page.dart';
-import 'package:chat_app/Timetable/provider/event_provider.dart';
-import 'package:chat_app/Timetable/widget/calendar_widget.dart';
+import 'package:chat_app/CounselorTimetable/event_editing_page.dart';
+import 'package:chat_app/CounselorTimetable/provider/event_provider.dart';
+import 'package:chat_app/CounselorTimetable/widget/calendar_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

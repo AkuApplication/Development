@@ -10,7 +10,7 @@ import 'package:chat_app/Screens/About/aboutPage.dart';
 import 'package:chat_app/Counselling/HomeScreen.dart';
 import 'package:chat_app/ProfileManagement/PatientProfile/profilePage.dart';
 import 'package:chat_app/Screens/Counselors/allCounselorsDetails.dart';
-import 'package:chat_app/Timetable/timetable.dart';
+import 'package:chat_app/CounselorTimetable/timetable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';

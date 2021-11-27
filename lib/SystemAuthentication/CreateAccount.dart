@@ -1,4 +1,5 @@
 import 'package:chat_app/SystemAuthentication/Methods.dart';
+import 'package:chat_app/SystemAuthentication/formForOTP.dart';
 import 'package:chat_app/assets/InputDecoration/Decoration.dart';
 import 'package:flutter/material.dart';
 
@@ -386,7 +387,26 @@ class _CreateAccountState extends State<CreateAccount> {
                   ],
                 ),
               );
-            },);
+            },).whenComplete(() {
+              showDialog(context: context, barrierDismissible: false, builder: (context) {
+                return WillPopScope(
+                  onWillPop: () => null,
+                  child: AlertDialog(
+                    content: FormForOTP(),
+                    actions: [
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("Close"),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },);
+            });
           }).onError((error, stackTrace) {
             Navigator.pop(context);
             showDialog(context: context, barrierDismissible: false, builder: (context) {

@@ -1,4 +1,4 @@
-import 'package:chat_app/Timetable/model/event.dart';
+import 'package:chat_app/CounselorTimetable/model/event.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 

@@ -22,7 +22,7 @@ class _PatientLogPageState extends State<PatientLogPage> {
       body: SafeArea(
           child: SingleChildScrollView(
             child: StreamBuilder(
-              stream: _firestore.collection("activityLog").doc(_auth.currentUser.uid).collection("sessions").snapshots(),
+              stream: null,
               builder: (context, snapshot) {
                 if(snapshot.hasData){
                   final records = snapshot.data.docs;

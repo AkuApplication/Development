@@ -1,5 +1,5 @@
-import 'package:chat_app/Timetable/model/event._data_source.dart';
-import 'package:chat_app/Timetable/provider/event_provider.dart';
+import 'package:chat_app/CounselorTimetable/model/event._data_source.dart';
+import 'package:chat_app/CounselorTimetable/provider/event_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';

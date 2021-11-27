@@ -1,4 +1,5 @@
 import 'package:chat_app/SystemAuthentication/LoginScreen.dart';
+import 'package:chat_app/SystemAuthentication/formForOTP.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,47 @@ class Methods {
 
     //Send email for verification of the account
     await user.sendEmailVerification();
+
+    //Verify phone number and link the phone number to the email account
+    await _auth.verifyPhoneNumber(
+        phoneNumber: contact,
+        verificationCompleted: (phoneAuthCredential) async {
+          // print("verification completed ${authCredential.smsCode}");
+          // User user = FirebaseAuth.instance.currentUser;
+          // setState(() {
+          //   this.otpCode.text = authCredential.smsCode;
+          // });
+          if (phoneAuthCredential.smsCode != null) {
+            try {
+              // UserCredential credential =
+              await user.linkWithCredential(phoneAuthCredential);
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'provider-already-linked') {
+                await _auth.signInWithCredential(phoneAuthCredential);
+              }
+            }
+            // setState(() {
+            //   isLoading = false;
+            // });
+            // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
+          }
+        },
+        verificationFailed: (error) {
+          print(error.message);
+          return error.message;
+          // if (error.code == 'invalid-phone-number') {
+          //   // showMessage("The phone number entered is invalid!");
+          // }
+        },
+        codeSent: (verificationId, forceResendingToken) {
+          FormForOTP().createState().verificationId = verificationId;
+          print(forceResendingToken);
+          print("code sent");
+        },
+        codeAutoRetrievalTimeout: (verificationId) {
+          return null;
+        },
+    );
 
     //Setting the Patient User Data in Firestore
     await _firestore.collection('users').doc(_auth.currentUser.uid).set({
