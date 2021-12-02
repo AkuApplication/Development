@@ -111,7 +111,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
     SmsSender sender = SmsSender();
     // String address = "+6738851490"; //change sja nanti address to the contact in Firestore
 
-    String address = "+1-555-521-5556";
+    String address = "+6738851490";
     SmsMessage message = SmsMessage(address, 'Your appointment with (Counselor name) is set to be on ${DateTime.now()}'); //change some of the Strings to fit into it such as from Firestore the Counselor name and the timestamp
     message.onStateChanged.listen((state) {
       if (state == SmsMessageState.Sent) {

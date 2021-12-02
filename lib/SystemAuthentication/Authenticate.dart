@@ -61,9 +61,8 @@ class _AuthenticateState extends State<Authenticate> {
   bool secondReminder;
 
   void firstNotification() async {
-    setState(() {
-      firstReminder = sharedPreferences.getBool("firstReminder") ?? true;
-    });
+    firstReminder = sharedPreferences.getBool("firstReminder") ?? true;
+
     if(firstReminder ==  true){
       await CustomNotification().showNotificationForTODOChecklist();
     } else {
@@ -72,9 +71,8 @@ class _AuthenticateState extends State<Authenticate> {
   }
 
   void secondNotification() async {
-    setState(() {
-      secondReminder = sharedPreferences.getBool("secondReminder") ?? true;
-    });
+    secondReminder = sharedPreferences.getBool("secondReminder") ?? true;
+
     if(secondReminder ==  true){
       await CustomNotification().showNotificationDaily();
     } else {

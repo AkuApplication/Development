@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:chat_app/ActivityLog/patientLogPage.dart';
 import 'package:chat_app/AssigningExercises/allExercisesPage.dart';
 import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/Notifications/notificationSettingsPage.dart';
 import 'package:chat_app/Notifications/notificationsMethods.dart';
+import 'package:chat_app/SetupExercises/setupExercisesPage.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutPage.dart';
 import 'package:chat_app/Counselling/HomeScreen.dart';
@@ -481,6 +483,78 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PatientLogPage(),
+                              ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.grey.shade300,
+                          elevation: 10.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Image.network(
+                              //   'https://cdn-icons-png.flaticon.com/512/2693/2693507.png',
+                              //   height: size.height / 10,
+                              // ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              Text(
+                                'Activity Log',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SetupExercisesPage(),
+                              ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.grey.shade300,
+                          elevation: 10.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // Image.network(
+                              //   'https://cdn-icons-png.flaticon.com/512/2693/2693507.png',
+                              //   height: size.height / 10,
+                              // ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              Text(
+                                'Setup Exercises',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                       ),
                     ],
                   ),

@@ -128,31 +128,66 @@ class _ChatRoomState extends State<ChatRoom> {
 
   //Adding activityLog once finished session
   void addActivityLog() async {
-    // List docList;
-    // List exercisesList;
     CollectionReference collectionReference;
     collectionReference = _firestore.collection("chatroom").doc(widget.chatRoomId).collection("chats");
     await collectionReference.orderBy("time", descending: false).get().then((value) async {
       // print(value.docs.length);
       List docList = value.docs;
-
-      await _firestore.collection("activityLog").doc(_auth.currentUser.uid).collection("sessions").add({
-        "type": "Chat",
-        "otherUser": widget.chosenUserData["name"],
-        "timeStarted": Timestamp.fromDate(timeSessionStarted),
-        "timeEnded": Timestamp.now(),
-        "conversationRecords": docList,
-        // "assignedExercises": exercisesList,
+      List mappedList = [];
+      docList.forEach((element) {
+        Map<String, dynamic> mappedDoc = {
+          "sendby": element["sendby"],
+          "message": element["message"],
+          "time": element["time"]
+        };
+        mappedList.add(mappedDoc);
       });
 
-      await _firestore.collection('chatroom').doc(widget.chatRoomId).delete();
-
-      await _firestore.collection('chatroom').doc(widget.chatRoomId).collection("chats").get().then((value) {
-        value.docs.forEach((element) {
-          element.reference.delete();
+      CollectionReference collectionReference;
+      collectionReference = _firestore.collection("assignedExercises").doc(_auth.currentUser.uid).collection("recordsOfExercises");
+      await collectionReference.orderBy("time", descending: false).get().then((value) async {
+        List docList = value.docs;
+        List exerciseMappedList = [];
+        docList.forEach((element) {
+          Map<String, dynamic> mappedDoc = {
+            "first": element["first"],
+            "second": element["second"],
+            "third": element["third"],
+            "fourth": element["fourth"],
+            "fifth": element["fifth"],
+            "time": element["time"],
+            "done": element["done"],
+            "by": element["by"],
+          };
+          exerciseMappedList.add(mappedDoc);
         });
-      });
 
+        await _firestore.collection("activityLog").doc(_auth.currentUser.uid).collection("sessions").add({
+          "type": "Chat",
+          "otherUser": widget.chosenUserData["name"],
+          "timeStarted": Timestamp.fromDate(timeSessionStarted),
+          "timeEnded": Timestamp.now(),
+          "conversationRecords": mappedList,
+          "assignedExercises": exerciseMappedList,
+        });
+
+        await _firestore.collection('chatroom').doc(widget.chatRoomId).delete();
+
+        await _firestore.collection('chatroom').doc(widget.chatRoomId).collection("chats").get().then((value) async {
+          value.docs.forEach((element) {
+            element.reference.delete();
+          });
+
+          await _firestore.collection("assignedExercises").doc(_auth.currentUser.uid).delete();
+
+          await _firestore.collection("assignedExercises").doc(_auth.currentUser.uid).collection("recordsOfExercises").get().then((value) {
+            value.docs.forEach((element) {
+              element.reference.delete();
+            });
+          });
+        });
+
+      });
     });
   }
 
@@ -186,7 +221,7 @@ class _ChatRoomState extends State<ChatRoom> {
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => CounselorAssigningExercisesToPatient(chosenUserData: widget.chosenUserData["uid"],),));
             },
-            icon: Icon(Icons.note),
+            icon: Icon(Icons.checklist),
             color: Colors.black54,
           ),
         ],

@@ -75,3 +75,7 @@
 2. Just pushing to GitHub so that Dzulfaridz can see how I implemented the assigning exercises part.
 3. Also, Notifications feature is pretty much done in terms of functionality, it is just the place where that function is put into not yet since its connected to Assigning Exercises and some in Counselor Timetable functional requirements.
 4. Working on the Activity Log, verifying phone number for Notifications SMS send feature for the Counselor Timetable functional requirement, also working on some part of Assigning Exercises since its connected to Notifications.
+
+3rd December 2021
+1. Working on the Setup Exercises UI now.
+2. Fixed the problem of displaying events in CounselorTimetable.

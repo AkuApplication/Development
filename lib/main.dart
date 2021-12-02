@@ -6,10 +6,12 @@ import 'package:chat_app/Notifications/notificationSettingsPage.dart';
 import 'package:chat_app/Notifications/notificationsMethods.dart';
 import 'package:chat_app/ReportGeneration/homepage.dart';
 import 'package:chat_app/Screens/loadingLogo.dart';
+import 'package:chat_app/SetupExercises/setupExercisesPage.dart';
 import 'package:chat_app/SystemAuthentication/PhoneAuthenticationForm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var prefs;

@@ -38,7 +38,7 @@ class MainPage extends StatelessWidget {
           title: Text(Timetable.title),
           centerTitle: true,
         ),
-        body: Calendarwidget(),
+        body: CalendarWidget(),
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add, color: Colors.white),
             backgroundColor: Colors.teal.shade500,

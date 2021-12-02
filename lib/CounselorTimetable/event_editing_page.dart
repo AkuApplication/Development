@@ -236,13 +236,13 @@ class _EventEditingPageState extends State<EventEditingPage> {
       );
 
       //This is what I added
-      Map<String, dynamic> toJson() => {
-        'title': titleController.text,
-        'description': "Description",
-        'from': fromDate,
-        'to': toDate,
-        'isAllDay': false,
-      };
+      // Map<String, dynamic> toJson() => {
+      //   'title': titleController.text,
+      //   'description': "Description",
+      //   'from': fromDate,
+      //   'to': toDate,
+      //   'isAllDay': false,
+      // };
 
       // Event events = Event(
       //   title: titleController.text,
@@ -256,7 +256,15 @@ class _EventEditingPageState extends State<EventEditingPage> {
       provider.addEvent(event);
 
       //Also this is what I uncommented
-      FirebaseFirestore.instance.collection('timetable').add(toJson());
+      // FirebaseFirestore.instance.collection('timetable').add(toJson());
+      FirebaseFirestore.instance.collection('timetable').add({
+        'title': event.title,
+        'description': event.description,
+        'from': event.from,
+        'to': event.to,
+        'isAllDay': event.isAllDay,
+      });
+
 
       Navigator.of(context).pop();
     }
