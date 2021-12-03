@@ -6,6 +6,7 @@ import 'package:chat_app/AssigningExercises/allExercisesPage.dart';
 import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/Notifications/notificationSettingsPage.dart';
 import 'package:chat_app/Notifications/notificationsMethods.dart';
+import 'package:chat_app/SetupExercises/createExercisesPage.dart';
 import 'package:chat_app/SetupExercises/setupExercisesPage.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutPage.dart';

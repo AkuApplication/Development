@@ -79,3 +79,8 @@
 3rd December 2021
 1. Working on the Setup Exercises UI now.
 2. Fixed the problem of displaying events in CounselorTimetable.
+
+4th Decemeber 2021
+1. Finished Setup Exercises function, now connecting the exercises to the Assigned Exercises function.
+2. Also, making a SetupPage for MentalHealthTest to be able to create MentalHealthTest.
+3. Fixed the problem of making floatingActionButton appear/disappear according to accountType.

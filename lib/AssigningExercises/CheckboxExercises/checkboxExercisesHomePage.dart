@@ -1,11 +1,4 @@
-
 import 'package:flutter/material.dart';
-
-import 'anxiety.dart';
-import 'bipolar.dart';
-import 'depression.dart';
-import 'meditation.dart';
-import 'ptsd.dart';
 
 class CheckboxExercisesHomePage extends StatefulWidget {
   @override

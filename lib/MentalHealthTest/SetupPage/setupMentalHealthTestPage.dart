@@ -1,18 +1,20 @@
 import 'package:chat_app/AssigningExercises/BreathingExercise/exercisePage.dart';
 import 'package:chat_app/AssigningExercises/BreathingExercise/models.dart';
 import 'package:chat_app/AssigningExercises/CheckboxExercises/checkboxExercisesHomePage.dart';
+import 'package:chat_app/MentalHealthTest/SetupPage/createMentalHealthTestPage.dart';
+import 'package:chat_app/MentalHealthTest/SetupPage/editMentalHealthTestPage.dart';
 import 'package:chat_app/SetupExercises/createExercisesPage.dart';
 import 'package:chat_app/SetupExercises/editExercisesPage.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SetupExercisesPage extends StatefulWidget {
+class SetupMentalHealthTestPage extends StatefulWidget {
 
   @override
-  _SetupExercisesPageState createState() => _SetupExercisesPageState();
+  _SetupMentalHealthTestPageState createState() => _SetupMentalHealthTestPageState();
 }
 
-class _SetupExercisesPageState extends State<SetupExercisesPage> {
+class _SetupMentalHealthTestPageState extends State<SetupMentalHealthTestPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class _SetupExercisesPageState extends State<SetupExercisesPage> {
             InkWell(
               onTap: (){
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CreateExercisesPage(),));
+                    MaterialPageRoute(builder: (context) => CreateMentalHealthTestPage(),));
               },
               child: Card(
                 shape: RoundedRectangleBorder(
@@ -69,7 +71,7 @@ class _SetupExercisesPageState extends State<SetupExercisesPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditExercises(),
+                      builder: (context) => EditMentalHealthTest(),
                     )
                 );
               },
