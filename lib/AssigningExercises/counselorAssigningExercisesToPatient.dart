@@ -30,7 +30,7 @@ class _CounselorAssigningExercisesToPatientState extends State<CounselorAssignin
 
   //Method to send boolean value to database so that can be fetch later on Patient page of assigned exercises checklist
   void sendChosenExercisesToDatabase() async {
-    await _firestore.collection("assignedExercises").doc(_auth.currentUser.uid).collection("recordsOfExercises").add({
+    await _firestore.collection("assignedExercises").doc(widget.chosenUserData).collection("recordsOfExercises").add({
       "first": {
         "exerciseChosen": firstExercise,
         "completed": false,
@@ -53,7 +53,7 @@ class _CounselorAssigningExercisesToPatientState extends State<CounselorAssignin
       },
       "time": FieldValue.serverTimestamp(),
       "done": false,
-      "by": "counselor name here"
+      "by": _auth.currentUser.displayName,
     });
   }
 

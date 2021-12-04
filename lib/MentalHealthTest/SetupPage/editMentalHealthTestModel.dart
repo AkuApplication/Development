@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EditMentalHealthTestRecord {
-  List<dynamic> steps;
-  List<dynamic> details;
-  String title;
+  List<dynamic> questions;
+  List<dynamic> answers;
+  List<dynamic> scores;
   String docId;
+  String lengthOfAnswers;
 
-  EditMentalHealthTestRecord({this.steps, this.details, this.title, this.docId});
+  EditMentalHealthTestRecord({this.questions, this.answers, this.scores, this.docId, this.lengthOfAnswers});
 }

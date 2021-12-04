@@ -44,10 +44,10 @@ class _AllExercisesState extends State<AllExercises> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Image.network(
-                    //   'https://image.flaticon.com/icons/png/512/2928/2928158.png',
-                    //   height: size.height / 10,
-                    // ),
+                    Image.network(
+                      'https://cdn-icons-png.flaticon.com/512/2927/2927735.png',
+                      height: size.height / 10,
+                    ),
                     SizedBox(
                       height: 12.0,
                     ),
@@ -81,10 +81,10 @@ class _AllExercisesState extends State<AllExercises> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Image.network(
-                    //   'https://image.flaticon.com/icons/png/512/4245/4245351.png',
-                    //   height: size.height / 10,
-                    // ),
+                    Image.network(
+                      'https://cdn-icons-png.flaticon.com/512/1237/1237072.png',
+                      height: size.height / 10,
+                    ),
                     SizedBox(
                       height: 12.0,
                     ),

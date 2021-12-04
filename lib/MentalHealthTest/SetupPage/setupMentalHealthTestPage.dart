@@ -22,7 +22,7 @@ class _SetupMentalHealthTestPageState extends State<SetupMentalHealthTestPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("All Exercises"),
+        title: Text("Mental Health Test Setup"),
       ),
       body: SafeArea(
         child: GridView.count(
@@ -55,7 +55,7 @@ class _SetupMentalHealthTestPageState extends State<SetupMentalHealthTestPage> {
                       height: 12.0,
                     ),
                     Text(
-                      'Create Exercises',
+                      'Create Mental Health Test',
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.black,
@@ -92,7 +92,7 @@ class _SetupMentalHealthTestPageState extends State<SetupMentalHealthTestPage> {
                       height: 12.0,
                     ),
                     Text(
-                      'Edit Exercises',
+                      'Edit Mental Health Test',
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.black,

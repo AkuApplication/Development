@@ -1,6 +1,9 @@
 import 'package:chat_app/ActivityLog/patientLogPage.dart';
+import 'package:chat_app/AssigningExercises/CheckboxExercises/assigningExercisesHomePage.dart';
 import 'package:chat_app/AssigningExercises/allExercisesPage.dart';
 import 'package:chat_app/CounselorTimetable/timetable.dart';
+import 'package:chat_app/MentalHealthTest/SetupPage/createMentalHealthTestPage.dart';
+import 'package:chat_app/MentalHealthTest/SetupPage/editMentalHealthTestPage.dart';
 import 'package:chat_app/MentalHealthTest/SetupPage/setupMentalHealthTestPage.dart';
 import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/Notifications/notificationSettingsPage.dart';

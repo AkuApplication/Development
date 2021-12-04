@@ -162,7 +162,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
-            height: size.height / 0.8,
+            height: size.height / 0.75,
             width: size.width,
             margin: EdgeInsets.symmetric(
                 vertical: size.height / 50, horizontal: size.width / 30),
@@ -266,6 +266,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: GridView.count(
                     physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     crossAxisCount: 2,
                     primary: false,
                     mainAxisSpacing: 10.0,
@@ -497,15 +498,15 @@ class _HomePageState extends State<HomePage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
                           ),
-                          color: Colors.grey.shade300,
+                          color: Colors.purple.shade300,
                           elevation: 10.0,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Image.network(
-                              //   'https://cdn-icons-png.flaticon.com/512/2693/2693507.png',
-                              //   height: size.height / 10,
-                              // ),
+                              Image.network(
+                                'https://cdn-icons-png.flaticon.com/128/2125/2125009.png',
+                                height: size.height / 10,
+                              ),
                               SizedBox(
                                 height: 12.0,
                               ),
@@ -521,42 +522,42 @@ class _HomePageState extends State<HomePage> {
                         ),
 
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SetupExercisesPage(),
-                              ));
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          color: Colors.grey.shade300,
-                          elevation: 10.0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Image.network(
-                              //   'https://cdn-icons-png.flaticon.com/512/2693/2693507.png',
-                              //   height: size.height / 10,
-                              // ),
-                              SizedBox(
-                                height: 12.0,
-                              ),
-                              Text(
-                                'Setup Exercises',
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //           builder: (context) => SetupExercisesPage(),
+                      //         ));
+                      //   },
+                      //   child: Card(
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(15.0),
+                      //     ),
+                      //     color: Colors.yellow.shade300,
+                      //     elevation: 10.0,
+                      //     child: Column(
+                      //       mainAxisAlignment: MainAxisAlignment.center,
+                      //       children: [
+                      //         Image.network(
+                      //           'https://cdn-icons-png.flaticon.com/512/12/12842.png',
+                      //           height: size.height / 10,
+                      //         ),
+                      //         SizedBox(
+                      //           height: 12.0,
+                      //         ),
+                      //         Text(
+                      //           'Setup Exercises',
+                      //           style: TextStyle(
+                      //             fontSize: 18.0,
+                      //             color: Colors.black,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      //
+                      // ),
                     ],
                   ),
                 ),

@@ -56,7 +56,7 @@ class _TasksWidgetState extends State<TasksWidget> {
       ), // BoxDecoration
       child: Center(
         child: Text(
-          event.title,
+          event.scores,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

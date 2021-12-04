@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:chat_app/ActivityLog/patientLogPage.dart';
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
 import 'package:chat_app/Counselling/signalingForRTC.dart';
 import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
@@ -9,6 +10,7 @@ import 'package:chat_app/CounselorTimetable/timetable.dart';
 import 'package:chat_app/Notifications/notificationSettingsPage.dart';
 import 'package:chat_app/ProfileManagement/CounsellorProfile/counsellorProfilePage.dart';
 import 'package:chat_app/Screens/Patients/allPatientsDetails.dart';
+import 'package:chat_app/SetupExercises/setupExercisesPage.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/Screens/About/aboutPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -572,6 +574,78 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                             ],
                           ),
                         ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PatientLogPage(),
+                              ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.purple.shade300,
+                          elevation: 10.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                'https://cdn-icons-png.flaticon.com/128/2125/2125009.png',
+                                height: size.height / 10,
+                              ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              Text(
+                                'Activity Log',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SetupExercisesPage(),
+                              ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.yellow.shade300,
+                          elevation: 10.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                'https://cdn-icons-png.flaticon.com/512/12/12842.png',
+                                height: size.height / 10,
+                              ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              Text(
+                                'Setup Exercises',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                       ),
                     ],
                   ),

@@ -167,103 +167,41 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
                 }
               },
             ),
-            ElevatedButton(
-              child: Text("Button for patient to set their appointment later on"),
-              onPressed: () {
-                creatingDatabaseForListenerSMS();
-              },
-            ),
-            ElevatedButton(
-              child: Text("Send Email about Appointment Date Set"),
-              onPressed: () {
-                // signedInToGoogleThenSendMail();
-                sendSMS();
-              },
-            ),
-            ElevatedButton(
-              child: Text("Going to assign exercises to Patient as Counselor"),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CounselorAssigningExercisesToPatient(),));
-              },
-            ),
-            ElevatedButton(
-              child: Text("Going to checklist of Exercises assigned to Patient"),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CheckListOfExercises(),));
-              },
-            ),
-            ElevatedButton(
-              child: Text("Going to user ActivityLog"),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => PatientLogPage(),));
-              },
-            ),
-            ElevatedButton(
-              child: Text("Click this to know how it looks like when user just wants to do Anxiety Exercise without being assigned"),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: AppBar(title: Text("Anxiety Exercises"),),body: Anxiety(),),));
-              },
-            ),
             // ElevatedButton(
-            //   child: Text("Going to 2nd Version Exercise Assigned"),
+            //   child: Text("Button for patient to set their appointment later on"),
             //   onPressed: () {
-            //     Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage(),));
+            //     creatingDatabaseForListenerSMS();
             //   },
             // ),
-            // CheckboxListTile(value: firstExercise, onChanged: (value) {
-            //   setState(() {
-            //     firstExercise = value;
-            //   });
-            // },),
-            // CheckboxListTile(value: secondExercise, onChanged: (value) {
-            //   setState(() {
-            //     secondExercise = value;
-            //   });
-            // },),
-            // CheckboxListTile(value: thirdExercise, onChanged: (value) {
-            //   setState(() {
-            //     thirdExercise = value;
-            //   });
-            // },),
-            // CheckboxListTile(value: fourthExercise, onChanged: (value) {
-            //   setState(() {
-            //     fourthExercise = value;
-            //   });
-            // },),
-            // CheckboxListTile(value: fifthExercise, onChanged: (value) {
-            //   setState(() {
-            //     fifthExercise = value;
-            //   });
-            // },),
-            // StreamBuilder(
-            //   stream: _firestore.collection("assignedExercises").doc("_auth.currentUser.uid").collection("recordsOfExercises").snapshots(),
-            //   builder: (context, snapshot) {
-            //     if(snapshot.hasData){
-            //       final records = snapshot.data.docs;
-            //
-            //       List<ExerciseCard> exerciseCards = [];
-            //       for (var record in records) {
-            //         Exercise recordObject = Exercise(
-            //             firstExercise: record["first"],
-            //             secondExercise: record["second"],
-            //             thirdExercise: record["third"],
-            //             fourthExercise: record["fourth"],
-            //             fifthExercise: record["fifth"],
-            //             timestamp: record["time"],
-            //         );
-            //
-            //         exerciseCards.add(ExerciseCard(
-            //           record: recordObject,
-            //         ));
-            //
-            //       }
-            //       //
-            //       return Column(
-            //         children: exerciseCards,
-            //       );
-            //     } else {
-            //       return CircularProgressIndicator();
-            //     }
+            // ElevatedButton(
+            //   child: Text("Send Email about Appointment Date Set"),
+            //   onPressed: () {
+            //     // signedInToGoogleThenSendMail();
+            //     sendSMS();
+            //   },
+            // ),
+            // ElevatedButton(
+            //   child: Text("Going to assign exercises to Patient as Counselor"),
+            //   onPressed: () {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) => CounselorAssigningExercisesToPatient(),));
+            //   },
+            // ),
+            // ElevatedButton(
+            //   child: Text("Going to checklist of Exercises assigned to Patient"),
+            //   onPressed: () {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) => CheckListOfExercises(),));
+            //   },
+            // ),
+            // ElevatedButton(
+            //   child: Text("Going to user ActivityLog"),
+            //   onPressed: () {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) => PatientLogPage(),));
+            //   },
+            // ),
+            // ElevatedButton(
+            //   child: Text("Click this to know how it looks like when user just wants to do Anxiety Exercise without being assigned"),
+            //   onPressed: () {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(appBar: AppBar(title: Text("Anxiety Exercises"),),body: Anxiety(),),));
             //   },
             // ),
           ],
