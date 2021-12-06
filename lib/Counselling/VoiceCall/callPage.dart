@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:chat_app/Counselling/signalingForRTC.dart';
 import 'package:chat_app/ManageNotes/notes_app/notes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
@@ -24,6 +25,7 @@ class VoiceCall extends StatefulWidget {
 class _VoiceCallState extends State<VoiceCall> {
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   bool onSpeaker = true;
   bool onToggleMic = false;
   Color defaultColor = (Colors.teal.shade300);
@@ -51,12 +53,14 @@ class _VoiceCallState extends State<VoiceCall> {
 
   @override
   void initState() {
+    startOfLog();
     listeningPop();
     super.initState();
   }
 
   @override
   void dispose() {
+    addActivityLog();
     setToNull();
     widget.localRenderer.dispose();
     widget.remoteRenderer.dispose();
@@ -73,6 +77,22 @@ class _VoiceCallState extends State<VoiceCall> {
   void toggleMic() {
     setState(() {
       onToggleMic = !onToggleMic;
+    });
+  }
+
+  DateTime timeSessionStarted;
+
+  //Start the log of the session
+  void startOfLog() {
+    timeSessionStarted = DateTime.now();
+  }
+
+  void addActivityLog() async {
+    await _firestore.collection("activityLog").doc(_auth.currentUser.uid).collection("sessions").add({
+      "type": "Chat",
+      "otherUser": widget.otherUserName,
+      "timeStarted": Timestamp.fromDate(timeSessionStarted),
+      "timeEnded": Timestamp.now(),
     });
   }
 

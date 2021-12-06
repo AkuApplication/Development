@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:chat_app/Counselling/signalingForRTC.dart';
 import 'package:chat_app/ManageNotes/notes_app/notes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
@@ -12,8 +13,9 @@ class VideoCall extends StatefulWidget {
   final RTCVideoRenderer localRenderer;
   final RTCVideoRenderer remoteRenderer;
   final String otherUserUID;
+  final String otherUserName;
 
-  VideoCall({this.signalingRTC, this.localRenderer, this.remoteRenderer, this.connectId, this.otherUserUID});
+  VideoCall({this.signalingRTC, this.localRenderer, this.remoteRenderer, this.connectId, this.otherUserUID, this.otherUserName});
 
   @override
   _VideoCallState createState() => _VideoCallState();
@@ -22,6 +24,7 @@ class VideoCall extends StatefulWidget {
 class _VideoCallState extends State<VideoCall> {
 
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   bool onSpeaker = true;
   bool onToggleVideo = false;
   bool onToggleMic = false;
@@ -50,12 +53,14 @@ class _VideoCallState extends State<VideoCall> {
 
   @override
   void initState() {
+    startOfLog();
     listeningPop();
     super.initState();
   }
 
   @override
   void dispose() {
+    addActivityLog();
     setToNull();
     widget.localRenderer.dispose();
     widget.remoteRenderer.dispose();
@@ -79,6 +84,22 @@ class _VideoCallState extends State<VideoCall> {
     setState(() {
       onToggleMic = !onToggleMic;
     });
+  }
+
+  DateTime timeSessionStarted;
+
+  //Start the log of the session
+  void startOfLog() {
+    timeSessionStarted = DateTime.now();
+  }
+
+  void addActivityLog() async {
+        await _firestore.collection("activityLog").doc(_auth.currentUser.uid).collection("sessions").add({
+          "type": "Chat",
+          "otherUser": widget.otherUserName,
+          "timeStarted": Timestamp.fromDate(timeSessionStarted),
+          "timeEnded": Timestamp.now(),
+        });
   }
 
   @override

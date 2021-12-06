@@ -255,7 +255,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         } else {
           getVideoDocument();
           Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid, otherUserUID: event.data()["other"]["uid"],),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid, otherUserUID: event.data()["other"]["uid"], otherUserName: event.data()["other"]["name"],),));
         }
       } else {
         return null;

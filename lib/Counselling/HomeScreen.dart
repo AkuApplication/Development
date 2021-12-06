@@ -437,7 +437,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
                                       createdVideoRoom();
                                       Navigator.pop(context);
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"], otherUserUID: userList[index]["uid"],),));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"], otherUserUID: userList[index]["uid"], otherUserName: userList[index]["name"],),));
                                       listenerForVideo.cancel();
                                     } else {
                                       Navigator.pop(context);
