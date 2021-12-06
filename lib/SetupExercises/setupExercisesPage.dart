@@ -45,10 +45,10 @@ class _SetupExercisesPageState extends State<SetupExercisesPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Image.network(
-                    //   'https://image.flaticon.com/icons/png/512/2928/2928158.png',
-                    //   height: size.height / 10,
-                    // ),
+                    Image.network(
+                      'https://cdn-icons-png.flaticon.com/512/929/929256.png',
+                      height: size.height / 10,
+                    ),
                     SizedBox(
                       height: 12.0,
                     ),
@@ -82,10 +82,10 @@ class _SetupExercisesPageState extends State<SetupExercisesPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Image.network(
-                    //   'https://image.flaticon.com/icons/png/512/4245/4245351.png',
-                    //   height: size.height / 10,
-                    // ),
+                    Image.network(
+                      'https://cdn-icons-png.flaticon.com/512/1827/1827175.png',
+                      height: size.height / 10,
+                    ),
                     SizedBox(
                       height: 12.0,
                     ),

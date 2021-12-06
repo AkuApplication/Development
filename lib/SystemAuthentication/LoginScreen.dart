@@ -1,4 +1,5 @@
 import 'package:chat_app/Notifications/notificationsMethods.dart';
+import 'package:chat_app/Screens/adminHomePage.dart';
 import 'package:chat_app/SystemAuthentication/CreateAccount.dart';
 import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/SystemAuthentication/SendEmailForResetPassword.dart';
@@ -23,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //Created a FormKey to interact with the Form
   final _formKey = GlobalKey<FormState>();
+  final _otpKey = GlobalKey<FormState>();
 
   //Initializing variables
   bool _obscureText = true;
@@ -30,6 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
   String _password;
   String _message = "You are not yet verified. Please click on the latest link provided in your email to complete registration.";
   String _account;
+  String _phoneNumber;
+  String verificationId;
+  String _otp;
+  bool noOTP = true;
+  AuthCredential _authCredential;
+  PhoneAuthCredential _phoneAuthCredential;
   int _numOfLogins;
   SharedPreferences sharedPreferences;
 
@@ -46,21 +54,150 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //Getting data from Firestore
   void checkFirestore() async {
-    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
+    await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) async {
       _account = value.data()["accountType"];
 
-      if (_account == "Patient") {
-        _numOfLogins = value.data()["numOfLogins"];
-        if(_numOfLogins < 1){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
-        } else {
-          firstNotification();
-          secondNotification();
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
+      if(_account == "Admin"){
+        Navigator.pop(context);
+        await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+          "status": "Online",
+        });
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminHomePage(),));
+      } else {
+        Navigator.pop(context);
+        _phoneNumber = value.data()["contact"];
+
+        if(_account == "Patient"){
+          _numOfLogins = value.data()["numOfLogins"];
         }
-      } else if (_account == "Counselor") {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+        //Verify phone number and link the phone number to the email account
+        // await _auth.verifyPhoneNumber(
+        //   phoneNumber: _phoneNumber,
+        //   verificationCompleted: (phoneAuthCredential) async {
+        //     // Navigator.pop(context);
+        //     setState(() {
+        //       noOTP = false;
+        //     });
+        //     this._phoneAuthCredential= phoneAuthCredential;
+        //     print(this._phoneAuthCredential);
+        //
+        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please insert the OTP code you received above in the specified field")));
+        //     // showDialog(context: context, builder: (context) {
+        //     //   return AlertDialog(
+        //     //     content: TextFormField(
+        //     //       key: _otpKey,
+        //     //       onSaved: (newValue) {
+        //     //         _otp = newValue;
+        //     //       },
+        //     //       cursorColor: Colors.teal.shade300,
+        //     //       decoration: decoText.copyWith(
+        //     //           hintText: "OTP SMS Code",
+        //     //           prefixIcon: Icon(Icons.email, color: Colors.grey)
+        //     //       ),
+        //     //       keyboardType: TextInputType.number,
+        //     //     ),
+        //     //     actions: [
+        //     //       Center(
+        //     //         child: TextButton(
+        //     //           onPressed: () async {
+        //     //             _otpKey.currentState.save();
+        //     //             print(_otp);
+        //     //             if (_otp == phoneAuthCredential.smsCode) {
+        //     //               try {
+        //     //                 this._authCredential = PhoneAuthProvider.credential(verificationId: this.verificationId, smsCode: _otp);
+        //     //                 print(this._authCredential.toString());
+        //     //                 await _auth.currentUser.linkWithCredential(this._authCredential);
+        //     //                 await _auth.signInWithCredential(this._authCredential);
+        //     //               } on FirebaseAuthException catch (e) {
+        //     //                 if (e.code == 'provider-already-linked') {
+        //     //                   await _auth.signInWithCredential(this._authCredential);
+        //     //                 }
+        //     //               }
+        //     //
+        //     //               await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+        //     //                 "status": "Online",
+        //     //               });
+        //     //
+        //     //               Navigator.pop(context);
+        //     //
+        //     //               if (_account == "Patient") {
+        //     //                 _numOfLogins = value.data()["numOfLogins"];
+        //     //                 if(_numOfLogins < 1){
+        //     //                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
+        //     //                 } else {
+        //     //                   firstNotification();
+        //     //                   secondNotification();
+        //     //                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
+        //     //                 }
+        //     //               } else if (_account == "Counselor") {
+        //     //                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+        //     //               }
+        //     //
+        //     //             }
+        //     //           },
+        //     //           child: Text("Verify"),
+        //     //         ),
+        //     //       ),
+        //     //     ],
+        //     //   );
+        //     // },);
+        //   },
+        //   verificationFailed: (error) {
+        //     showDialog(context: context, barrierDismissible: false, builder: (context) {
+        //       return WillPopScope(
+        //         onWillPop: () => null,
+        //         child: AlertDialog(
+        //           content: Text(
+        //             error.message,
+        //             textAlign: TextAlign.center,
+        //           ),
+        //           actions: [
+        //             Center(
+        //               child: TextButton(
+        //                 onPressed: () {
+        //                   Navigator.pop(context);
+        //                 },
+        //                 child: Text("Close"),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       );
+        //     },);
+        //   },
+        //   codeSent: (verificationId, forceResendingToken) {
+        //     this.verificationId = verificationId;
+        //     print(this.verificationId);
+        //     // print(this.verificationId);
+        //     // print(forceResendingToken.toString());
+        //   },
+        //   codeAutoRetrievalTimeout: (verificationId) {
+        //     this.verificationId = verificationId;
+        //     showDialog(context: context, barrierDismissible: false, builder: (context) {
+        //       return WillPopScope(
+        //         onWillPop: () => null,
+        //         child: AlertDialog(
+        //           content: Text(
+        //             "Timed out.",
+        //             textAlign: TextAlign.center,
+        //           ),
+        //           actions: [
+        //             Center(
+        //               child: TextButton(
+        //                 onPressed: () {
+        //                   Navigator.pop(context);
+        //                 },
+        //                 child: Text("Close"),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       );
+        //     },);
+        //   },
+        // );
       }
+
     });
   }
 
@@ -136,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Form(
                 key: _formKey,
-                child: Column(
+                child: noOTP ? Column(
                   children: [
                     Container(
                       width: size.width / 1,
@@ -240,6 +377,60 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ],
+                ) : Column(
+                  children: [
+                    TextFormField(
+                      onSaved: (newValue) {
+                        _otp = newValue;
+                      },
+                      // onChanged: (value) async {
+                      //
+                      // },
+                      cursorColor: Colors.teal.shade300,
+                      decoration: decoText.copyWith(
+                          hintText: "OTP SMS Code",
+                          prefixIcon: Icon(Icons.email, color: Colors.grey)
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                    ElevatedButton(
+                      child: Text("Submit OTP"),
+                      onPressed: () async {
+                        _formKey.currentState.save();
+                        if (_otp == this._phoneAuthCredential.smsCode) {
+                          try {
+                            this._phoneAuthCredential = PhoneAuthProvider.credential(verificationId: this.verificationId, smsCode: _otp);
+                            // print(this._phoneAuthCredential.toString());
+                            // print(this._authCredential);
+                            await _auth.currentUser.linkWithCredential(this._phoneAuthCredential);
+                            await _auth.signInWithCredential(this._phoneAuthCredential);
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'provider-already-linked') {
+                              await _auth.signInWithCredential(this._phoneAuthCredential);
+                            }
+                          }
+
+                          await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+                            "status": "Online",
+                          });
+
+                          if (_account == "Patient") {
+                            // _numOfLogins = value.data()["numOfLogins"];
+                            if(_numOfLogins < 1){
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
+                            } else {
+                              firstNotification();
+                              secondNotification();
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
+                            }
+                          } else if (_account == "Counselor") {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+                          }
+
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -300,7 +491,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 );
               },);
             } else {
-              Navigator.pop(context);
               checkFirestore();
             }
           }).onError((error, stackTrace) {

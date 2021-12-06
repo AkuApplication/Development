@@ -25,6 +25,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   //Initializing variables
   String _username2;
+  String _account;
   final TextEditingController _message = TextEditingController();
   ScrollController _scrollController = ScrollController();
   DateTime timeSessionStarted;
@@ -34,6 +35,7 @@ class _ChatRoomState extends State<ChatRoom> {
     await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
       setState(() {
         _username2 = value.data()["name"];
+        _account = value.data()["accountType"];
       });
     });
   }
@@ -217,7 +219,7 @@ class _ChatRoomState extends State<ChatRoom> {
             color: Colors.black54,
           ),
           //Just for testing assigning exercises
-          IconButton(
+          _account == "Patient" ? Container() : IconButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => CounselorAssigningExercisesToPatient(chosenUserData: widget.chosenUserData["uid"],),));
             },

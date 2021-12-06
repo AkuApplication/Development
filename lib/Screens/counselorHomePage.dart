@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chat_app/ActivityLog/patientLogPage.dart';
+import 'package:chat_app/ActivityLog/activityLogPage.dart';
 import 'package:chat_app/Counselling/Chat/ChatRoom.dart';
 import 'package:chat_app/Counselling/signalingForRTC.dart';
 import 'package:chat_app/Counselling/VideoCall/videoPage.dart';
@@ -43,6 +43,15 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
 
   Size size;
 
+  StreamSubscription listenerToChanges;
+
+  void listenToChanges() {
+    _firestore.collection("users").doc(_auth.currentUser.uid).snapshots().listen((event) {
+      setState(() {
+        _username2 = event.data()["name"];
+      });
+    });
+  }
   //Getting data from Firestore and inserting it to a new variable to be displayed at the screen
   void checkFirestore() async {
     await _firestore.collection("users").doc(_auth.currentUser.uid).get().then((value) {
@@ -246,7 +255,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         } else {
           getVideoDocument();
           Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid,),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid, otherUserUID: event.data()["other"]["uid"],),));
         }
       } else {
         return null;
@@ -320,7 +329,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         } else {
           getCallDocument();
           Navigator.pop(context);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid, otherUserProfileURL: event.data()["other"]["profileURL"], otherUserName: event.data()["other"]["name"],),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceCall(signalingRTC: signalingRTC, localRenderer: localRenderer, remoteRenderer: remoteRenderer,connectId: _auth.currentUser.uid, otherUserProfileURL: event.data()["other"]["profileURL"], otherUserName: event.data()["other"]["name"], otherUserUID: event.data()["other"]["uid"],),));
         }
       } else {
         return null;
@@ -331,6 +340,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   //Initial state of the page
   @override
   void initState() {
+    listenToChanges();
     getPref();
     checkFirestore();
     checkQuotes();
@@ -364,10 +374,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         title: Text("Counselor Homepage"),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationSettingsPage(sharedPreferences: sharedPreferences,),)),
-          ),
-          IconButton(
             icon: Icon(Icons.logout),
             onPressed: () => Methods().logOut(context),
           )
@@ -376,7 +382,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
-            height: size.height / 1,
+            height: size.height / 0.9,
             width: size.width,
             margin: EdgeInsets.symmetric(vertical: size.height / 50, horizontal: size.width / 30),
             child: Column(

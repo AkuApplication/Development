@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chat_app/Counselling/signalingForRTC.dart';
+import 'package:chat_app/ManageNotes/notes_app/notes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -10,8 +11,9 @@ class VideoCall extends StatefulWidget {
   final SignalingRTC signalingRTC;
   final RTCVideoRenderer localRenderer;
   final RTCVideoRenderer remoteRenderer;
+  final String otherUserUID;
 
-  VideoCall({this.signalingRTC, this.localRenderer, this.remoteRenderer, this.connectId});
+  VideoCall({this.signalingRTC, this.localRenderer, this.remoteRenderer, this.connectId, this.otherUserUID});
 
   @override
   _VideoCallState createState() => _VideoCallState();
@@ -87,6 +89,15 @@ class _VideoCallState extends State<VideoCall> {
       appBar: AppBar(
         backgroundColor: Colors.teal.shade300,
         title: Text("For Video Call"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Notes(chosenUserData: widget.otherUserUID,),));
+            },
+            icon: Icon(Icons.note),
+            color: Colors.black54,
+          ),
+        ],
       ),
       body: Stack(
         textDirection: TextDirection.rtl,

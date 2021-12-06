@@ -1,4 +1,5 @@
 import 'package:chat_app/CounselorTimetable/model/event._data_source.dart';
+import 'package:chat_app/CounselorTimetable/model/event.dart';
 import 'package:chat_app/CounselorTimetable/provider/event_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,39 @@ class TasksWidget extends StatefulWidget {
 
 class _TasksWidgetState extends State<TasksWidget> {
   @override
+  void initState() {
+    getEventsFromFirestore();
+    super.initState();
+  }
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<Event> takenFromFirestore = [];
+  void getEventsFromFirestore() async {
+    await _firestore.collection("timetable").get().then((value) {
+      value.docs.forEach((element) {
+        Timestamp timestampFrom = element["from"];
+        Timestamp timestampTo = element["to"];
+        Event event = Event(
+          title: element["title"],
+          description: element["description"],
+          from: timestampFrom.toDate(),
+          to: timestampTo.toDate(),
+          isAllDay: element["isAllDay"],
+        );
+
+        final provider = Provider.of<EventProvider>(context, listen: false);
+        // takenFromFirestore.forEach((element) {
+        //   provider.addEvent(element);
+        // });
+        provider.addEvent(event);
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<EventProvider>(context);
-    final selectedEvents = provider.eventsOfSelectedDate;
+    // final provider = Provider.of<EventProvider>(context);
+    final selectedEvents = Provider.of<EventProvider>(context).eventsOfSelectedDate;
 
     if (selectedEvents.isEmpty) {
       return Center(
@@ -30,8 +61,8 @@ class _TasksWidgetState extends State<TasksWidget> {
 
     return SfCalendar(
       view: CalendarView.timelineDay,
-      dataSource: EventDataSource(provider.events),
-      initialDisplayDate: provider.selectedDate,
+      dataSource: EventDataSource(Provider.of<EventProvider>(context).events),
+      initialDisplayDate: Provider.of<EventProvider>(context).selectedDate,
       appointmentBuilder: appointmentBuilder,
       onTap: (details) {
         if (details.appointments == null) return;

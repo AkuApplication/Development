@@ -2,12 +2,12 @@ import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:chat_app/assets/InputDecoration/Decoration.dart';
 import 'package:flutter/material.dart';
 
-class CreateAccount extends StatefulWidget {
+class AdminHomePage extends StatefulWidget {
   @override
-  _CreateAccountState createState() => _CreateAccountState();
+  _AdminHomePageState createState() => _AdminHomePageState();
 }
 
-class _CreateAccountState extends State<CreateAccount> {
+class _AdminHomePageState extends State<AdminHomePage> {
   //Initializing variables
   List<String> _genderList = ["Male", "Female"];
   List<String> _phoneCodeList = ["+673"];
@@ -53,9 +53,9 @@ class _CreateAccountState extends State<CreateAccount> {
                 alignment: Alignment.centerLeft,
                 width: size.width / 1.2,
                 child: IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(context);
+                    icon: Icon(Icons.logout),
+                    onPressed: () async {
+                      await Methods().logOut(context);
                     }
                 ),
               ),
@@ -78,7 +78,7 @@ class _CreateAccountState extends State<CreateAccount> {
               Container(
                 width: size.width / 1.3,
                 child: Text(
-                  "Create Account to Continue!",
+                  "Create Account for User!",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 25,
@@ -308,20 +308,18 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: size.height / 7,
                     ),
-                    customButton(size),
-                    SizedBox(
-                      height: size.height / 50,
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Text(
-                          "Already have an Account ?",
-                          style: TextStyle(
-                            color: Colors.teal.shade400,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          )
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: customButton(size),
+                        )),
+                        Expanded(child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: customButtonCounselor(size),
+                        )),
+                      ],
                     ),
                   ],
                 ),
@@ -333,7 +331,7 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  //A custom Widget
+  //A custom Widget for Patient
   Widget customButton(Size size) {
     return GestureDetector(
       onTap: () async {
@@ -422,12 +420,114 @@ class _CreateAccountState extends State<CreateAccount> {
         ),
         alignment: Alignment.center,
         child: Text(
-          "Create Account",
+          "Create Account for Patient",
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
+  //A custom Widget for Counselor
+  Widget customButtonCounselor(Size size) {
+    return GestureDetector(
+      onTap: () async {
+        //To validate the form
+        if (_formKey.currentState.validate()) {
+          showDialog(context: context, barrierDismissible: false, builder: (context) {
+            return WillPopScope(
+              onWillPop: () => null,
+              child: Dialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: size.width / 3),
+                child: Container(
+                  height: size.height / 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(width: size.width / 40,),
+                      Text("Loading...", textAlign: TextAlign.center,)
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },);
+
+          //Combined the code with the phone number to complete the contact
+          setState(() {
+            _contact = _phoneCode + _contact;
+          });
+
+          await Methods().createCounselor(_email, _password, _name, _gender, _contact).then((user) {
+            Navigator.pop(context);
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () => null,
+                child: AlertDialog(
+                  content: Text(
+                    _message,
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
+          }).onError((error, stackTrace) {
+            Navigator.pop(context);
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () => null,
+                child: AlertDialog(
+                  content: Text(
+                    error.message,
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
+          });
+        }
+      },
+      child: Container(
+        height: size.height / 14,
+        width: size.width / 1.2,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.teal.shade400,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          "Create Account for Counselor",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

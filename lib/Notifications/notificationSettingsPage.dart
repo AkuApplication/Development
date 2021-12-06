@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:chat_app/ActivityLog/patientLogPage.dart';
+import 'package:chat_app/ActivityLog/activityLogPage.dart';
 import 'package:chat_app/AssigningExercises/CheckboxExercises/anxiety.dart';
 import 'package:chat_app/AssigningExercises/checklistExercises.dart';
 import 'package:chat_app/AssigningExercises/counselorAssigningExercisesToPatient.dart';
@@ -40,7 +40,7 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
 
   @override
   void initState() {
-    listenToSMS();
+    // listenToSMS();
     // initNotif();
     firstNotification();
     secondNotification();
@@ -51,27 +51,27 @@ class _NotificationSettingsPageState extends State<NotificationSettingsPage> {
   //   await CustomNotification().initialized(context);
   // }
 
-  StreamSubscription listenerForSMS;
+  // StreamSubscription listenerForSMS;
 
-  void listenToSMS() {
-    listenerForSMS = _firestore.collection("appointment").doc("date").snapshots().listen((event) {
-      if(event.data()["set"] == true){
-        showDialog(context: context, builder: (context) {
-          return AlertDialog(
-            title: Text("Appointment is Set"),
-          );
-        },);
-      } else if(event.data()["set"] == false){
-        showDialog(context: context, builder: (context) {
-          return AlertDialog(
-            title: Text("Patient just set a date for appointment. Do approve or reject it"),
-          );
-        });
-      } else {
-        return null;
-      }
-    });
-  }
+  // void listenToSMS() {
+  //   listenerForSMS = _firestore.collection("appointment").doc("date").snapshots().listen((event) {
+  //     if(event.data()["set"] == true){
+  //       showDialog(context: context, builder: (context) {
+  //         return AlertDialog(
+  //           title: Text("Appointment is Set"),
+  //         );
+  //       },);
+  //     } else if(event.data()["set"] == false){
+  //       showDialog(context: context, builder: (context) {
+  //         return AlertDialog(
+  //           title: Text("Patient just set a date for appointment. Do approve or reject it"),
+  //         );
+  //       });
+  //     } else {
+  //       return null;
+  //     }
+  //   });
+  // }
 
   void firstNotification() async {
     setState(() {

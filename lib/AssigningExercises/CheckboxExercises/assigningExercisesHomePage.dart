@@ -99,25 +99,7 @@ class _AssigningExercisesHomePageState extends State<AssigningExercisesHomePage>
                 ));
               }
               return Column(
-                children: [
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: recordCards,
-                    ),
-                  ),
-                  ElevatedButton(
-                    child: Text("Assign"),
-                    onPressed: () {
-                      // listOfBool.clear();
-                      _formKey.currentState.save();
-                      print(AssigningExerciseCard().listOfBool.length);
-                      print(AssigningExerciseCard().listOfBool.toString());
-                      // print(listOfBool.length);
-                      // print(listOfBool.toString());
-                    },
-                  ),
-                ],
+                children: recordCards,
               );
             } else {
               return CircularProgressIndicator();

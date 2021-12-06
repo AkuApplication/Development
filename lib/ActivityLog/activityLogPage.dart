@@ -19,7 +19,7 @@ class _PatientLogPageState extends State<PatientLogPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("PatientLogPage"),
+        title: Text("Activity Log Page"),
       ),
       body: SafeArea(
           child: SingleChildScrollView(

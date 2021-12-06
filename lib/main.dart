@@ -1,4 +1,4 @@
-import 'package:chat_app/ActivityLog/patientLogPage.dart';
+import 'package:chat_app/ActivityLog/activityLogPage.dart';
 import 'package:chat_app/AssigningExercises/CheckboxExercises/assigningExercisesHomePage.dart';
 import 'package:chat_app/AssigningExercises/allExercisesPage.dart';
 import 'package:chat_app/CounselorTimetable/timetable.dart';
@@ -12,7 +12,7 @@ import 'package:chat_app/ReportGeneration/homepage.dart';
 import 'package:chat_app/Screens/loadingLogo.dart';
 import 'package:chat_app/SetupExercises/createExercisesPage.dart';
 import 'package:chat_app/SetupExercises/editExercisesPage.dart';
-import 'package:chat_app/SystemAuthentication/PhoneAuthenticationForm.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

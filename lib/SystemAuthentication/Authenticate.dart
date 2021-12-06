@@ -1,8 +1,10 @@
 import 'package:chat_app/Notifications/notificationsMethods.dart';
+import 'package:chat_app/Screens/adminHomePage.dart';
 import 'package:chat_app/SystemAuthentication/LoginScreen.dart';
 import 'package:chat_app/MentalHealthTest/Screen/first_time.dart';
 import 'package:chat_app/Screens/counselorHomePage.dart';
 import 'package:chat_app/Screens/patientHomePage.dart';
+import 'package:chat_app/SystemAuthentication/Methods.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +22,8 @@ class _AuthenticateState extends State<Authenticate> {
 
   //Initializing variables
   String _account;
-  String _phone;
   int _numOfLogins;
+  String _contact;
   SharedPreferences sharedPreferences;
 
   //Getting SharedPreferences instance
@@ -38,21 +40,28 @@ class _AuthenticateState extends State<Authenticate> {
   //Getting data from Firestore
   void checkFirestore() async {
     await _store.collection("users").doc(_auth.currentUser.uid).get().then((value) {
-      _account = value.data()["accountType"];
-      _phone = value.data()["contact"];
+      _contact = value.data()["contact"];
 
-      if(_account == "Patient"){
-        _numOfLogins = value.data()["numOfLogins"];
-        if(_numOfLogins < 1){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
-        } else {
-          firstNotification();
-          secondNotification();
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
+      // if(_contact == _auth.currentUser.phoneNumber){
+        _account = value.data()["accountType"];
+        if(_account == "Patient"){
+          _numOfLogins = value.data()["numOfLogins"];
+          if(_numOfLogins < 1){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
+          } else {
+            firstNotification();
+            secondNotification();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
+          }
+        } else if (_account == "Counselor") {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+        } else if (_account == "Admin") {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminHomePage(),));
         }
-      } else if (_account == "Counselor") {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
-      }
+      // } else {
+      //   Methods().logOut(context);
+      // }
+
     });
   }
 
@@ -87,11 +96,6 @@ class _AuthenticateState extends State<Authenticate> {
     } else {
       if(_auth.currentUser.emailVerified){
         checkFirestore();
-        // if(_auth.currentUser.phoneNumber == _phone){
-        //
-        // } else {
-        //   return LoginScreen();
-        // }
 
         //While checkFirestore is running, will return a loadingIndicator
         return Scaffold(

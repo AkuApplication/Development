@@ -381,7 +381,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
                                       createdCallRoom();
                                       Navigator.pop(context);
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"], otherUserProfileURL: userList[index]["profileURL"], otherUserName: userList[index]["name"],),));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VoiceCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"], otherUserProfileURL: userList[index]["profileURL"], otherUserName: userList[index]["name"], otherUserUID: userList[index]["uid"],),));
                                       listenerForCall.cancel();
                                     } else {
                                       Navigator.pop(context);
@@ -437,7 +437,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     } else if(event.data()["firstUser"] == first && event.data()["secondUser"] == second){
                                       createdVideoRoom();
                                       Navigator.pop(context);
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"],),));
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => VideoCall(signalingRTC: signalingRTC, localRenderer: _localRenderer, remoteRenderer: _remoteRenderer, connectId: userList[index]["uid"], otherUserUID: userList[index]["uid"],),));
                                       listenerForVideo.cancel();
                                     } else {
                                       Navigator.pop(context);

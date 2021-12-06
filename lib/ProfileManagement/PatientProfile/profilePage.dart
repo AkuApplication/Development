@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat_app/MentalHealthTest/Screen/first_time.dart';
 import 'package:chat_app/MentalHealthTest/testRecords/allRecords.dart';
 import 'package:chat_app/assets/InputDecoration/Decoration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -283,6 +284,19 @@ class _ProfileState extends State<Profile> {
                         onChanged: (value) {
                           _condition.text = value;
                         },
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      ElevatedButton(
+                        child: Text("Retake Mental Health Test"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF337B6E),
+                        ),
                       ),
                       SizedBox(
                         height: 15,

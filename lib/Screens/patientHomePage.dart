@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chat_app/ActivityLog/patientLogPage.dart';
+import 'package:chat_app/ActivityLog/activityLogPage.dart';
+import 'package:chat_app/AssigningExercises/CheckboxExercises/assigningExercisesHomePage.dart';
+import 'package:chat_app/AssigningExercises/CheckboxExercises/checkboxExercisesHomePage.dart';
 import 'package:chat_app/AssigningExercises/allExercisesPage.dart';
+import 'package:chat_app/AssigningExercises/checklistExercises.dart';
 import 'package:chat_app/MoodTracker/start_page.dart';
 import 'package:chat_app/Notifications/notificationSettingsPage.dart';
 import 'package:chat_app/Notifications/notificationsMethods.dart';
@@ -79,7 +82,15 @@ class _HomePageState extends State<HomePage> {
   // void stopSecondNotifications() async {
   //
   // }
+  StreamSubscription listenerToChanges;
 
+  void listenToChanges() {
+    _firestore.collection("users").doc(_auth.currentUser.uid).snapshots().listen((event) {
+      setState(() {
+        _username2 = event.data()["name"];
+      });
+    });
+  }
   //Getting data from Firestore and inserting it to a new variable to be displayed at the screen
   void checkFirestore() async {
     await _firestore
@@ -123,6 +134,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // getPref();
+    listenToChanges();
     addNumOfLogins();
     checkFirestore();
     checkQuotes();
@@ -152,8 +164,8 @@ class _HomePageState extends State<HomePage> {
           ),
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () {
-              Methods().logOut(context);
+            onPressed: () async {
+              await Methods().logOut(context);
               stopAllNotifications();
             },
           )
@@ -516,6 +528,43 @@ class _HomePageState extends State<HomePage> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CheckListOfExercises(),
+                              ));
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.cyan.shade300,
+                          elevation: 10.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.network(
+                                'https://cdn-icons-png.flaticon.com/512/762/762677.png',
+                                height: size.height / 10,
+                              ),
+                              SizedBox(
+                                height: 12.0,
+                              ),
+                              Text(
+                                'CheckList Of Exercises',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),
