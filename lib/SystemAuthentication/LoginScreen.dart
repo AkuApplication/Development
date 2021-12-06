@@ -70,132 +70,132 @@ class _LoginScreenState extends State<LoginScreen> {
         if(_account == "Patient"){
           _numOfLogins = value.data()["numOfLogins"];
         }
-        //Verify phone number and link the phone number to the email account
-        // await _auth.verifyPhoneNumber(
-        //   phoneNumber: _phoneNumber,
-        //   verificationCompleted: (phoneAuthCredential) async {
-        //     // Navigator.pop(context);
-        //     setState(() {
-        //       noOTP = false;
-        //     });
-        //     this._phoneAuthCredential= phoneAuthCredential;
-        //     print(this._phoneAuthCredential);
-        //
-        //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please insert the OTP code you received above in the specified field")));
-        //     // showDialog(context: context, builder: (context) {
-        //     //   return AlertDialog(
-        //     //     content: TextFormField(
-        //     //       key: _otpKey,
-        //     //       onSaved: (newValue) {
-        //     //         _otp = newValue;
-        //     //       },
-        //     //       cursorColor: Colors.teal.shade300,
-        //     //       decoration: decoText.copyWith(
-        //     //           hintText: "OTP SMS Code",
-        //     //           prefixIcon: Icon(Icons.email, color: Colors.grey)
-        //     //       ),
-        //     //       keyboardType: TextInputType.number,
-        //     //     ),
-        //     //     actions: [
-        //     //       Center(
-        //     //         child: TextButton(
-        //     //           onPressed: () async {
-        //     //             _otpKey.currentState.save();
-        //     //             print(_otp);
-        //     //             if (_otp == phoneAuthCredential.smsCode) {
-        //     //               try {
-        //     //                 this._authCredential = PhoneAuthProvider.credential(verificationId: this.verificationId, smsCode: _otp);
-        //     //                 print(this._authCredential.toString());
-        //     //                 await _auth.currentUser.linkWithCredential(this._authCredential);
-        //     //                 await _auth.signInWithCredential(this._authCredential);
-        //     //               } on FirebaseAuthException catch (e) {
-        //     //                 if (e.code == 'provider-already-linked') {
-        //     //                   await _auth.signInWithCredential(this._authCredential);
-        //     //                 }
-        //     //               }
-        //     //
-        //     //               await _firestore.collection('users').doc(_auth.currentUser.uid).update({
-        //     //                 "status": "Online",
-        //     //               });
-        //     //
-        //     //               Navigator.pop(context);
-        //     //
-        //     //               if (_account == "Patient") {
-        //     //                 _numOfLogins = value.data()["numOfLogins"];
-        //     //                 if(_numOfLogins < 1){
-        //     //                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
-        //     //                 } else {
-        //     //                   firstNotification();
-        //     //                   secondNotification();
-        //     //                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
-        //     //                 }
-        //     //               } else if (_account == "Counselor") {
-        //     //                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
-        //     //               }
-        //     //
-        //     //             }
-        //     //           },
-        //     //           child: Text("Verify"),
-        //     //         ),
-        //     //       ),
-        //     //     ],
-        //     //   );
-        //     // },);
-        //   },
-        //   verificationFailed: (error) {
-        //     showDialog(context: context, barrierDismissible: false, builder: (context) {
-        //       return WillPopScope(
-        //         onWillPop: () => null,
-        //         child: AlertDialog(
-        //           content: Text(
-        //             error.message,
-        //             textAlign: TextAlign.center,
-        //           ),
-        //           actions: [
-        //             Center(
-        //               child: TextButton(
-        //                 onPressed: () {
-        //                   Navigator.pop(context);
-        //                 },
-        //                 child: Text("Close"),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       );
-        //     },);
-        //   },
-        //   codeSent: (verificationId, forceResendingToken) {
-        //     this.verificationId = verificationId;
-        //     print(this.verificationId);
-        //     // print(this.verificationId);
-        //     // print(forceResendingToken.toString());
-        //   },
-        //   codeAutoRetrievalTimeout: (verificationId) {
-        //     this.verificationId = verificationId;
-        //     showDialog(context: context, barrierDismissible: false, builder: (context) {
-        //       return WillPopScope(
-        //         onWillPop: () => null,
-        //         child: AlertDialog(
-        //           content: Text(
-        //             "Timed out.",
-        //             textAlign: TextAlign.center,
-        //           ),
-        //           actions: [
-        //             Center(
-        //               child: TextButton(
-        //                 onPressed: () {
-        //                   Navigator.pop(context);
-        //                 },
-        //                 child: Text("Close"),
-        //               ),
-        //             ),
-        //           ],
-        //         ),
-        //       );
-        //     },);
-        //   },
-        // );
+        // Verify phone number and link the phone number to the email account
+        await _auth.verifyPhoneNumber(
+          phoneNumber: _phoneNumber,
+          verificationCompleted: (phoneAuthCredential) async {
+            // Navigator.pop(context);
+            setState(() {
+              noOTP = false;
+            });
+            this._phoneAuthCredential= phoneAuthCredential;
+            print(this._phoneAuthCredential);
+
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Please insert the OTP code you received above in the specified field")));
+            // showDialog(context: context, builder: (context) {
+            //   return AlertDialog(
+            //     content: TextFormField(
+            //       key: _otpKey,
+            //       onSaved: (newValue) {
+            //         _otp = newValue;
+            //       },
+            //       cursorColor: Colors.teal.shade300,
+            //       decoration: decoText.copyWith(
+            //           hintText: "OTP SMS Code",
+            //           prefixIcon: Icon(Icons.email, color: Colors.grey)
+            //       ),
+            //       keyboardType: TextInputType.number,
+            //     ),
+            //     actions: [
+            //       Center(
+            //         child: TextButton(
+            //           onPressed: () async {
+            //             _otpKey.currentState.save();
+            //             print(_otp);
+            //             if (_otp == phoneAuthCredential.smsCode) {
+            //               try {
+            //                 this._authCredential = PhoneAuthProvider.credential(verificationId: this.verificationId, smsCode: _otp);
+            //                 print(this._authCredential.toString());
+            //                 await _auth.currentUser.linkWithCredential(this._authCredential);
+            //                 await _auth.signInWithCredential(this._authCredential);
+            //               } on FirebaseAuthException catch (e) {
+            //                 if (e.code == 'provider-already-linked') {
+            //                   await _auth.signInWithCredential(this._authCredential);
+            //                 }
+            //               }
+            //
+            //               await _firestore.collection('users').doc(_auth.currentUser.uid).update({
+            //                 "status": "Online",
+            //               });
+            //
+            //               Navigator.pop(context);
+            //
+            //               if (_account == "Patient") {
+            //                 _numOfLogins = value.data()["numOfLogins"];
+            //                 if(_numOfLogins < 1){
+            //                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FirstTime(),));
+            //                 } else {
+            //                   firstNotification();
+            //                   secondNotification();
+            //                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(sharedPreferences: sharedPreferences,),));
+            //                 }
+            //               } else if (_account == "Counselor") {
+            //                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DoctorHomePage(),));
+            //               }
+            //
+            //             }
+            //           },
+            //           child: Text("Verify"),
+            //         ),
+            //       ),
+            //     ],
+            //   );
+            // },);
+          },
+          verificationFailed: (error) {
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () => null,
+                child: AlertDialog(
+                  content: Text(
+                    error.message,
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
+          },
+          codeSent: (verificationId, forceResendingToken) {
+            this.verificationId = verificationId;
+            print(this.verificationId);
+            // print(this.verificationId);
+            // print(forceResendingToken.toString());
+          },
+          codeAutoRetrievalTimeout: (verificationId) {
+            this.verificationId = verificationId;
+            showDialog(context: context, barrierDismissible: false, builder: (context) {
+              return WillPopScope(
+                onWillPop: () => null,
+                child: AlertDialog(
+                  content: Text(
+                    "Timed out.",
+                    textAlign: TextAlign.center,
+                  ),
+                  actions: [
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Close"),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },);
+          },
+        );
       }
 
     });

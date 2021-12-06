@@ -42,7 +42,7 @@ class _AuthenticateState extends State<Authenticate> {
     await _store.collection("users").doc(_auth.currentUser.uid).get().then((value) {
       _contact = value.data()["contact"];
 
-      // if(_contact == _auth.currentUser.phoneNumber){
+      if(_contact == _auth.currentUser.phoneNumber){
         _account = value.data()["accountType"];
         if(_account == "Patient"){
           _numOfLogins = value.data()["numOfLogins"];
@@ -58,9 +58,9 @@ class _AuthenticateState extends State<Authenticate> {
         } else if (_account == "Admin") {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminHomePage(),));
         }
-      // } else {
-      //   Methods().logOut(context);
-      // }
+      } else {
+        Methods().logOut(context);
+      }
 
     });
   }
